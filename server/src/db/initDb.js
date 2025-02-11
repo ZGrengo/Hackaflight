@@ -1,3 +1,13 @@
+// Accedemos a las variables del fichero ".env" y las añadimos a la lista de variables de entorno.
+import 'dotenv/config';
+
+// Importamos dependencias.
+import bcrypt from 'bcrypt';
+
+// Importamos la función que nos permite conectarnos a la base de datos.
+import getPool from './getPool.js';
+
+
 // Función principal encargada de crear las tablas.
 const main = async () => {
     try {
