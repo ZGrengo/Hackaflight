@@ -25,17 +25,17 @@ const main = async () => {
 
         // Creamos la tabla de usuarios.
         await pool.query(`
-            CREATE TABLE IF NOT EXISTS users (
+         CREATE TABLE IF NOT EXISTS users (
                 userId INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
                 username VARCHAR(30) UNIQUE NOT NULL,
-                firstname VARCHAR (50) NOT NULL
-                lastname VARCHAR (100) NOT NULL 
+                firstname VARCHAR (50) NOT NULL,
+                lastname VARCHAR (100) NOT NULL ,
                 email VARCHAR(100) UNIQUE NOT NULL,
                 password VARCHAR(100) NOT NULL,
                 birthdate DATE,
                 avatar VARCHAR(100),
                 role ENUM('admin', 'normal') DEFAULT 'normal',
-                payMetod ENUM('Visa '.'Paypal', 'wallet') DEFAULT 'Visa',
+                payMethod ENUM('Visa ','Paypal', 'wallet') DEFAULT 'Visa',
                 createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
                 modifiedAt DATETIME ON UPDATE CURRENT_TIMESTAMP
             )	
@@ -49,48 +49,18 @@ const main = async () => {
                 flyId INT UNSIGNED NOT NULL,
                 reserveDate DATETIME,
                 title VARCHAR(50) NOT NULL,
+                origin INT UNSIGNED NOT NULL,
+                destiny INT UNSIGNED NOT NULL,
+                scales INT UNSIGNED NOT NULL,
                 place VARCHAR(30) NOT NULL,
                 description TEXT NOT NULL,
-                luggage SMALLINT NOT NULL,
-                class ('FirstClass','EconomyClass', 'SecondClass') DEFAULT 'SecondClass',
+                luggage TINYINT(30) NOT NULL,
+                class ENUM('FirstClass','EconomyClass', 'SecondClass') DEFAULT 'SecondClass',
                 extras TINYINT(1) NOT NULL DEFAULT 0,
                 createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
                 modifiedAt DATETIME ON UPDATE CURRENT_TIMESTAMP,
                 FOREIGN KEY (bookingId) REFERENCES users(userId),
                 FOREIGN KEY (userId) REFERENCES users(userId)
-            )
-        `);
-
-        // Creamos la tabla de vuelos.
-        await pool.query(`
-            CREATE TABLE IF NOT EXISTS flies (
-                fliesId INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-                code INT UNSIGNED NOT NULL,
-                airline INT UNSIGNED NOT NULL,
-                origin VARCHAR(100) NOT NULL,
-                destiny VARCHAR(100) NOT NULL,
-                scales VARCHAR(100) NOT NULL,
-                arribes DATATIME NOT NULL,
-                departures DATATIME NOT NULL,
-                price SMALLINT NOT NULL, 
-                createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY (code) REFERENCES users(userId),
-                
-            )
-        `);
-
-        // Tabla de itinerario.
-        await pool.query(`
-            CREATE TABLE IF NOT EXISTS itinerary (
-                itineraryId INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-                flyId INT UNSIGNED NOT NULL,
-                origin VARCHAR(100) NOT NULL,
-                destiny VARCHAR(100) NOT NULL,
-                scales VARCHAR(100) NOT NULL,
-                duration VARCHAR(100) NOT NULL, 
-                createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY (userId) REFERENCES users(id),
-                FOREIGN KEY (flyId) REFERENCES entries(id)
             )
         `);
 
@@ -106,11 +76,48 @@ const main = async () => {
             )
         `);
 
+        // Creamos la tabla de vuelos.
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS flies (
+                flyId INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+                codeFly INT UNSIGNED NOT NULL,
+                airline INT UNSIGNED NOT NULL,
+                origin INT UNSIGNED NOT NULL,
+                destiny INT UNSIGNED NOT NULL,
+                scales INT UNSIGNED NOT NULL,
+                arrivals DATETIME NOT NULL,
+                departures DATETIME NOT NULL,
+                price SMALLINT NOT NULL, 
+                createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (codeFly) REFERENCES users(userId),
+				FOREIGN KEY (origin) REFERENCES airports(airportId),
+                FOREIGN KEY (destiny) REFERENCES airports(airportId),
+                FOREIGN KEY (scales) REFERENCES airports(airportId)
+                
+            )
+        `);
+
+        // Tabla de itinerario.
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS itinerary (
+                itineraryId INT UNSIGNED PRIMARY KEY AUTO_INCREMENT ,
+                flyId INT UNSIGNED NOT NULL,
+                origin INT UNSIGNED NOT NULL,
+                destiny INT UNSIGNED NOT NULL,
+                scales INT UNSIGNED NOT NULL,
+                duration VARCHAR(100) NOT NULL, 
+                createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (itineraryId) REFERENCES users(userId),
+                FOREIGN KEY (flyId) REFERENCES flies(flyId)
+            )
+        `);
+
+        
+
         // Tabla de valoraciones.
         await pool.query(`
             CREATE TABLE IF NOT EXISTS valorations (
-                valorationId INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-                         
+                valorationId INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,          
                 valoration TINYINT(10) NOT NULL,
                 comment VARCHAR(600) ,
                 createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
