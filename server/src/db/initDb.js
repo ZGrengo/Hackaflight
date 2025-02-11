@@ -91,7 +91,20 @@ const main = async () => {
                 name VARCHAR(70) NOT NULL,                
                 city VARCHAR(70) NOT NULL,
                 country VARCHAR(70) NOT NULL,
+                createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (flyId) REFERENCES id(id)
+            )
+        `);
+
+        // Tabla de valoraciones.
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS valorations (
+                valorationId INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+                         
+                valoration TINYINT(10) NOT NULL,
+                comment VARCHAR(600) ,
+                createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (valorationId) REFERENCES users(userId)
             )
         `);
 
