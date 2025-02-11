@@ -1,103 +1,123 @@
-// Accedemos a las variables del fichero ".env" y las añadimos a la lista de variables de entorno.
-import 'dotenv/config';
-
-// Importamos las dependencias.
-import bcrypt from 'bcrypt';
-
-// Importamos la función que nos permite conectarnos a la base de datos.
-import getPool from './getPool.js';
-
 // Función principal encargada de crear las tablas.
 const main = async () => {
     try {
         // Obtenemos el pool.
         const pool = await getPool();
 
-        console.log('Borrando tablas...');
+        console.log("Borrando tablas...");
 
         // Borramos las tablas.
         await pool.query(
-            'DROP TABLE IF EXISTS entryVotes, entryPhotos, entries, users',
+            "DROP TABLE IF EXISTS users, booking, flies, airports, itinerary "
         );
 
-        console.log('Creando tablas...');
+        console.log("Creando tablas...");
 
         // Creamos la tabla de usuarios.
         await pool.query(`
             CREATE TABLE IF NOT EXISTS users (
-                id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-                email VARCHAR(100) UNIQUE NOT NULL,
+                userId INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
                 username VARCHAR(30) UNIQUE NOT NULL,
+                firstname VARCHAR (50) NOT NULL
+                lastname VARCHAR (100) NOT NULL 
+                email VARCHAR(100) UNIQUE NOT NULL,
                 password VARCHAR(100) NOT NULL,
+                birthdate DATE,
                 avatar VARCHAR(100),
-                active BOOLEAN DEFAULT FALSE,
-                regCode CHAR(30),
-                recoverPassCode CHAR(30),
                 role ENUM('admin', 'normal') DEFAULT 'normal',
-                createdAt DATETIME DEFAULT CURRENT_TIMESTAMP, 
+                payMetod ENUM('Visa '.'Paypal', 'wallet') DEFAULT 'Visa',
+                createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
                 modifiedAt DATETIME ON UPDATE CURRENT_TIMESTAMP
             )	
         `);
 
-        // Creamos la tabla de entradas.
+        // Creamos la tabla de registros.
         await pool.query(`
-            CREATE TABLE IF NOT EXISTS entries (
-                id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+            CREATE TABLE IF NOT EXISTS booking (
+                bookingId INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+                userId INT UNSIGNED NOT NULL,
+                flyId INT UNSIGNED NOT NULL,
+                reserveDate DATETIME,
                 title VARCHAR(50) NOT NULL,
                 place VARCHAR(30) NOT NULL,
                 description TEXT NOT NULL,
-                userId INT UNSIGNED NOT NULL,
-                createdAt DATETIME DEFAULT CURRENT_TIMESTAMP, 
-                FOREIGN KEY (userId) REFERENCES users(id)
+                luggage SMALLINT NOT NULL,
+                class ('FirstClass','EconomyClass', 'SecondClass') DEFAULT 'SecondClass',
+                extras TINYINT(1) NOT NULL DEFAULT 0,
+                createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+                modifiedAt DATETIME ON UPDATE CURRENT_TIMESTAMP,
+                FOREIGN KEY (bookingId) REFERENCES users(userId),
+                FOREIGN KEY (userId) REFERENCES users(userId)
             )
         `);
 
-        // Creamos la tabla de fotos.
+        // Creamos la tabla de vuelos.
         await pool.query(`
-            CREATE TABLE IF NOT EXISTS entryPhotos (
-                id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-                name VARCHAR(100) NOT NULL,
-                entryId INT UNSIGNED NOT NULL,
-                FOREIGN KEY (entryId) REFERENCES entries(id),
-                createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
+            CREATE TABLE IF NOT EXISTS flies (
+                fliesId INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+                code INT UNSIGNED NOT NULL,
+                airline INT UNSIGNED NOT NULL,
+                origin VARCHAR(100) NOT NULL,
+                destiny VARCHAR(100) NOT NULL,
+                scales VARCHAR(100) NOT NULL,
+                arribes DATATIME NOT NULL,
+                departures DATATIME NOT NULL,
+                price SMALLINT NOT NULL, 
+                createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (code) REFERENCES users(userId),
+                
             )
         `);
 
-        // Tabla de votos.
+        // Tabla de itinerario.
         await pool.query(`
-            CREATE TABLE IF NOT EXISTS entryVotes (
-                id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-                value TINYINT UNSIGNED NOT NULL,
-                userId INT UNSIGNED NOT NULL,
-                entryId INT UNSIGNED NOT NULL,
+            CREATE TABLE IF NOT EXISTS itinerary (
+                itineraryId INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+                flyId INT UNSIGNED NOT NULL,
+                origin VARCHAR(100) NOT NULL,
+                destiny VARCHAR(100) NOT NULL,
+                scales VARCHAR(100) NOT NULL,
+                duration VARCHAR(100) NOT NULL, 
                 createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (userId) REFERENCES users(id),
-                FOREIGN KEY (entryId) REFERENCES entries(id)
+                FOREIGN KEY (flyId) REFERENCES entries(id)
             )
         `);
 
-        console.log('¡Tablas creadas!');
+        // Tabla de aeropuertos.
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS airports (
+                airportId INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+                name VARCHAR(70) NOT NULL,                
+                city VARCHAR(70) NOT NULL,
+                country VARCHAR(70) NOT NULL,
+                FOREIGN KEY (flyId) REFERENCES id(id)
+            )
+        `);
 
-        // Encriptamos la contraseña del administrador.
-        const hashedPass = await bcrypt.hash('admin', 10);
+        console.log("¡Tablas creadas!");
+        const hashedPass = await bcrypt.hash("admin", 10);
 
         // Insertamos el usuario administrador.
         await pool.query(
             `
-                INSERT INTO users (username, email, password, role, active, createdAt)
-                VALUES (?, ?, ?, ?, ?, ?)
+                INSERT INTO users (username, firstname, lastname, email, password, birthdate, avatar, role, payMetod, createdAt,  modifiedAt)
+                VALUES (?, ?, ?, ?, ?, ?,?,?,?,?,?)
             `,
             [
-                'admin',
-                'admin@example.com',
+                "admin",
+                "admin",
+                "admin",
+                "admin@example.com",
                 hashedPass,
-                'admin',
-                true,
                 new Date(),
-            ],
+                "admin",
+                ,
+                true,
+            ]
         );
 
-        console.log('¡Usuario administrador insertado!');
+        console.log("¡Usuario administrador insertado!");
 
         // Cerramos el proceso con código 0.
         process.exit(0);
