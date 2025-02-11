@@ -2,6 +2,7 @@
 import express from 'express';
 
 //importamos middleware--> el de autenticación.
+import authUserMiddleware from '../middlewares/index.js';
 
 //importamos funciones controladoras
 
