@@ -8,9 +8,11 @@ import morgan from 'morgan';
 import fileUpload from 'express-fileupload';
 
 //importamos rutas
+import userRoutes from './src/routes/userRoutes.js';
 
 //obtenemos variables de entorno necesarias
 const { PORT, UPLOADS_DIR } = process.env;
+
 //Creamos una aplicación express (server)
 const app = express();
 
@@ -30,8 +32,10 @@ app.use(express.json());
 app.use(fileUpload());
 
 //middleware que indica a Express dónde están las rutas.
+app.use('/api/users', userRoutes);
 
 //middleware de manejo de errores
+// eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
     console.error(err);
     res.status(err.httpStatus || 500).send({

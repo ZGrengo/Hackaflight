@@ -11,15 +11,12 @@ const authUserMiddleware = async (req, res, next) => {
         const { authorization } = req.headers;
 
         //si falta el token lanzamos un error
-        if (!authToken) {
+        if (!authorization) {
             generateErrorUtil('Falta la cabecera de autenticación', 401);
         }
         try {
             //Desencriptamos la información del token
-            const tokenInfo = jwt.verify(
-                authorization,
-                processMultipart.env.SECRET,
-            );
+            const tokenInfo = jwt.verify(authorization, process.env.SECRET);
 
             //Creamos una propiedad inventada en el objeto "request" para almacenar el ID y rol del usuario
             req.user = {

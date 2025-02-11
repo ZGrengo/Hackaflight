@@ -5,6 +5,10 @@ import express from 'express';
 import authUserMiddleware from '../middlewares/index.js';
 
 //importamos funciones controladoras
+import {
+    loginUserController,
+    privateUserProfileController,
+} from '../controllers/users/index.js';
 
 //creamos un router
 const router = express.Router();
@@ -13,13 +17,15 @@ const router = express.Router();
 
 // Validación usuario
 
-// Iniciar sesión de usuario (requiere autenticación)
+// Iniciar sesión de usuario (requiere Validacion)
+router.post('/login', loginUserController);
 
 // Recuperar contraseña (extra)
 
 // Cambiar contraseña (requiere autenticación)
 
 // Obtener el perfil del usuario (requiere estar autenticado)
+router.get('', authUserMiddleware, privateUserProfileController);
 
 // Actualizar el perfil del usuario (requiere estar autenticado)(extra)
 
