@@ -19,7 +19,7 @@ const insertUserModel = async (username, email, password) => {
     // Obtenemos el listado de usuarios que tengan el nombre de usuario que recibimos
     // por body. Utilizamos destructuring con arrays para quedarme concretamente con
     // el array de resultados de SELECT que será el array que esá en la posición cero.
-    let [users] = await pool.query(`SELECT id FROM users WHERE username = ?`, [
+    let [users] = await pool.query(`SELECT userId FROM users WHERE username = ?`, [
         username,
     ]);
 
@@ -29,7 +29,7 @@ const insertUserModel = async (username, email, password) => {
     }
 
     // Obtenemos el listado de usuarios que tengan el email que recibimos por body.
-    [users] = await pool.query(`SELECT id FROM users WHERE email = ?`, [email]);
+    [users] = await pool.query(`SELECT userId FROM users WHERE email = ?`, [email]);
 
     // Lanzamos un error si ya existe un usuario con ese email.
     if (users.length > 0) {
@@ -48,20 +48,20 @@ const insertUserModel = async (username, email, password) => {
     // Insertamos el usuario en la tabla correspondiente.
     await pool.query(
         `
-            INSERT INTO users (username, email, password, regCode, createdAt)
-            VALUES (?, ?, ?, ?, ?)
+            INSERT INTO users (username, email, password, birthdate, avatar, role, payMethod, createdAt, madifiedAt)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         `,
         [username, email, hashedPass, regCode, now],
     );
 
     // Asunto del email de verificación.
-    const emailSubject = 'Activa tu usuario en Diario de Viajes :)';
+    const emailSubject = 'Activa tu usuario en Hack a flight ;)';
 
     // Cuerpo del email de verificación.
     const emailBody = `
         ¡Bienvenid@ ${username}!
 
-        Gracias por registrarte en Diario de Viajes bruh. Para activar tu cuenta, haz click en el siguiente enlace:
+        Gracias por registrarte en Hack a flight. Para activar tu cuenta y empezar a ahorrar en tus vuelos, haz click en el siguiente enlace:
 
         <a href="${process.env.CLIENT_URL}/users/validate/${regCode}">¡Activa tu usuario!</a>
     `;
