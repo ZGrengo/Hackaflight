@@ -1,4 +1,4 @@
-import selectUserByEmailModel from '../models/users/selectUserByEmailModel.js';
+import selectUserByEmailModel from '../../models/users/selectUserByEmailModel.js';
 
 const privateUserProfileController = async (req, res, next) => {
     try {

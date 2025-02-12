@@ -1,7 +1,7 @@
-import jwt from 'bjsonwebtoken';
+import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import generateErrorUtil from '../utils/generateErrorUtil.js';
-import selectUserByEmailModel from '../models/users/selectUserByEmailModel.js';
+import generateErrorUtil from '../../utils/generateErrorUtil.js';
+import selectUserByEmailModel from '../../models/users/selectUserByEmailModel.js';
 
 const loginUserController = async (req, res, next) => {
     try {

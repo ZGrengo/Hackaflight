@@ -8,6 +8,7 @@ import authUserMiddleware from '../middlewares/index.js';
 import {
     loginUserController,
     privateUserProfileController,
+    listRatingsController,
 } from '../controllers/users/index.js';
 
 //creamos un router
@@ -40,6 +41,7 @@ router.get('', authUserMiddleware, privateUserProfileController);
 // Valorar la plataforma (requiere autenticación)
 
 // Obtener lista de valoraciones
+router.get('', listRatingsController);
 
 //Endpoints adminitrador
 // Obtener lista de usuarios (requiere rol de administrador)
