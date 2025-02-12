@@ -4,11 +4,11 @@
     "version": "1.0.0",
     "main": "index.js",
     "scripts": {
-        "initDb": "node ./src/db/initDb.js",
-        "start": "node ./src/app.js",
-        "dev": "nodemon ./src/app.js"
+        "initdb": "node ./src/db/initDb.js",
+        "start": "node app.js",
+        "dev": "nodemon ./app.js"
     },
-    "keywords": [ ],
+    "keywords": [],
     "author": "",
     "license": "ISC",
     "description": "",
