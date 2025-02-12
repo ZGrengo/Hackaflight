@@ -1,5 +1,5 @@
 //importamos modelo
-import selectRatingsModel from '../../models/users/selectRatingsModel.js';
+import selectRatingsModel from '../../models/rating/selectRatingsModel.js';
 
 //Función controladora que obtiene el listado de las valoraciones
 const listRatingsController = async (req, res, next) => {
