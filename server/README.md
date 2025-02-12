@@ -13,7 +13,7 @@
 3. **Inicializar la base de datos**:
 
     ```sh
-    npm run initDb
+    npm run initdb
     ```
 
 4. **Iniciar el servidor**:
