@@ -8,8 +8,9 @@ import authUserMiddleware from '../middlewares/index.js';
 import {
     loginUserController,
     privateUserProfileController,
-    listRatingsController,
 } from '../controllers/users/index.js';
+
+import listRatingsController from '../controllers/ratings/listRatingsController.js';
 
 //creamos un router
 const router = express.Router();
