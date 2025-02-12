@@ -48,9 +48,7 @@ const main = async () => {
                 price SMALLINT NOT NULL,
                 createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (origin) REFERENCES airports(airportId),
-                FOREIGN KEY (destiny) REFERENCES airports(airportId),
-                INDEX (origin),
-                INDEX (destiny)
+                FOREIGN KEY (destiny) REFERENCES airports(airportId)
             )
         `);
         // Creamos la tabla de usuarios.
@@ -90,9 +88,7 @@ const main = async () => {
                 createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
                 modifiedAt DATETIME ON UPDATE CURRENT_TIMESTAMP,
                 FOREIGN KEY (userId) REFERENCES users(userId),
-                FOREIGN KEY (flyId) REFERENCES flies(flyId),
-                INDEX (userId),
-                INDEX (flyId)
+                FOREIGN KEY (flyId) REFERENCES flies(flyId)
             )
         `);
 
@@ -113,11 +109,7 @@ const main = async () => {
                 FOREIGN KEY (flyId) REFERENCES flies(flyId),
                 FOREIGN KEY (scales) REFERENCES airports(airportId),
                 FOREIGN KEY (origin) REFERENCES airports(airportId),
-                FOREIGN KEY (destiny) REFERENCES airports(airportId),
-                INDEX (bookingId),
-                INDEX (flyId),
-                INDEX (origin),
-                INDEX (destiny)
+                FOREIGN KEY (destiny) REFERENCES airports(airportId)
             )
         `);
 
@@ -126,13 +118,10 @@ const main = async () => {
             CREATE TABLE IF NOT EXISTS valorations (
                 valorationId INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
                 userId INT UNSIGNED NOT NULL,
-                experience ENUM('good', 'neutral', 'bad') DEFAULT 'good',
                 rte Enum('1', '2', '3', '4', '5') DEFAULT '5',
-                recomendation ENUM('yes', 'no') DEFAULT 'yes',
                 comment VARCHAR(600),
                 createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY (userId) REFERENCES users(userId),
-                INDEX (userId)
+                FOREIGN KEY (userId) REFERENCES users(userId)
             )
         `);
 
