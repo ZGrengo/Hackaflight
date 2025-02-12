@@ -9,6 +9,8 @@ import {
     loginUserController,
     privateUserProfileController,
     deleteUserController,
+    userFavoriteController,
+    deleteUserFavoriteController,
 } from '../controllers/users/index.js';
 
 import listRatingsController from '../controllers/ratings/listRatingsController.js';
@@ -33,17 +35,22 @@ router.get('', authUserMiddleware, privateUserProfileController);
 // Actualizar el perfil del usuario (requiere estar autenticado)(extra)
 
 // Guardar un criterio de búsqueda como favorito (requiere autenticación)
+router.post('/favorites', authUserMiddleware, saveUserFavoriteController);
 
 // Obtener la lista de criterios de búsqueda favoritos del usuario (requiere autenticación)
+router.get('/favorites', authUserMiddleware, userFavoriteController);
 
 // Obtener detalles de un criterio de búsqueda favorito (requiere autenticación)
+router.get('/favorites/:title', authUserMiddleware, userFavoriteController);
 
 // Eliminar un criterio de búsqueda favorito (requiere autenticación)
+router.delete('/favorites/:favoriteId', authUserMiddleware, deleteUserFavoriteController);
 
 // Valorar la plataforma (requiere autenticación)
 
 // Obtener lista de valoraciones
 router.get('', listRatingsController);
+
 
 //Endpoints adminitrador
 // Obtener lista de usuarios (requiere rol de administrador)
