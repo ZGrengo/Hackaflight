@@ -127,7 +127,9 @@ const main = async () => {
             CREATE TABLE IF NOT EXISTS valorations (
                 valorationId INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
                 userId INT UNSIGNED NOT NULL,
-                valoration TINYINT(10) NOT NULL,
+                Experience ENUM('good', 'neutral', 'bad') DEFAULT 'good',
+                Rate Enum('1', '2', '3', '4', '5') DEFAULT '5',
+                Recomentation ENUM('yes', 'no') DEFAULT 'yes',
                 comment VARCHAR(600),
                 createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (userId) REFERENCES users(userId),
@@ -231,11 +233,11 @@ const main = async () => {
         // Insertamos datos de ejemplo en la tabla de valoraciones.
         await pool.query(
             `
-                INSERT INTO valorations (userId, valoration, comment, createdAt)
-                VALUES (?, ?, ?, ?)
+                INSERT INTO valorations (userId, Experience, Rate, Recomentation, comment, createdAt)
+                VALUES (?, ?, ?, ?, ?, ?)
             `,
             [
-                2, 5, "Great experience!", new Date()
+                2, "good", 5, "yes", "Great experience!", new Date()
             ]
         );
 
