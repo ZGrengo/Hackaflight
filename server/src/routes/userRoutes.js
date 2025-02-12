@@ -8,6 +8,7 @@ import authUserMiddleware from '../middlewares/index.js';
 import {
     loginUserController,
     privateUserProfileController,
+    deleteUserController,
 } from '../controllers/users/index.js';
 
 import listRatingsController from '../controllers/ratings/listRatingsController.js';
@@ -50,6 +51,7 @@ router.get('', listRatingsController);
 // Habilitar / deshabilitar un usuario (requiere rol de administrador)
 
 // Eliminar un usuario (requiere rol de administrador)
+router.delete('/:id', authUserMiddleware, deleteUserController);
 
 //Super-extra
 // Obtener las reservas del usuario (requiere autenticación)
