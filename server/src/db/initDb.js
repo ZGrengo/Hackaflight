@@ -83,8 +83,8 @@ const main = async () => {
                 destiny INT UNSIGNED NOT NULL,
                 scales INT UNSIGNED NOT NULL,
                 place VARCHAR(30) NOT NULL,
-                description TEXT NOT NULL,
-                luggage TINYINT(30) NOT NULL,
+                description TEXT,
+                luggage TINYINT(30),
                 class ENUM('FirstClass', 'EconomyClass', 'TuristClass') DEFAULT 'EconomyClass',
                 extras TINYINT(1) NOT NULL DEFAULT 0,
                 createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -116,7 +116,6 @@ const main = async () => {
                 FOREIGN KEY (destiny) REFERENCES airports(airportId),
                 INDEX (bookingId),
                 INDEX (flyId),
-                INDEX (scales),
                 INDEX (origin),
                 INDEX (destiny)
             )
@@ -127,9 +126,9 @@ const main = async () => {
             CREATE TABLE IF NOT EXISTS valorations (
                 valorationId INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
                 userId INT UNSIGNED NOT NULL,
-                Experience ENUM('good', 'neutral', 'bad') DEFAULT 'good',
-                Rate Enum('1', '2', '3', '4', '5') DEFAULT '5',
-                Recomentation ENUM('yes', 'no') DEFAULT 'yes',
+                experience ENUM('good', 'neutral', 'bad') DEFAULT 'good',
+                rte Enum('1', '2', '3', '4', '5') DEFAULT '5',
+                recomendation ENUM('yes', 'no') DEFAULT 'yes',
                 comment VARCHAR(600),
                 createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (userId) REFERENCES users(userId),
