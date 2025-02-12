@@ -10,19 +10,19 @@ const loginUserController = async ( req, res, next ) => {
 
         if ( !email || !password )
         {
-            throw generateErrorUtil( 'Faltan campos.', 400 );
+            generateErrorUtil( 'Faltan campos.', 400 );
         }
 
         const user = await selectUserByEmailModel( email );
 
         if ( !user || !( await bcrypt.compare( password, user.password ) ) )
         {
-            throw generateErrorUtil( 'Credenciales invalidas.', 403 );
+            generateErrorUtil( 'Credenciales invalidas.', 403 );
         }
 
         if ( !user.active )
         {
-            throw generateErrorUtil( 'Cuenta en espera de validacion.', 403 );
+            generateErrorUtil( 'Cuenta en espera de validacion.', 403 );
         }
 
         const tokenInfo = {

@@ -7,7 +7,7 @@ const privateUserProfileController = async ( req, res, next ) => {
 
         if ( !user )
         {
-            throw new Error( 'Usuario no encontrado.' );
+            new Error( 'Usuario no encontrado.' );
         }
 
         res.send( {

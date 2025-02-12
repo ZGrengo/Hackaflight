@@ -5,18 +5,21 @@ import jwt from 'jsonwebtoken';
 import generateErrorUtil from '../utils/generateErrorUtil.js';
 
 //Creamos middleware que desencripta un token y crea la propiedad user en el objeto request.
-const authUserMiddleware = async (req, res, next) => {
-    try {
+const authUserMiddleware = async ( req, res, next ) => {
+    try
+    {
         //obtenemos el token
         const { authorization } = req.headers;
 
         //si falta el token lanzamos un error
-        if (!authorization) {
-            generateErrorUtil('Falta la cabecera de autenticación', 401);
+        if ( !authorization )
+        {
+            generateErrorUtil( 'Falta la cabecera de autenticación', 401 );
         }
-        try {
+        try
+        {
             //Desencriptamos la información del token
-            const tokenInfo = jwt.verify(authorization, process.env.SECRET);
+            const tokenInfo = jwt.verify( authorization, process.env.SECRET );
 
             //Creamos una propiedad inventada en el objeto "request" para almacenar el ID y rol del usuario
             req.user = {
@@ -26,12 +29,14 @@ const authUserMiddleware = async (req, res, next) => {
 
             //Pasamos el control al siguiente middlware o función controladora.
             next();
-        } catch (err) {
-            console.error(err);
-            generateErrorUtil('Token inválido', 403);
+        } catch ( err )
+        {
+            console.error( err );
+            generateErrorUtil( 'Token inválido', 403 );
         }
-    } catch (err) {
-        next(err);
+    } catch ( err )
+    {
+        next( err );
     }
 };
 
