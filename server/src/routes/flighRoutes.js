@@ -3,6 +3,6 @@ import searchFlightsController from '../controllers/flights/searchFlightsControl
 
 const router = express.Router();
 // Endpoint para buscar vuelos
-router.get('/flights/search', searchFlightsController);
+router.get('/search', searchFlightsController);
 
 export default router;
