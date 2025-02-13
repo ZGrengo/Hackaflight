@@ -22,6 +22,24 @@ const main = async () => {
 
         console.log('Creando tablas...');
 
+          // Creamos la tabla de usuarios.
+          await pool.query(`
+            CREATE TABLE IF NOT EXISTS users (
+                userId INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+                username VARCHAR(30) UNIQUE NOT NULL,
+                firstname VARCHAR(50) NOT NULL,
+                lastname VARCHAR(100) NOT NULL,
+                email VARCHAR(100) UNIQUE NOT NULL,
+                password VARCHAR(100) NOT NULL,
+                birthdate DATE,
+                avatar VARCHAR(100),
+                role ENUM('admin', 'normal') DEFAULT 'normal',
+                payMethod ENUM('Visa', 'Paypal', 'Wallet') DEFAULT 'Visa',
+                createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+                modifiedAt DATETIME ON UPDATE CURRENT_TIMESTAMP
+            )
+        `);
+
         // Tabla de aeropuertos.
         await pool.query(`
             CREATE TABLE IF NOT EXISTS airports (
@@ -49,23 +67,7 @@ const main = async () => {
                 FOREIGN KEY (destiny) REFERENCES airports(airportId)
             )
         `);
-        // Creamos la tabla de usuarios.
-        await pool.query(`
-            CREATE TABLE IF NOT EXISTS users (
-                userId INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-                username VARCHAR(30) UNIQUE NOT NULL,
-                firstname VARCHAR(50) NOT NULL,
-                lastname VARCHAR(100) NOT NULL,
-                email VARCHAR(100) UNIQUE NOT NULL,
-                password VARCHAR(100) NOT NULL,
-                birthdate DATE,
-                avatar VARCHAR(100),
-                role ENUM('admin', 'normal') DEFAULT 'normal',
-                payMethod ENUM('Visa', 'Paypal', 'Wallet') DEFAULT 'Visa',
-                createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-                modifiedAt DATETIME ON UPDATE CURRENT_TIMESTAMP
-            )
-        `);
+      
 
         // Creamos la tabla de reservas.
         await pool.query(`
