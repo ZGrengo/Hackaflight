@@ -1,10 +1,10 @@
-import amadeus from '../../utils/amadeusClient.js';
+import amadeus from '../../utils/amadeusClientUtil.js';
 
 const searchFlightsController = async (req, res) => {
     try {
-        const { origin, destination, departureDate } = req.query;
+        const { origin, destination, departureDate, adults } = req.query;
 
-        if (!origin || !destination || !departureDate) {
+        if (!origin || !destination || !departureDate || !adults) {
             return res
                 .status(400)
                 .send({ error: 'Faltan parámetros de búsqueda' });
@@ -13,7 +13,7 @@ const searchFlightsController = async (req, res) => {
             originLocationCode: origin,
             destinationLocationCode: destination,
             departureDate: departureDate,
-            adults: 1,
+            adults: adults,
         });
 
         res.json(response.data);
