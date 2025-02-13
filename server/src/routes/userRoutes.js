@@ -13,6 +13,7 @@ import {
     deleteUserFavoriteController,
     updateUserPassController,
     registerUserController,
+    saveUserFavoriteController,
 } from '../controllers/users/index.js';
 
 import listRatingsController from '../controllers/ratings/listRatingsController.js';
@@ -47,13 +48,16 @@ router.get('/favorites', authUserMiddleware, userFavoriteController);
 router.get('/favorites/:title', authUserMiddleware, userFavoriteController);
 
 // Eliminar un criterio de búsqueda favorito (requiere autenticación)
-router.delete('/favorites/:favoriteId', authUserMiddleware, deleteUserFavoriteController);
+router.delete(
+    '/favorites/:favoriteId',
+    authUserMiddleware,
+    deleteUserFavoriteController,
+);
 
 // Valorar la plataforma (requiere autenticación)
 
 // Obtener lista de valoraciones
 router.get('', listRatingsController);
-
 
 //Endpoints adminitrador
 // Obtener lista de usuarios (requiere rol de administrador)
