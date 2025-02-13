@@ -32,7 +32,7 @@ const main = async () => {
                 birthdate DATE,
                 avatar VARCHAR(100),
                 role ENUM('admin', 'normal') DEFAULT 'normal',
-                Active BOOLEAN DEFAULT FALSE,
+                active BOOLEAN DEFAULT FALSE,
                 createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
                 modifiedAt DATETIME ON UPDATE CURRENT_TIMESTAMP
                 
