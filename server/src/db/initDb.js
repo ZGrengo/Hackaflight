@@ -17,13 +17,13 @@ const main = async () => {
 
         // Borramos las tablas.
         await pool.query(
-            'DROP TABLE IF EXISTS users, airports,  flies, booking, itinerary, valorations',
+            'DROP TABLE IF EXISTS valorations, itinerary, booking, flies, airports, users',
         );
 
         console.log('Creando tablas...');
 
-          // Creamos la tabla de usuarios.
-          await pool.query(`
+        // Creamos la tabla de usuarios.
+        await pool.query(`
             CREATE TABLE IF NOT EXISTS users (
                 userId INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
                 username VARCHAR(30) UNIQUE NOT NULL,
@@ -67,7 +67,6 @@ const main = async () => {
                 FOREIGN KEY (destiny) REFERENCES airports(airportId)
             )
         `);
-      
 
         // Creamos la tabla de reservas.
         await pool.query(`
