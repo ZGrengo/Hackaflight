@@ -70,17 +70,6 @@ const main = async () => {
                 modifiedAt DATETIME ON UPDATE CURRENT_TIMESTAMP
             )
         `);
-        // Creamos la tabla de criterios de busqueda favoritos de los Usuarios.
-        await pool.query(`
-            CREATE TABLE IF NOT EXISTS favorites (
-                favoriteId INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-                userId INT UNSIGNED NOT NULL,
-                title VARCHAR(100),
-                favoriteSearch JSON,
-                createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY (userId) REFERENCES users(userId) ON DELETE CASCADE
-            )
-        `);
 
         // Creamos la tabla de reservas.
         await pool.query( `
@@ -106,7 +95,6 @@ const main = async () => {
                 INDEX (flyId)
             )
         `);
-
 
 
         // Tabla de itinerario.
