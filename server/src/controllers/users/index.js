@@ -8,6 +8,7 @@ import userFavoriteController from './userFavoriteController.js';
 import userFavoriteDetailsController from './userFavoriteDetailsController.js';
 import deleteUserFavoriteController from './deleteUserFavoriteController.js';
 import updateUserPassController from './updateUserPassController.js';
+import activateUserController from './activateUserController.js';
 
 //exportamos las funciones controladoras
 export {
@@ -20,4 +21,5 @@ export {
     userFavoriteDetailsController,
     saveUserFavoriteController,
     updateUserPassController,
+    activateUserController,
 };

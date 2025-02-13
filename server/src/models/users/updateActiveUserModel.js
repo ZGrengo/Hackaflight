@@ -2,7 +2,6 @@ import getPool from '../../db/getPool.js';
 import generateErrorUtil from '../../utils/generateErrorUtil.js';
 
 const updateActiveUserModel = async (regCode) => {
-    console.log('RECIEVED CODE IN THE MODEL', regCode);
     const pool = await getPool();
     const [users] = await pool.query(
         `SELECT userId FROM users WHERE regCode = ?`,
@@ -10,7 +9,7 @@ const updateActiveUserModel = async (regCode) => {
     );
 
     if (users.length < 1) {
-        generateErrorUtil('Invalid register code', 404);
+        generateErrorUtil('Codigo de registro invalido', 404);
     }
 
     await pool.query(

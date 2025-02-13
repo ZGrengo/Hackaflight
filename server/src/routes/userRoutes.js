@@ -14,6 +14,7 @@ import {
     updateUserPassController,
     registerUserController,
     saveUserFavoriteController,
+    activateUserController,
 } from '../controllers/users/index.js';
 
 import listRatingsController from '../controllers/ratings/listRatingsController.js';
@@ -22,14 +23,17 @@ import listRatingsController from '../controllers/ratings/listRatingsController.
 const router = express.Router();
 
 // Registrar un nuevo usuario
+router.post('/register', registerUserController);
 
 // Validación usuario
+router.put('/validate/:regCode', activateUserController);
 
 // Iniciar sesión de usuario (requiere Validacion)
 router.post('/login', loginUserController);
 
 // Recuperar contraseña (extra)
 router.post('/register', registerUserController);
+
 // Cambiar contraseña (requiere autenticación)
 router.post('/password', authUserMiddleware, updateUserPassController);
 
