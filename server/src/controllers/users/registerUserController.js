@@ -3,13 +3,28 @@ import generateErrorUtil from '../../utils/generateErrorUtil.js';
 
 const registerUserController = async (req, res, next) => {
     try {
-        const { username, email, password , firstname , lastname , birthdate , createdAt } = req.body;
+        const { firstName, lastname, username, email, password, birthdate } =
+            req.body;
 
-        if (!username || !email || !password || !firstname || !lastname || !birthdate || !createdAt) {
-            generateErrorUtil('Missing fields.', 400);
+        if (
+            !firstName ||
+            !lastname ||
+            !username ||
+            !email ||
+            !password ||
+            !birthdate
+        ) {
+            generateErrorUtil('Faltan campos.', 400);
         }
 
-        await insertUserModel(username, email, password, firstname, lastname, birthdate, createdAt);
+        await insertUserModel(
+            firstName,
+            lastname,
+            username,
+            email,
+            password,
+            birthdate,
+        );
 
         res.status(201).send({
             status: 'ok',
