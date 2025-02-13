@@ -148,6 +148,7 @@ const main = async () => {
             ],
         );
 
+        /*
         // Insertamos un usuario normal.
         await pool.query(
             `
@@ -244,14 +245,14 @@ const main = async () => {
         // Insertamos datos de ejemplo en la tabla de valoraciones.
         await pool.query(
             `
-                INSERT INTO valorations (userId, Experience, Rate, recomendation, comment, createdAt)
+                INSERT INTO valorations (userId,rate, comment, createdAt)
                 VALUES (?, ?, ?, ?, ?, ?)
             `,
-            [2, 'good', 5, 'yes', 'Great experience!', new Date()],
+            [  , 5, 'Great experience!', new Date()],
         );
 
         console.log('¡Datos de ejemplo insertados!');
-
+    */
         // Cerramos el proceso con código 0.
         process.exit(0);
     } catch (err) {
