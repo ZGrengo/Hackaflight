@@ -6,7 +6,7 @@ import bcrypt from 'bcrypt';
 import getPool from '../../db/getPool.js';
 
 // Importamos la función que envía un email.
-import sendMailUtil from '../../utils/sendMailUtil.js';
+import sendMailUtil from '../../utils/sendEmailUtil.js';
 
 // Importamos la función que genera un error.
 import generateErrorUtil from '../../utils/generateErrorUtil.js';
@@ -19,9 +19,10 @@ const insertUserModel = async (username, email, password) => {
     // Obtenemos el listado de usuarios que tengan el nombre de usuario que recibimos
     // por body. Utilizamos destructuring con arrays para quedarme concretamente con
     // el array de resultados de SELECT que será el array que esá en la posición cero.
-    let [users] = await pool.query(`SELECT userId FROM users WHERE username = ?`, [
-        username,
-    ]);
+    let [users] = await pool.query(
+        `SELECT userId FROM users WHERE username = ?`,
+        [username],
+    );
 
     // Lanzamos un error si ya existe un usuario con ese nombre.
     if (users.length > 0) {
@@ -29,7 +30,9 @@ const insertUserModel = async (username, email, password) => {
     }
 
     // Obtenemos el listado de usuarios que tengan el email que recibimos por body.
-    [users] = await pool.query(`SELECT userId FROM users WHERE email = ?`, [email]);
+    [users] = await pool.query(`SELECT userId FROM users WHERE email = ?`, [
+        email,
+    ]);
 
     // Lanzamos un error si ya existe un usuario con ese email.
     if (users.length > 0) {
