@@ -125,7 +125,7 @@ const main = async () => {
         console.log('¡Tablas creadas!');
         const hashedPassAdmin = await bcrypt.hash('admin', 10);
         /* const hashedPassUser = await bcrypt.hash('user', 10); */
-
+        /*
         // Insertamos el usuario administrador.
         await pool.query(
             `
@@ -146,7 +146,7 @@ const main = async () => {
                 new Date(),
             ],
         );
-
+*/
         /*
         // Insertamos un usuario normal.
         await pool.query(
