@@ -9,6 +9,7 @@ import {
     loginUserController,
     privateUserProfileController,
     deleteUserController,
+    updateUserPassController,
 } from '../controllers/users/index.js';
 
 import listRatingsController from '../controllers/ratings/listRatingsController.js';
@@ -26,6 +27,7 @@ router.post('/login', loginUserController);
 // Recuperar contraseña (extra)
 
 // Cambiar contraseña (requiere autenticación)
+router.post("/password", authUserMiddleware, updateUserPassController)
 
 // Obtener el perfil del usuario (requiere estar autenticado)
 router.get('', authUserMiddleware, privateUserProfileController);
