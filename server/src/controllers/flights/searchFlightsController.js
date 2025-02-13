@@ -1,4 +1,4 @@
-import amadeus from '../../utils/amadeusClient.js';
+import amadeus from '../../utils/amadeusClientUtil.js';
 
 const searchFlightsController = async (req, res) => {
     try {
