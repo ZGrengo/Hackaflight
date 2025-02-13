@@ -32,7 +32,7 @@ const main = async () => {
                 birthdate DATE,
                 avatar VARCHAR(100),
                 role ENUM('admin', 'normal') DEFAULT 'normal',
-                
+                Active BOOLEAN DEFAULT FALSE,
                 createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
                 modifiedAt DATETIME ON UPDATE CURRENT_TIMESTAMP
                 
@@ -40,10 +40,6 @@ const main = async () => {
 
             )
         `);
-<<<<<<< HEAD
-
-=======
->>>>>>> 112d659f5d12614caa94ebb45b7c9d1dae6cf620
         // Creamos la tabla de criterios de busqueda favoritos de los Usuarios. (En esta tabla pondremos los criterios de busqueda en columnas)
         await pool.query(`
             CREATE TABLE IF NOT EXISTS favorites (
