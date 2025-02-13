@@ -44,8 +44,6 @@ const main = async () => {
 
             )
         `);
-
-             
         // Creamos la tabla de criterios de busqueda favoritos de los Usuarios. (En esta tabla pondremos los criterios de busqueda en columnas)
         await pool.query(`
             CREATE TABLE IF NOT EXISTS favorites (
