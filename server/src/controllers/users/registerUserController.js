@@ -3,12 +3,12 @@ import generateErrorUtil from '../../utils/generateErrorUtil.js';
 
 const registerUserController = async (req, res, next) => {
     try {
-        const { firstName, lastname, username, email, password, birthdate } =
+        const { firstName, lastName, username, email, password, birthdate } =
             req.body;
 
         if (
             !firstName ||
-            !lastname ||
+            !lastName ||
             !username ||
             !email ||
             !password ||
@@ -19,7 +19,7 @@ const registerUserController = async (req, res, next) => {
 
         await insertUserModel(
             firstName,
-            lastname,
+            lastName,
             username,
             email,
             password,
@@ -29,7 +29,7 @@ const registerUserController = async (req, res, next) => {
         res.status(201).send({
             status: 'ok',
             message:
-                'Account created successfully. Please activate your account by following the instructions sent to your email.',
+                'Cuenta registrada con exito. Por favor sigue las instucciones en tu correo',
         });
     } catch (err) {
         next(err);

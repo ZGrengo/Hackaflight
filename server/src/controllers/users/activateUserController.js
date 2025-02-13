@@ -7,6 +7,11 @@ const activateUserController = async (req, res, next) => {
 
         //Llamamos la funcion y le damos el codigo de registro.
         await updateActiveUserModel(regCode);
+
+        res.send({
+            status: 'ok',
+            message: 'Usuario activado.',
+        });
     } catch (err) {
         next(err);
     }

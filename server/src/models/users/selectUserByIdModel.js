@@ -3,17 +3,18 @@ import generateErrorUtil from '../../utils/generateErrorUtil.js';
 
 const selectUserByIdModel = async (userId) => {
     const pool = await getPool();
-    const [users] = await pool.query(
+
+    const [user] = await pool.query(
         `
-        Select id, firstname, lastname, username, email, avatar, role, birthdate, createdAt FROM users where userId = ?
+        SELECT userId, firstName, lastName, username, email, avatar, role, birthdate, createdAt FROM users WHERE userId = ?
         `,
         [userId],
     );
 
-    if (users.length < 1) {
+    if (user.length < 1) {
         generateErrorUtil('Usuario no encontrado.', 404);
     }
-    return users[0];
+    return user[0];
 };
 
 export default selectUserByIdModel;

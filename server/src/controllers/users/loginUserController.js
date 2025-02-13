@@ -3,46 +3,46 @@ import bcrypt from 'bcrypt';
 import generateErrorUtil from '../../utils/generateErrorUtil.js';
 import selectUserByEmailModel from '../../models/users/selectUserByEmailModel.js';
 
-const loginUserController = async ( req, res, next ) => {
-    try
-    {
+const loginUserController = async (req, res, next) => {
+    try {
         const { email, password } = req.body;
 
-        if ( !email || !password )
-        {
-            generateErrorUtil( 'Faltan campos.', 400 );
+        if (!email || !password) {
+            generateErrorUtil('Faltan campos.', 400);
         }
 
-        const user = await selectUserByEmailModel( email );
+        const user = await selectUserByEmailModel(email);
+        let isPassValid;
 
-        if ( !user || !( await bcrypt.compare( password, user.password ) ) )
-        {
-            generateErrorUtil( 'Credenciales invalidas.', 403 );
+        if (user) {
+            isPassValid = await bcrypt.compare(password, user.password);
         }
 
-        if ( !user.active )
-        {
-            generateErrorUtil( 'Cuenta en espera de validacion.', 403 );
+        if (!user || !isPassValid) {
+            generateErrorUtil('Invalid credentials.', 403);
+        }
+
+        if (!user.active) {
+            generateErrorUtil('Cuenta en espera de validacion.', 403);
         }
 
         const tokenInfo = {
-            id: user.id,
+            id: user.userId,
             role: user.role,
         };
 
-        const token = jwt.sign( tokenInfo, process.env.SECRET, {
-            expiresIn: '1d',
-        } );
+        const token = jwt.sign(tokenInfo, process.env.SECRET, {
+            expiresIn: '7d',
+        });
 
-        res.send( {
+        res.send({
             status: 'ok',
             data: {
                 token,
             },
-        } );
-    } catch ( err )
-    {
-        next( err );
+        });
+    } catch (err) {
+        next(err);
     }
 };
 

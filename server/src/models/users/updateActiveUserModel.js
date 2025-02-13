@@ -3,6 +3,7 @@ import generateErrorUtil from '../../utils/generateErrorUtil.js';
 
 const updateActiveUserModel = async (regCode) => {
     const pool = await getPool();
+
     const [users] = await pool.query(
         `SELECT userId FROM users WHERE regCode = ?`,
         [regCode],
