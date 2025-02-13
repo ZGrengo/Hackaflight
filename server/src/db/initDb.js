@@ -34,79 +34,31 @@ const main = async () => {
                 birthdate DATE,
                 avatar VARCHAR(100),
                 role ENUM('admin', 'normal') DEFAULT 'normal',
-                payMethod ENUM('Visa', 'Paypal', 'Wallet') DEFAULT 'Visa',
+                recPassword
+                recCode 
+                online ENUM('online','offline') DEFAULT 'offline'.
                 createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
                 modifiedAt DATETIME ON UPDATE CURRENT_TIMESTAMP
+                
+               
+
             )
         `);
 
-        // Tabla de aeropuertos.
+             
+        // Creamos la tabla de criterios de busqueda favoritos de los Usuarios. (En esta tabla pondremos los criterios de busqueda en columnas)
         await pool.query(`
-            CREATE TABLE IF NOT EXISTS airports (
-                airportId INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-                name VARCHAR(70) NOT NULL,
-                city VARCHAR(70) NOT NULL,
-                country VARCHAR(70) NOT NULL,
-                createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
-            )
-        `);
-        // Creamos la tabla de vuelos.
-        await pool.query(`
-            CREATE TABLE IF NOT EXISTS flies (
-                flyId INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-                codeFly INT UNSIGNED NOT NULL,
-                airline INT UNSIGNED NOT NULL,
-                origin INT UNSIGNED NOT NULL,
-                destiny INT UNSIGNED NOT NULL,
-                scales INT UNSIGNED NOT NULL,
-                arrivals DATETIME NOT NULL,
-                departures DATETIME NOT NULL,
-                price SMALLINT NOT NULL,
-                createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY (origin) REFERENCES airports(airportId),
-                FOREIGN KEY (destiny) REFERENCES airports(airportId)
-            )
-        `);
-
-        // Creamos la tabla de reservas.
-        await pool.query(`
-            CREATE TABLE IF NOT EXISTS booking (
-                bookingId INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+            CREATE TABLE IF NOT EXISTS favorites (
+                favoriteId INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
                 userId INT UNSIGNED NOT NULL,
-                flyId INT UNSIGNED NOT NULL,
-                reserveDate DATETIME,
-                title VARCHAR(50) NOT NULL,
-                origin INT UNSIGNED NOT NULL,
-                destiny INT UNSIGNED NOT NULL,
-                scales INT UNSIGNED NOT NULL,
-                place VARCHAR(30) NOT NULL,
-                description TEXT,
-                luggage TINYINT(30),
-                class ENUM('FirstClass', 'EconomyClass', 'TuristClass') DEFAULT 'EconomyClass',
-                extras TINYINT(1) NOT NULL DEFAULT 0,
+                title VARCHAR(100),
+                origin VARCHAR(3) NOT NULL,
+                destination VARCHAR(3) NOT NULL,
+                departureDate DATE ,
+                returnDate DATE,
+                adults TINYINT(5),
                 createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-                modifiedAt DATETIME ON UPDATE CURRENT_TIMESTAMP,
-                FOREIGN KEY (userId) REFERENCES users(userId),
-                FOREIGN KEY (flyId) REFERENCES flies(flyId)
-            )
-        `);
-
-        // Tabla de itinerario.
-        await pool.query(`
-            CREATE TABLE IF NOT EXISTS itinerary (
-                itineraryId INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-                bookingId INT UNSIGNED NOT NULL,
-                flyId INT UNSIGNED NOT NULL,
-                origin INT UNSIGNED NOT NULL,
-                destiny INT UNSIGNED NOT NULL,
-                scales INT UNSIGNED,
-                duration VARCHAR(100) NOT NULL,
-                createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY (bookingId) REFERENCES booking(bookingId),
-                FOREIGN KEY (flyId) REFERENCES flies(flyId),
-                FOREIGN KEY (scales) REFERENCES airports(airportId),
-                FOREIGN KEY (origin) REFERENCES airports(airportId),
-                FOREIGN KEY (destiny) REFERENCES airports(airportId)
+                FOREIGN KEY (userId) REFERENCES users(userId) ON DELETE CASCADE
             )
         `);
 
@@ -123,9 +75,9 @@ const main = async () => {
         `);
 
         console.log('¡Tablas creadas!');
-        /*   const hashedPassAdmin = await bcrypt.hash('admin', 10);*/
+          const hashedPassAdmin = await bcrypt.hash('admin', 10);
         /* const hashedPassUser = await bcrypt.hash('user', 10); */
-        /*
+       
         // Insertamos el usuario administrador.
         await pool.query(
             `
@@ -147,7 +99,7 @@ const main = async () => {
             ],
         );
 */
-        /*
+        
         // Insertamos un usuario normal.
         await pool.query(
             `
