@@ -9,6 +9,8 @@ import {
     loginUserController,
     privateUserProfileController,
     deleteUserController,
+    updateUserPassController,
+    registerUserController,
 } from '../controllers/users/index.js';
 
 import listRatingsController from '../controllers/ratings/listRatingsController.js';
@@ -24,8 +26,9 @@ const router = express.Router();
 router.post('/login', loginUserController);
 
 // Recuperar contraseña (extra)
-
+router.post('/register', registerUserController);
 // Cambiar contraseña (requiere autenticación)
+router.post('/password', authUserMiddleware, updateUserPassController);
 
 // Obtener el perfil del usuario (requiere estar autenticado)
 router.get('', authUserMiddleware, privateUserProfileController);
