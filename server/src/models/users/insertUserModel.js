@@ -12,7 +12,14 @@ import sendMailUtil from '../../utils/sendEmailUtil.js';
 import generateErrorUtil from '../../utils/generateErrorUtil.js';
 
 // Función que se conecta a la base de datos para crear un nuevo usuario.
-const insertUserModel = async (username, email, password) => {
+const insertUserModel = async (
+    firstName,
+    lastName,
+    username,
+    email,
+    password,
+    birthdate,
+) => {
     // Obtenemos el pool.
     const pool = await getPool();
 
@@ -51,10 +58,19 @@ const insertUserModel = async (username, email, password) => {
     // Insertamos el usuario en la tabla correspondiente.
     await pool.query(
         `
-            INSERT INTO users (username, email, password, birthdate, avatar, role, payMethod, createdAt, madifiedAt)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO users (firstName, lastName, username, email, password, regCode, birthdate, createdAt)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         `,
-        [username, email, hashedPass, regCode, now],
+        [
+            firstName,
+            lastName,
+            username,
+            email,
+            hashedPass,
+            regCode,
+            birthdate,
+            now,
+        ],
     );
 
     // Asunto del email de verificación.
@@ -66,7 +82,7 @@ const insertUserModel = async (username, email, password) => {
 
         Gracias por registrarte en Hack a flight. Para activar tu cuenta y empezar a ahorrar en tus vuelos, haz click en el siguiente enlace:
 
-        <a href="${process.env.CLIENT_URL}/users/validate/${regCode}">¡Activa tu usuario!</a>
+        ${process.env.CLIENT_URL}/users/validate/${regCode}
     `;
 
     // Enviamos el email.

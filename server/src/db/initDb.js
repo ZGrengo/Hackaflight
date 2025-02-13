@@ -1,9 +1,6 @@
 // Accedemos a las variables del fichero ".env" y las añadimos a la lista de variables de entorno.
 import 'dotenv/config';
 
-// Importamos dependencias.
-import bcrypt from 'bcrypt';
-
 // Importamos la función que nos permite conectarnos a la base de datos.
 import getPool from './getPool.js';
 
@@ -20,16 +17,18 @@ const main = async () => {
 
         console.log('Creando tablas...');
 
-        // Creamos la tabla de usuarios.  FALTA ESTA WEA ; recPassword recCode ; y poner si esta online o offline creo q es opsionale
+        // Creamos la tabla de usuarios.
 
         await pool.query(`
             CREATE TABLE IF NOT EXISTS users (
                 userId INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
                 username VARCHAR(30) UNIQUE NOT NULL,
-                firstname VARCHAR(50) NOT NULL,
-                lastname VARCHAR(100) NOT NULL,
+                firstName VARCHAR(50) NOT NULL,
+                lastName VARCHAR(100) NOT NULL,
                 email VARCHAR(100) UNIQUE NOT NULL,
                 password VARCHAR(100) NOT NULL,
+                regCode CHAR(30),
+                recoverPassCode CHAR(30),
                 birthdate DATE,
                 avatar VARCHAR(100),
                 role ENUM('admin', 'normal') DEFAULT 'normal',
@@ -41,7 +40,10 @@ const main = async () => {
 
             )
         `);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 112d659f5d12614caa94ebb45b7c9d1dae6cf620
         // Creamos la tabla de criterios de busqueda favoritos de los Usuarios. (En esta tabla pondremos los criterios de busqueda en columnas)
         await pool.query(`
             CREATE TABLE IF NOT EXISTS favorites (
