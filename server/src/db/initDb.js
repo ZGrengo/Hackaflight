@@ -58,7 +58,7 @@ const main = async () => {
                 returnDate DATE,
                 adults TINYINT(5),
                 createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY (userId) REFERENCES users(userId) ON DELETE CASCADE
+                FOREIGN KEY (userId) REFERENCES users(userId)
             )
         `);
 
