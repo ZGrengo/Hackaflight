@@ -13,38 +13,35 @@ let pool;
 
 // Función que retorna las conexiones.
 const getPool = async () => {
-    try
-    {
+    try {
         // Si no existen conexiones las creamos.
-        if ( !pool )
-        {
+        if (!pool) {
             // Creamos una única conexión con el servidor MySQL.
-            const dbConnection = await mysql.createConnection( {
+            const dbConnection = await mysql.createConnection({
                 host: MYSQL_HOST,
                 user: MYSQL_USER,
                 password: MYSQL_PASSWORD,
-            } );
+            });
 
             // Con dicha conexión vamos a crear la base de datos si no existe.
             await dbConnection.query(
-                `CREATE DATABASE IF NOT EXISTS ${ MYSQL_DATABASE }`,
+                `CREATE DATABASE IF NOT EXISTS ${MYSQL_DATABASE}`,
             );
 
             // Tras asegurarnos de que existe la base de datos creamos el pool.
-            pool = mysql.createPool( {
+            pool = mysql.createPool({
                 host: MYSQL_HOST,
                 user: MYSQL_USER,
                 password: MYSQL_PASSWORD,
                 database: MYSQL_DATABASE,
                 timezone: 'Z',
-            } );
+            });
         }
 
         // Retornamos el pool.
         return await pool;
-    } catch ( err )
-    {
-        console.error( err );
+    } catch (err) {
+        console.error(err);
     }
 };
 

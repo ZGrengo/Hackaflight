@@ -16,8 +16,9 @@ import {
     saveUserFavoriteController,
     activateUserController,
 } from '../controllers/users/index.js';
-
+//importamos controladores de valoraciones
 import listRatingsController from '../controllers/ratings/listRatingsController.js';
+import createRatingController from '../controllers/ratings/createRatingController.js';
 
 //creamos un router
 const router = express.Router();
@@ -59,9 +60,9 @@ router.delete(
 );
 
 // Valorar la plataforma (requiere autenticación)
-
+router.post('/ratings', authUserMiddleware, createRatingController);
 // Obtener lista de valoraciones
-router.get('', listRatingsController);
+router.get('/ratings', listRatingsController);
 
 //Endpoints adminitrador
 // Obtener lista de usuarios (requiere rol de administrador)
