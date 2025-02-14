@@ -8,7 +8,7 @@ const updateUserPassModel = async (userId, currentPassword, newPassword) => {
 
     //Obtenemos la actual contraseña del usuario
     const [users] = await pool.query(
-        `SELECT password FROM users WHERE id = ?`,
+        `SELECT password FROM users WHERE userId = ?`,
         [userId],
     );
 
@@ -32,7 +32,7 @@ const updateUserPassModel = async (userId, currentPassword, newPassword) => {
 
     // Actualizamos la contraseña del usuario.
     await pool.query(
-        `UPDATE users SET password = ? modifiedAt = ? WHERE id = ?`,
+        `UPDATE users SET password = ?, modifiedAt = ? WHERE userId = ?`,
         [hashedPass, now, userId],
     );
 };

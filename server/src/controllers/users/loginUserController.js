@@ -19,7 +19,7 @@ const loginUserController = async (req, res, next) => {
         }
 
         if (!user || !isPassValid) {
-            generateErrorUtil('Invalid credentials.', 403);
+            generateErrorUtil('Credenciales no válidas.', 403);
         }
 
         if (!user.active) {
