@@ -8,7 +8,6 @@ import authUserMiddleware from '../middlewares/index.js';
 import {
     loginUserController,
     privateUserProfileController,
-    deleteUserController,
     userFavoriteController,
     deleteUserFavoriteController,
     updateUserPassController,
@@ -24,50 +23,42 @@ import { createRatingController } from '../controllers/ratings/indexRatingContro
 const router = express.Router();
 
 // Registrar un nuevo usuario
-router.post('/register', registerUserController);
+router.post( '/users/register', registerUserController );
 
 // Validación usuario
-router.put('/validate/:regCode', activateUserController);
+router.put( '/users/validate/:regCode', activateUserController );
 
 // Iniciar sesión de usuario (requiere Validacion)
-router.post('/login', loginUserController);
+router.post( '/users/login', loginUserController );
 
 // Recuperar contraseña (extra)
-router.post('/register', registerUserController);
+router.post( '/users/register', registerUserController );
 
 // Cambiar contraseña (requiere autenticación)
-router.post('/password', authUserMiddleware, updateUserPassController);
+router.post( '/users/password', authUserMiddleware, updateUserPassController );
 
 // Obtener el perfil del usuario (requiere estar autenticado)
-router.get('', authUserMiddleware, privateUserProfileController);
+router.get( '/users/profile', authUserMiddleware, privateUserProfileController );
 
 // Actualizar el perfil del usuario (requiere estar autenticado)(extra)
 
 // Guardar un criterio de búsqueda como favorito (requiere autenticación)
-router.post('/favorites', authUserMiddleware, saveUserFavoriteController);
+router.post( '/users/favorites', authUserMiddleware, saveUserFavoriteController );
 
 // Obtener la lista de criterios de búsqueda favoritos del usuario (requiere autenticación)
-router.get('/favorites', authUserMiddleware, userFavoriteController);
+router.get( '/users/favorites', authUserMiddleware, userFavoriteController );
 
 // Obtener detalles de un criterio de búsqueda favorito (requiere autenticación)
-router.get('/favorites/:title', authUserMiddleware, userFavoriteController);
+router.get( '/users/favorites/:title', authUserMiddleware, userFavoriteController );
 
 // Eliminar un criterio de búsqueda favorito (requiere autenticación)
 router.delete(
-    '/favorites/:favoriteId',
+    '/users/favorites/:favoriteId',
     authUserMiddleware,
     deleteUserFavoriteController,
 );
 
 // Valorar la plataforma (requiere autenticación)
-router.post('', authUserMiddleware, createRatingController);
-
-//Endpoints administrador
-// Obtener lista de usuarios (requiere rol de administrador)
-
-// Habilitar / deshabilitar un usuario (requiere rol de administrador)
-
-// Eliminar un usuario (requiere rol de administrador)
-router.delete('/:id', authUserMiddleware, deleteUserController);
+router.post( '/users/ratings', authUserMiddleware, createRatingController );
 
 export default router;

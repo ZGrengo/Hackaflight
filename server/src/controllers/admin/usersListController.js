@@ -10,7 +10,7 @@ const usersListController = async ( req, res, next ) => {
             generateErrorUtil( 'Acceso denegado. Solo los administradores pueden acceder a esta información.', 403 );
         }
 
-        const users = await selectAllUsersModel( {} );
+        const users = await selectAllUsersModel( req.query );
 
         res.send( {
             status: 'ok',

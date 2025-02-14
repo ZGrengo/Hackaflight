@@ -1,4 +1,4 @@
-import deleteUserModel from '../../models/users/deleteUserModel.js';
+import deleteUserModel from '../../models/admin/deleteUserModel.js';
 
 const deleteUserFavoriteController = async (req, res, next) => {
     try {
