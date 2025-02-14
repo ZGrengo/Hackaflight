@@ -1,22 +1,26 @@
 import getPool from '../../db/getPool.js';
 import generateErrorUtil from '../../utils/generateErrorUtil.js';
 
-const updateActiveUserModel = async (regCode) => {
+const updateActiveUserModel = async (userId) => {
     const pool = await getPool();
 
-    const [users] = await pool.query(
-        `SELECT userId FROM users WHERE regCode = ?`,
-        [regCode],
-    );
+    //Revisa si el usuario existe
+    const [user] = await pool.query(`SELECT * FROM users WHERE userId = ?`, [
+        userId,
+    ]);
 
-    if (users.length < 1) {
-        generateErrorUtil('Codigo de registro invalido', 404);
+    if (user.length === 0) {
+        generateErrorUtil('Usuario no encontrado.', 404);
     }
 
-    await pool.query(
-        `UPDATE users SET active = TRUE, regCode = null WHERE regCode = ?`,
-        [regCode],
-    );
+    //Actualizamos el estado del usuario en la base de datos
+
+    const updateActiveState = user.active ? 0 : 1;
+
+    await pool.query(`UPDATE users SET active = ? WHERE userId = ?`, [
+        updateActiveState,
+        userId,
+    ]);
 };
 
 export default updateActiveUserModel;

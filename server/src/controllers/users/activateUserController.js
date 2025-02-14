@@ -1,4 +1,4 @@
-import updateActiveUserModel from '../../models/users/updateActiveUserModel.js';
+import activateUserModel from '../../models/users/activateUserModel.js';
 
 const activateUserController = async (req, res, next) => {
     try {
@@ -6,7 +6,7 @@ const activateUserController = async (req, res, next) => {
         const { regCode } = req.params;
 
         //Llamamos la funcion y le damos el codigo de registro.
-        await updateActiveUserModel(regCode);
+        await activateUserModel(regCode);
 
         res.send({
             status: 'ok',
