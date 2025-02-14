@@ -9,7 +9,8 @@ import fileUpload from 'express-fileupload';
 
 //importamos rutas
 import userRoutes from './src/routes/userRoutes.js';
-import flighRoutes from './src/routes/flighRoutes.js';
+import flightRoutes from './src/routes/flightRoutes.js';
+import ratingRoutes from './src/routes/ratingRoutes.js';
 
 //obtenemos variables de entorno necesarias
 const { PORT, UPLOADS_DIR } = process.env;
@@ -34,7 +35,8 @@ app.use(fileUpload());
 
 //middleware que indica a Express dónde están las rutas.
 app.use('/api/users', userRoutes);
-app.use('/api/flights', flighRoutes);
+app.use('/api/flights', flightRoutes);
+app.use('/api/ratings', ratingRoutes);
 
 //middleware de manejo de errores
 // eslint-disable-next-line no-unused-vars
