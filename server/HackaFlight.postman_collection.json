@@ -13,7 +13,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"firstName\" : \"Camilo\",\r\n    \"lastName\" : \"Norena\",\r\n    \"username\": \"boozki\",\r\n    \"email\": \"imdrizzky@gmail.com\",\r\n    \"password\": \"password\",\r\n    \"birthdate\" : \"2000-03-02\"\r\n}",
+					"raw": "{\r\n    \"firstName\" : \"Camilo2\",\r\n    \"lastName\" : \"Norena2\",\r\n    \"username\": \"boozki2\",\r\n    \"email\": \"imdrizzky2@gmail.com\",\r\n    \"password\": \"password\",\r\n    \"birthdate\" : \"2000-03-02\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -110,6 +110,33 @@
 						"api",
 						"users",
 						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete user (admin)",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6Im5vcm1hbCIsImlhdCI6MTczOTUwNTE0NywiZXhwIjoxNzQwMTA5OTQ3fQ.kbbnMt5cVeRbIqBkxX9Wg3UmO-Rgqj6VMk0FZzEDccw",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8000/api/users/4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"users",
+						"4"
 					]
 				}
 			},

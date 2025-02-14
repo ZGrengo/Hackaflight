@@ -5,7 +5,7 @@ const deleteUserModel = async (userId) => {
     const pool = await getPool();
 
     //Revisa si el usuario existe
-    const [user] = await pool.query(`SELECT * FROM users WHERE id = ?`, [
+    const [user] = await pool.query(`SELECT * FROM users WHERE userId = ?`, [
         userId,
     ]);
 
@@ -14,7 +14,7 @@ const deleteUserModel = async (userId) => {
     }
 
     //Borramos el usuario de la base de datos
-    await pool.query(`DELETE FROM users WHERE id = ?`, [userId]);
+    await pool.query(`DELETE FROM users WHERE userId = ?`, [userId]);
 };
 
 export default deleteUserModel;
