@@ -9,18 +9,18 @@ const selectRatingsModel = async (rating = '') => {
     //obtenemos los datos de las valoraciones
     const [ratings] = await pool.query(
         `
-		SELECT
+        SELECT
                 v.valorationId AS id,
+                v.title,
                 v.rate,
                 v.comment,
                 v.createdAt,
-                u.userId,
                 u.username
             FROM valorations v
             INNER JOIN users u ON u.userId = v.userId
-            WHERE v.rate LIKE =?
+            WHERE v.rate LIKE ?
             ORDER BY v.createdAt DESC;`,
-        [`${rating}`],
+        [`%${rating}%`],
     );
 
     //devolvemos las valoraciones

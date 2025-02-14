@@ -7,17 +7,13 @@ const listRatingsController = async (req, res, next) => {
         //obtenemos los params
         const { rating } = req.query;
 
-        // rating = rating ? Number(rating) : null; // Convertimos solo si existe un valor
-
         //obtenemos las valoraciones
         const ratings = await selectRatingsModel(rating);
-
+        //console.log('Ratings from DB:', ratings);
         //enviamos una respuesta
         res.send({
             status: 'ok',
-            data: {
-                ratings,
-            },
+            data: { total: ratings.length, ratings },
         });
     } catch (err) {
         next(err);

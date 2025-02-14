@@ -19,7 +19,7 @@ const createRatingController = async (req, res, next) => {
             title,
             rate,
             comment,
-            req.user.id,
+            req.user.userId,
         );
 
         //enviamos una respuesta
