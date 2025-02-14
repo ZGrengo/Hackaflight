@@ -1,182 +1,261 @@
 {
 	"info": {
-		"_postman_id": "206c14a9-9c7f-4b53-b61f-7327e140597c",
+		"_postman_id": "c1841354-88b5-4d56-8897-e6a1629a7b6b",
 		"name": "HackaFlight",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "40373234"
+		"_exporter_id": "40399714",
+		"_collection_link": "https://hackaflight-3711.postman.co/workspace/My-Workspace~e9bd9a5c-3eac-4d70-8240-486365574b39/collection/40399714-c1841354-88b5-4d56-8897-e6a1629a7b6b?action=share&source=collection_link&creator=40399714"
 	},
 	"item": [
 		{
-			"name": "Register",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"firstName\" : \"Camilo2\",\r\n    \"lastName\" : \"Norena2\",\r\n    \"username\": \"boozki2\",\r\n    \"email\": \"imdrizzky2@gmail.com\",\r\n    \"password\": \"password\",\r\n    \"birthdate\" : \"2000-03-02\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+			"name": "Users",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\" : \"Angela\",\r\n    \"lastName\" : \"del pan\",\r\n    \"username\": \"pan\",\r\n    \"email\": \"angeladelpan@gmail.com\",\r\n    \"password\": \"1234\",\r\n    \"birthdate\" : \"1985-04-19\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/users/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"users",
+								"register"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:8000/api/users/register",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8000",
-					"path": [
-						"api",
-						"users",
-						"register"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "validate",
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:8000/api/users/validate/60df931b8e00b5efcbdcb546b27b74",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8000",
-					"path": [
-						"api",
-						"users",
-						"validate",
-						"60df931b8e00b5efcbdcb546b27b74"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "login",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"email\": \"imdrizzky@gmail.com\",\r\n    \"password\": \"password123\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+				{
+					"name": "validate",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/users/validate/f9b75834bfaabff4d4458376ef3fc4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"users",
+								"validate",
+								"f9b75834bfaabff4d4458376ef3fc4"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:8000/api/users/login",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8000",
-					"path": [
-						"api",
-						"users",
-						"login"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "private profile",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6Im5vcm1hbCIsImlhdCI6MTczOTQ4NjY5MywiZXhwIjoxNzQwMDkxNDkzfQ.-FJ5uyBNqkDPpQp9kCL8-yc5E_W0E34aK8oF_x3vzPM",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "http://localhost:8000/api/users/",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8000",
-					"path": [
-						"api",
-						"users",
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "delete user (admin)",
-			"request": {
-				"method": "DELETE",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6Im5vcm1hbCIsImlhdCI6MTczOTUwNTE0NywiZXhwIjoxNzQwMTA5OTQ3fQ.kbbnMt5cVeRbIqBkxX9Wg3UmO-Rgqj6VMk0FZzEDccw",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "http://localhost:8000/api/users/4",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8000",
-					"path": [
-						"api",
-						"users",
-						"4"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "update password",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6Im5vcm1hbCIsImlhdCI6MTczOTUwNTcyNiwiZXhwIjoxNzQwMTEwNTI2fQ.WsHu0BZFr3BW5ydqmvwyq8Dpjp96Kqe0v8__wLs-iXI",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"currentPassword\": \"password\",\r\n    \"newPassword\" : \"password123\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"angeladelpan@gmail.com\",\r\n    \"password\": \"1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/users/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"users",
+								"login"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:8000/api/users/password",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8000",
-					"path": [
-						"api",
-						"users",
-						"password"
-					]
+				{
+					"name": "private profile",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6Im5vcm1hbCIsImlhdCI6MTczOTQ4NjY5MywiZXhwIjoxNzQwMDkxNDkzfQ.-FJ5uyBNqkDPpQp9kCL8-yc5E_W0E34aK8oF_x3vzPM",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8000/api/users/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"users",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6Im5vcm1hbCIsImlhdCI6MTczOTUwNTcyNiwiZXhwIjoxNzQwMTEwNTI2fQ.WsHu0BZFr3BW5ydqmvwyq8Dpjp96Kqe0v8__wLs-iXI",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"currentPassword\": \"password\",\r\n    \"newPassword\" : \"password123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/users/password",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"users",
+								"password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Nueva Valoración",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token_userHack}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"MEH\",\n    \"rate\": \"2\",\n    \"comment\": \"nothing special\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/users/ratings",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"users",
+								"ratings"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
+		},
+		{
+			"name": "Ratings",
+			"item": [
+				{
+					"name": "Listado Valoraciones",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/users/ratings?rating=2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"users",
+								"ratings"
+							],
+							"query": [
+								{
+									"key": "rating",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "delete user (admin)",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6Im5vcm1hbCIsImlhdCI6MTczOTUwNTE0NywiZXhwIjoxNzQwMTA5OTQ3fQ.kbbnMt5cVeRbIqBkxX9Wg3UmO-Rgqj6VMk0FZzEDccw",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8000/api/users/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"users",
+								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"event": [
@@ -204,6 +283,11 @@
 	"variable": [
 		{
 			"key": "token_user_1",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "token_userHack",
 			"value": "",
 			"type": "string"
 		}

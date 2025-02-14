@@ -61,6 +61,7 @@ const main = async () => {
             CREATE TABLE IF NOT EXISTS valorations (
                 valorationId INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
                 userId INT UNSIGNED NOT NULL,
+                title VARCHAR(100) NOT NULL,
                 rate Enum('1', '2', '3', '4', '5') DEFAULT '5',
                 comment VARCHAR(600),
                 createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
