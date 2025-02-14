@@ -75,7 +75,7 @@ HackaFlight es una plataforma para la búsqueda de vuelos, donde los usuarios pu
 -   **GET** - [`/api/users/favorites`] - Lista los criterios de búsqueda guardados como favoritos.
 -   **POST** - [`/api/users/favorites`] - Guarda un criterio de búsqueda como favorito.
 -   **DELETE** - [`/api/users/favorites/:id`] - Elimina un criterio de búsqueda favorito.
--   **POST** - [`/api/ratings`] - Agregar una valoración a la plataforma.
+-   **POST** - [`/api/users/ratings`] - Agregar una valoración a la plataforma.
 
 ## Endpoints de vuelos
 
