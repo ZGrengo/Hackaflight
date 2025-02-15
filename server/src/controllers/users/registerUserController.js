@@ -29,7 +29,7 @@ const registerUserController = async (req, res, next) => {
         res.status(201).send({
             status: 'ok',
             message:
-                'Cuenta registrada con exito. Por favor sigue las instucciones en tu correo',
+                'Cuenta registrada con éxito. Por favor sigue las instucciones en tu correo',
         });
     } catch (err) {
         next(err);

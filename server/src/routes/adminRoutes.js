@@ -2,8 +2,7 @@
 import express from 'express';
 
 // Importamos middleware de autenticación y autorización
-import authUserMiddleware from '../middlewares/authAdminMiddleware.js';
-import adminMiddleware from '../middlewares/adminMiddleware.js';
+import authAdminMiddleware from '../middlewares/authAdminMiddleware.js';
 
 // Importamos funciones controladoras
 import {
@@ -15,9 +14,9 @@ import {
 const router = express.Router();
 
 // Obtener lista de usuarios (requiere rol de administrador)
-router.get( '/admin/users', authUserMiddleware, adminMiddleware, usersListController );
+router.get( '/users/list', authAdminMiddleware, usersListController );
 
 // Eliminar un usuario (requiere rol de administrador)
-router.delete( '/admin/users/:id', authUserMiddleware, adminMiddleware, deleteUserController );
+router.delete( '/users/:Id',authAdminMiddleware, deleteUserController );
 
 export default router;

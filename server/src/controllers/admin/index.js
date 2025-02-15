@@ -1,10 +1,9 @@
-//importamos las funciones controladoras
+// Importamos las funciones controladoras
+import deleteUserController from './deleteUserController.js';
+import usersListController from './usersListController.js';
 
-import deleteUserController from './admin/deleteUserController.js';
-import usersListController from './admin/usersListController.js';
-
-//exportamos las funciones controladoras
+// Exportamos las funciones controladoras
 export {
     deleteUserController,
-    usersListController,
+    usersListController
 };

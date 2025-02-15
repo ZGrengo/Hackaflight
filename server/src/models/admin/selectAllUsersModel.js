@@ -1,7 +1,13 @@
 import getPool from '../../db/getPool.js';
 import generateErrorUtil from '../../utils/generateErrorUtil.js';
 
-const selectAllUsersModel = async ({ userId, username, firstName, lastName, email } = {}) => {
+const selectAllUsersModel = async (
+    userId,
+    username,
+    firstName,
+    lastName,
+    email,
+) => {
     const pool = await getPool();
 
     let query = 'SELECT userId, firstName, lastName, username, email, birthdate, createdAt FROM users';
