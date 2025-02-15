@@ -1,17 +1,22 @@
-import deleteUserModel from '../../models/admin/deleteUserModel.js';
+import deleteUserFavoriteModel from '../../models/users/deleteUserFavoriteModel.js';
 
 const deleteUserFavoriteController = async (req, res, next) => {
     try {
-
-        const { userId } = req.user.userId;
+        const { userId } = req.user;
         const { favoriteId } = req.params;
 
         //Llamamos la funcion para borrar el criterio de busqueda.
-        await deleteUserModel(userId, favoriteId);
+        const deletedFavoriteId = await deleteUserFavoriteModel(
+            userId,
+            favoriteId,
+        );
 
         res.send({
             status: 'ok',
             message: 'Criterio de busqueda borrado con exito.',
+            data: {
+                favoriteId: deletedFavoriteId, // Enviamos el favoriteId eliminado
+            },
         });
     } catch (err) {
         next(err);

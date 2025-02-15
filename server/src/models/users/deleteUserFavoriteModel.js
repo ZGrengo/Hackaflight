@@ -8,9 +8,10 @@ const deleteUserFavoriteModel = async (favoriteId, userId) => {
     const pool = await getPool();
 
     // Obtenemos el listado de criterios de busqueda favoritos que tengan el id que recibimos.
-    const [favorite] = await pool.query(`SELECT favoriteId FROM favorites WHERE favoriteId = ? AND userId = ?`, [
-        favoriteId, userId
-    ]);
+    const [favorite] = await pool.query(
+        `SELECT favoriteId FROM favorites WHERE favoriteId = ? AND userId = ?`,
+        [favoriteId, userId],
+    );
 
     // Si no se encontró el criterio de busqueda favorito, generamos un error.
     if (favorite.length === 0) {
@@ -24,6 +25,8 @@ const deleteUserFavoriteModel = async (favoriteId, userId) => {
         `,
         [favoriteId],
     );
+    // Devolvemos el id borrado.
+    return favoriteId;
 };
 
 export default deleteUserFavoriteModel;
