@@ -1,14 +1,24 @@
-import selectUserFavoriteModel from '../../models/users/selectUserFavoriteModel.js';
+import saveUserFavoriteModel from '../../models/users/saveUserFavoriteModel.js';
 const saveUserFavoriteController = async (req, res, next) => {
     try {
-        //TODO
-        const { userId } = req.user.userId;
+        //Obtenemos los datos de la busqueda que se guardara.
+        const { userId } = req.user;
+        const { title, origin, destination, departureDate, adults } = req.body;
 
-        const favorites = await selectUserFavoriteModel(null, userId);
+        //Obtenemos la id de la busqueda favorita que fue guardada con su respectivo modelo de insercion.
+        const favoriteId = await saveUserFavoriteModel(
+            title,
+            origin,
+            destination,
+            departureDate,
+            adults,
+            userId,
+        );
         res.send({
             status: 'Ok',
+            message: 'Busqueda favorita guardada con exito',
             data: {
-                favorites,
+                favoriteId,
             },
         });
     } catch (err) {
