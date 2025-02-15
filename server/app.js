@@ -8,7 +8,10 @@ import morgan from 'morgan';
 import fileUpload from 'express-fileupload';
 
 //importamos rutas
-import router from './src/routes/index.js';
+import adminRoutes from './src/routes/adminRoutes.js';
+import flightRoutes from './src/routes/flightRoutes.js';
+import userRoutes from './src/routes/userRoutes.js';
+import ratingRoutes from './src/routes/ratingRoutes.js';
 
 //obtenemos variables de entorno necesarias
 const { PORT, UPLOADS_DIR } = process.env;
@@ -32,9 +35,10 @@ app.use(express.json());
 app.use(fileUpload());
 
 //middleware que indica a Express dónde están las rutas.
-app.use('/api/users', router);
-app.use('/api/flights', router);
-app.use('/api/ratings', router);
+app.use('/api/users', userRoutes);
+app.use('/api/flights', flightRoutes);
+app.use('/api/ratings', ratingRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Define la ruta del archivo raiz
 app.get('/', (req, res) => {
