@@ -1,12 +1,13 @@
 // Importamos las dependencias.
-import amadeus from "../../utils/amadeusClientUtil.js";
-import generateErrorUtil from "../../utils/generateErrorUtil.js";
+import amadeus from '../../utils/amadeusClientUtil.js';
+import generateErrorUtil from '../../utils/generateErrorUtil.js';
 
 // función que obtiene la lista de vuelos.
 
 const flightListController = async (req, res, next) => {
     try {
-        const { origin, destination, departureDate, returnDate, adults } = req.query;
+        const { origin, destination, departureDate, returnDate, adults } =
+            req.query;
 
         if (!origin || !destination || !departureDate) {
             generateErrorUtil('Faltan campos.', 400);

@@ -14,6 +14,8 @@ import {
     registerUserController,
     saveUserFavoriteController,
     activateUserController,
+    sendRecoveryPassEmailController,
+    useRecoveryPassCodeController,
 } from '../controllers/users/index.js';
 
 //importamos controladores de valoraciones
@@ -23,33 +25,36 @@ import { createRatingController } from '../controllers/ratings/indexRatingContro
 const router = express.Router();
 
 // Registrar un nuevo usuario
-router.post( '/register', registerUserController );
+router.post('/register', registerUserController);
 
 // Validación usuario
-router.put( '/validate/:regCode', activateUserController );
+router.put('/validate/:regCode', activateUserController);
 
 // Iniciar sesión de usuario (requiere Validacion)
-router.post( '/login', loginUserController );
-
-// Recuperar contraseña (extra)
-router.post( '/register', registerUserController );
+router.post('/login', loginUserController);
 
 // Cambiar contraseña (requiere autenticación)
-router.post( '/password', authUserMiddleware, updateUserPassController );
+router.post('/password', authUserMiddleware, updateUserPassController);
+
+// Envia email para cambiar contraseña (extra)
+router.put('/password/reset', sendRecoveryPassEmailController);
+
+// Cambiar contraseña(extra)
+router.put('/password/reset/:recoverPassCode', useRecoveryPassCodeController);
 
 // Obtener el perfil del usuario (requiere estar autenticado)
-router.get( '/profile', authUserMiddleware, privateUserProfileController );
+router.get('/profile', authUserMiddleware, privateUserProfileController);
 
 // Actualizar el perfil del usuario (requiere estar autenticado)(extra)
 
 // Guardar un criterio de búsqueda como favorito (requiere autenticación)
-router.post( '/favorites', authUserMiddleware, saveUserFavoriteController );
+router.post('/favorites', authUserMiddleware, saveUserFavoriteController);
 
 // Obtener la lista de criterios de búsqueda favoritos del usuario (requiere autenticación)
-router.get( '/favorites', authUserMiddleware, userFavoriteController );
+router.get('/favorites', authUserMiddleware, userFavoriteController);
 
 // Obtener detalles de un criterio de búsqueda favorito (requiere autenticación)
-router.get( '/favorites/:title', authUserMiddleware, userFavoriteController );
+router.get('/favorites/:title', authUserMiddleware, userFavoriteController);
 
 // Eliminar un criterio de búsqueda favorito (requiere autenticación)
 router.delete(
@@ -59,6 +64,6 @@ router.delete(
 );
 
 // Valorar la plataforma (requiere autenticación)
-router.post( '/ratings', authUserMiddleware, createRatingController );
+router.post('/ratings', authUserMiddleware, createRatingController);
 
 export default router;
