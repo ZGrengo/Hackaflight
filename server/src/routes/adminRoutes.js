@@ -31,7 +31,7 @@ router.delete(
     deleteUserController,
 );
 
-// Suspende temporalmente al usuario
+// Suspende temporalmente al usuario (requiere el rol de admin)
 router.post('/users/:active', updateUserStatusController);
 
 export default router;
