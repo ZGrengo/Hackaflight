@@ -1,5 +1,5 @@
 // Importamos la función que retorna una conexión con la base de datos.
-import getPool from '../../db/getPool.js';
+import { getPool } from '../../db/getPool.js';
 
 // Importamos la función que genera un error.
 import generateErrorUtil from '../../utils/generateErrorUtil.js';
@@ -7,52 +7,53 @@ import generateErrorUtil from '../../utils/generateErrorUtil.js';
 // Función que se conecta a la base de datos y retorna todos los usuarios o filtra por los criterios dados.
 // Recibimos un objeto vacío por defecto.
 
-const selectAllUsersModel = async ( { userId, username, firstName, lastName, email } = {} ) => {
+const selectAllUsersModel = async ({
+    userId,
+    username,
+    firstName,
+    lastName,
+    email,
+} = {}) => {
     // Obtenemos el pool.
     const pool = await getPool();
 
     // Construimos la consulta SQL con los filtros proporcionados.( Where 1=1 ) para agregar filtros opcionales.
-    let query = 'SELECT userId, firstName, lastName, username, email, birthdate, createdAt FROM users WHERE 1=1';
+    let query =
+        'SELECT userId, firstName, lastName, username, email, birthdate, createdAt FROM users WHERE 1=1';
 
     const params = [];
 
-    if ( userId )
-    {
+    if (userId) {
         query += ' AND userId = ?';
-        params.push( userId );
+        params.push(userId);
     }
 
-    if ( username )
-    {
+    if (username) {
         query += ' AND username LIKE ?';
-        params.push( `%${ username }%` );
+        params.push(`%${username}%`);
     }
 
-    if ( firstName )
-    {
+    if (firstName) {
         query += ' AND firstName LIKE ?';
-        params.push( `%${ firstName }%` );
+        params.push(`%${firstName}%`);
     }
 
-    if ( lastName )
-    {
+    if (lastName) {
         query += ' AND lastName LIKE ?';
-        params.push( `%${ lastName }%` );
+        params.push(`%${lastName}%`);
     }
 
-    if ( email )
-    {
+    if (email) {
         query += ' AND email LIKE ?';
-        params.push( `%${ email }%` );
+        params.push(`%${email}%`);
     }
 
     // Ejecutamos la consulta.
-    const [ users ] = await pool.query( query, params );
+    const [users] = await pool.query(query, params);
 
     // Si no se encuentran usuarios, lanzamos un error.
-    if ( users.length < 1 )
-    {
-        generateErrorUtil( 'Usuario no encontrado.', 404 );
+    if (users.length < 1) {
+        generateErrorUtil('Usuario no encontrado.', 404);
     }
 
     // Retornamos los usuarios.

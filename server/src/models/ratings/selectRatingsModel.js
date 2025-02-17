@@ -1,5 +1,5 @@
 //importamos la conexión con la base de datos
-import getPool from '../../db/getPool.js';
+import { getPool } from '../../db/getPool.js';
 
 //función que conecta con la base de datos y obtiene los datos de las valoraciones
 const selectRatingsModel = async (rating = '') => {

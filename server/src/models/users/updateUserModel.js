@@ -1,18 +1,25 @@
-import getPool from "../../db/getPool.js";
+import { getPool } from '../../db/getPool.js';
 
-import generateErrorUtil from "../../utils/generateErrorUtil.js";
+import generateErrorUtil from '../../utils/generateErrorUtil.js';
 
 // Inicializamos el modelo.
-const updateUserModel = async ({firstName, lastName, username, email, birthdate, userId}) => {
+const updateUserModel = async ({
+    firstName,
+    lastName,
+    username,
+    email,
+    birthdate,
+    userId,
+}) => {
     const pool = await getPool();
-    
+
     if (firstName) {
         await pool.query(
             `UPDATE users SET firstName = ?, modifiedAt = ? WHERE userId = ?`,
             [firstName, new Date(), userId],
         );
     }
-    
+
     if (lastName) {
         await pool.query(
             `UPDATE users SET lastName = ?, modifiedAt = ? WHERE userId = ?`,
@@ -58,7 +65,6 @@ const updateUserModel = async ({firstName, lastName, username, email, birthdate,
             [birthdate, new Date(), userId],
         );
     }
-
 };
 
 export default updateUserModel;

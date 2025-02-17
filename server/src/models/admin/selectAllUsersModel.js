@@ -1,4 +1,4 @@
-import getPool from '../../db/getPool.js';
+import { getPool } from '../../db/getPool.js';
 import generateErrorUtil from '../../utils/generateErrorUtil.js';
 
 const selectAllUsersModel = async (
@@ -10,7 +10,8 @@ const selectAllUsersModel = async (
 ) => {
     const pool = await getPool();
 
-    let query = 'SELECT userId, firstName, lastName, username, email, birthdate, createdAt FROM users';
+    let query =
+        'SELECT userId, firstName, lastName, username, email, birthdate, createdAt FROM users';
     const params = [];
     const conditions = [];
 

@@ -3,7 +3,7 @@ import crypto from 'crypto';
 import bcrypt from 'bcrypt';
 
 // Importamos la función que me permite conectarme a la base de datos.
-import getPool from '../../db/getPool.js';
+import { getPool } from '../../db/getPool.js';
 
 // Importamos la función que envía un email.
 import sendMailUtil from '../../utils/sendEmailUtil.js';

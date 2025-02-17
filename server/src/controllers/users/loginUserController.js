@@ -27,8 +27,8 @@ const loginUserController = async (req, res, next) => {
             generateErrorUtil('Cuenta en espera de validacion.', 403);
         }
 
-         // Comprobamos si el usuario es el administrador
-         if (email === adminConfig.email && password === adminConfig.password) {
+        // Comprobamos si el usuario es el administrador
+        if (email === adminConfig.email && password === adminConfig.password) {
             // Lógica si el usuario es el administrador
             console.log('¡Administrador autenticado!');
         }

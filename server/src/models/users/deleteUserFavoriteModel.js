@@ -1,5 +1,5 @@
 // Importamos la función que me permite conectarme a la base de datos.
-import getPool from '../../db/getPool.js';
+import { getPool } from '../../db/getPool.js';
 import generateErrorUtil from '../../utils/generateErrorUtil.js';
 
 // Función que se conecta a la base de datos para borrar un criterio de busqueda.

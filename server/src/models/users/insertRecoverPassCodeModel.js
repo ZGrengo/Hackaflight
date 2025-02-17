@@ -1,4 +1,4 @@
-import getPool from '../../db/getPool.js';
+import { getPool } from '../../db/getPool.js';
 
 const insertRecoverPassCodeModel = async (recoverPassCode, email) => {
     const pool = await getPool();

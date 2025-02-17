@@ -1,7 +1,7 @@
 import crypto from 'crypto';
 import insertRecoverPassCodeModel from '../../models/users/insertRecoverPassCodeModel.js';
 import selectUserByEmailModel from '../../models/users/selectUserByEmailModel.js';
-import sendMailUtil from '../../utils/sendMailUtil.js';
+import sendEmailUtil from '../../utils/sendEmailUtil.js';
 import generateErrorUtil from '../../utils/generateErrorUtil.js';
 
 const sendRecoveryPassEmailController = async (req, res, next) => {
@@ -28,7 +28,7 @@ const sendRecoveryPassEmailController = async (req, res, next) => {
              ${process.env.CLIENT_URL}/users/password/${recoverPassCode}
 
             `;
-            await sendMailUtil(email, emailSubject, emailBody);
+            await sendEmailUtil(email, emailSubject, emailBody);
         }
 
         res.send({

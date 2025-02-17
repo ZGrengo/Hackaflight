@@ -1,5 +1,5 @@
 import generateErrorUtil from '../../utils/generateErrorUtil.js';
-import getPool from '../../db/getPool.js';
+import { getPool } from '../../db/getPool.js';
 import bcrypt from 'bcrypt';
 
 // Funcion que actualiza la contraseña de un usuario autenticado.
