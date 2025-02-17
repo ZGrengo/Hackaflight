@@ -1,8 +1,17 @@
+//importamos dependencias
+import bcrypt from 'bcrypt';
 // Accedemos a las variables del fichero ".env" y las añadimos a la lista de variables de entorno.
 import 'dotenv/config';
+const {
+    MYSQL_ADMIN,
+    MYSQL_ADMIN_PASSWORD,
+    MYSQL_NAME,
+    MYSQL_LASTNAME,
+    MYSQL_ADMIN_EMAIL,
+} = process.env;
 
 // Importamos la función que nos permite conectarnos a la base de datos.
-import getPool from './getPool.js';
+import { getPool } from './getPool.js';
 
 // Función principal encargada de crear las tablas.
 const main = async () => {
@@ -70,6 +79,24 @@ const main = async () => {
         `);
 
         console.log('¡Tablas creadas!');
+
+        //encriptamos la contraseña del usuario admin.
+        const hashedPass = await bcrypt.hash(`${MYSQL_ADMIN_PASSWORD}`, 10);
+        //insertamos el usuario admin.
+        await pool.query(
+            `INSERT INTO users (username, firstname,lastname,password, email, role, active) 
+             VALUES (?,?, ?,?, ?, ?,?)`,
+            [
+                `${MYSQL_ADMIN}`,
+                `${MYSQL_NAME}`,
+                `${MYSQL_LASTNAME}`,
+                hashedPass,
+                `${MYSQL_ADMIN_EMAIL}`,
+                'admin',
+                true,
+            ],
+        );
+        console.log('Usuario administrador creado!');
 
         // Cerramos el proceso con código 0.
         process.exit(0);
