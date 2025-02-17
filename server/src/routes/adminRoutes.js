@@ -9,6 +9,7 @@ import authUserMiddleware from '../middlewares/authUserMiddleware.js';
 import {
     usersListController,
     deleteUserController,
+    updateUserStatusController,
 } from '../controllers/admin/index.js';
 
 // Creamos un router
@@ -29,5 +30,8 @@ router.delete(
     authAdminMiddleware,
     deleteUserController,
 );
+
+// Suspende temporalmente al usuario
+router.post('/users/:active', updateUserStatusController);
 
 export default router;
