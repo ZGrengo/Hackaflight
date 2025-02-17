@@ -9,9 +9,17 @@ const selectAllUsersModel = async (
     email,
 ) => {
     const pool = await getPool();
-
-    let query =
-        'SELECT userId, firstName, lastName, username, email, birthdate, createdAt FROM users';
+    let query = `
+    SELECT 
+        userId, 
+        firstName, 
+        lastName, 
+        username, 
+        email, 
+        birthdate,
+        active, 
+        createdAt 
+    FROM users`;
     const params = [];
     const conditions = [];
 
@@ -41,13 +49,15 @@ const selectAllUsersModel = async (
     }
 
     if (conditions.length > 0) {
-        query += ' WHERE ' + conditions.join(' AND ');
+        query += ` WHERE ${conditions.join(' AND ')}`;
     }
+
+    query += ` ORDER BY createdAt DESC`;
 
     const [users] = await pool.query(query, params);
 
     if (users.length < 1) {
-        throw generateErrorUtil('Usuario no encontrado.', 404);
+        throw generateErrorUtil('No se encontraron usuarios.', 404);
     }
 
     return users;

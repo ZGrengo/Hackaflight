@@ -32,6 +32,11 @@ router.delete(
 );
 
 // Suspende temporalmente al usuario
-router.post('/users/:active', updateUserStatusController);
+router.post(
+    '/users/active',
+    authUserMiddleware,
+    authAdminMiddleware,
+    updateUserStatusController,
+);
 
 export default router;
