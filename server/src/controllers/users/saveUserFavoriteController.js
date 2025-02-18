@@ -3,7 +3,14 @@ const saveUserFavoriteController = async (req, res, next) => {
     try {
         //Obtenemos los datos de la busqueda que se guardara.
         const { userId } = req.user;
-        const { title, origin, destination, departureDate, adults } = req.body;
+        const {
+            title,
+            origin,
+            destination,
+            departureDate,
+            returnDate,
+            adults,
+        } = req.body;
 
         //Obtenemos la id de la busqueda favorita que fue guardada con su respectivo modelo de insercion.
         const favoriteId = await saveUserFavoriteModel(
@@ -11,6 +18,7 @@ const saveUserFavoriteController = async (req, res, next) => {
             origin,
             destination,
             departureDate,
+            returnDate,
             adults,
             userId,
         );
