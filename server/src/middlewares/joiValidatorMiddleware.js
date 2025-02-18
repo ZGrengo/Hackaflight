@@ -1,28 +1,19 @@
-import generateErrorUtil from '../utils/generateErrorUtil.js';
-import validateSearch from '../validators/apiValidation.js';
+const joiValidatorMiddleware = (schema) => {
+    return async (req, res, next) => {
+        try {
+            // For GET requests, validate query parameters
+            const dataToValidate = req.method === 'GET' ? req.query : req.body;
 
-const joiValidatorError = (req, res, next) => {
-    const { origin, destination, departureDate, returnDate, adults } =
-        req.query;
-    const { error } = validateSearch.validate({
-        originLocationCode: origin,
-        destinationLocationCode: destination,
-        departureDate,
-        returnDate,
-        adults,
-    });
+            await schema.validateAsync(dataToValidate);
 
-    if (error) {
-        const errorMessage = error.details
-            .map((detail) => detail.message)
-            .join(', ');
-        return next(
-            generateErrorUtil(`Error de validación: ${errorMessage}`, 400),
-            // return next(
-            //     generateErrorUtil('Imposible acceder al servidor amadeus', 500),
-        );
-    }
-    next();
+            next();
+        } catch (error) {
+            res.status(400).json({
+                status: 'error',
+                message: error.details[0].message,
+            });
+        }
+    };
 };
 
-export default joiValidatorError;
+export default joiValidatorMiddleware;
