@@ -3,7 +3,6 @@ import generateErrorUtil from '../../utils/generateErrorUtil.js';
 
 const updateUserStatusModel = async ({ userId }) => {
     const pool = await getPool();
-
     //Revisa si el usuario existe
     const [user] = await pool.query(`SELECT * FROM users WHERE userId = ?`, [
         userId,
@@ -12,14 +11,14 @@ const updateUserStatusModel = async ({ userId }) => {
     if (user.length === 0) {
         generateErrorUtil('Usuario no encontrado.', 404);
     }
+
     // Accedemos al primer usuario, ya que la consulta devuelve un array
     const userData = user[0];
-
     // Asegurémonos de que userData existe
     if (!userData) {
         console.log('Usuario no encontrado al intentar acceder a user[0].');
         throw generateErrorUtil(
-            'Usuario no encontrado en pene  la base de datos.',
+            `Usuario no encontrado en la base de datos.${userId}`,
             404,
         );
     }
