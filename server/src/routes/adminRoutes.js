@@ -31,7 +31,7 @@ router.delete(
     deleteUserController,
 );
 
-// Suspende temporalmente al usuario
+// habilitar / deshabilitar temporalmente al usuario
 router.post(
     '/users/active',
     authUserMiddleware,
