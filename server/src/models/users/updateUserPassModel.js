@@ -13,7 +13,7 @@ const updateUserPassModel = async (userId, currentPassword, newPassword) => {
     );
 
     if (users.length < 1) {
-        generateErrorUtil('Usuario no encontrado', 404);
+        throw generateErrorUtil('Usuario no encontrado', 404);
     }
 
     const storedPassword = users[0].password;
@@ -22,7 +22,7 @@ const updateUserPassModel = async (userId, currentPassword, newPassword) => {
     const passMatch = await bcrypt.compare(currentPassword, storedPassword);
 
     if (!passMatch) {
-        generateErrorUtil('La contraseña actual es incorrecta', 401);
+        throw generateErrorUtil('La contraseña actual es incorrecta', 401);
     }
 
     //Encriptamos la nueva contraseña.
