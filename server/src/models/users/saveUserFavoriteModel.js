@@ -36,7 +36,7 @@ const saveUserFavoriteModel = async (
     // Insertamos el listado de criterios de busqueda favoritos a la base de datos con el id del usuario.
     const [newFavorite] = await pool.query(
         `INSERT INTO favorites (title, origin, destination, departureDate, returnDate, adults, userId) 
-          VALUES (?, ?, ?, ?, ?, ?)`,
+          VALUES (?, ?, ?, ?, ?,?,?)`,
         [title, origin, destination, departureDate, returnDate, adults, userId],
     );
 
