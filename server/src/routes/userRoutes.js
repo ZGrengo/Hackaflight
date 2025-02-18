@@ -36,10 +36,10 @@ router.post('/login', loginUserController);
 // Cambiar contraseña (requiere autenticación)
 router.post('/password', authUserMiddleware, updateUserPassController);
 
-// Envia email para cambiar contraseña (extra)
+// Envia email para recuperar contraseña (extra)
 router.put('/password/reset', sendRecoveryPassEmailController);
 
-// Cambiar contraseña(extra)
+// Recuperar contraseña(extra)
 router.put('/password/reset/:recoverPassCode', useRecoveryPassCodeController);
 
 // Obtener el perfil del usuario (requiere estar autenticado)
@@ -54,7 +54,11 @@ router.post('/favorites', authUserMiddleware, saveUserFavoriteController);
 router.get('/favorites', authUserMiddleware, userFavoriteController);
 
 // Obtener detalles de un criterio de búsqueda favorito (requiere autenticación)
-router.get('/favorites/:title', authUserMiddleware, userFavoriteController);
+router.get(
+    '/favorites/:favoriteId',
+    authUserMiddleware,
+    userFavoriteController,
+);
 
 // Eliminar un criterio de búsqueda favorito (requiere autenticación)
 router.delete(

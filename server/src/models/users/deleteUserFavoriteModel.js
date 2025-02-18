@@ -12,10 +12,12 @@ const deleteUserFavoriteModel = async (favoriteId, userId) => {
         `SELECT favoriteId FROM favorites WHERE favoriteId = ? AND userId = ?`,
         [favoriteId, userId],
     );
-
     // Si no se encontró el criterio de busqueda favorito, generamos un error.
     if (favorite.length === 0) {
-        generateErrorUtil('Criterio de busqueda favorito no encontrado', 404);
+        throw generateErrorUtil(
+            'Criterio de busqueda favorito no encontrado',
+            404,
+        );
     }
 
     // Borramos el criterio de busqueda favorito de la tabla.

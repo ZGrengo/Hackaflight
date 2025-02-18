@@ -10,7 +10,19 @@ const usersListController = async (req, res, next) => {
                 403,
             );
         }
-        const users = await selectAllUsersModel(req.query);
+        //obtenemos datos del query
+        const { userId, username, firstName, lastName, email } = req.query;
+
+        //obtenemos los usuarios
+        const users = await selectAllUsersModel(
+            userId,
+            username,
+            firstName,
+            lastName,
+            email,
+        );
+
+        //enviamos una respuesta
         res.send({
             status: 'ok',
             data: users,
