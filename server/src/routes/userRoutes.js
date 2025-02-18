@@ -16,6 +16,7 @@ import {
     activateUserController,
     sendRecoveryPassEmailController,
     useRecoveryPassCodeController,
+    userAvatarController,
 } from '../controllers/users/index.js';
 
 //importamos controladores de valoraciones
@@ -41,6 +42,9 @@ router.put('/password/reset', sendRecoveryPassEmailController);
 
 // Recuperar contraseña(extra)
 router.put('/password/reset/:recoverPassCode', useRecoveryPassCodeController);
+
+//Actualizar avatar de usuario.
+router.put('/avatar', authUserMiddleware, userAvatarController);
 
 // Obtener el perfil del usuario (requiere estar autenticado)
 router.get('/profile', authUserMiddleware, privateUserProfileController);
