@@ -12,7 +12,9 @@ const authUserMiddleware = async (req, res, next) => {
 
         //si falta el token lanzamos un error
         if (!authorization) {
-            generateErrorUtil('Falta la cabecera de autenticación', 401);
+            return next(
+                generateErrorUtil('Falta la cabecera de autenticación', 401),
+            );
         }
         try {
             //Desencriptamos la información del token
@@ -28,7 +30,7 @@ const authUserMiddleware = async (req, res, next) => {
             next();
         } catch (err) {
             console.error(err);
-            generateErrorUtil('Token inválido', 403);
+            return next(generateErrorUtil('Token inválido', 403));
         }
     } catch (err) {
         next(err);

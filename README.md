@@ -2,6 +2,8 @@
 
 HackaFlight es una plataforma para la búsqueda de vuelos, donde los usuarios pueden registrar cuentas, buscar vuelos, guardar búsquedas favoritas y gestionar sus reservas de manera eficiente.
 
+## Dependencias
+
 ## 🚀 Instalación
 
 1. Instalar las dependencias con el comando:
@@ -22,47 +24,47 @@ HackaFlight es una plataforma para la búsqueda de vuelos, donde los usuarios pu
 
 ### users
 
- Campo            | Tipo         | Descripción                         |
-| --------------- | ------------ | ------------------------------------|
-| userId          | INT UNSIGNED | Identificador único del usuario     |
-| username        | VARCHAR(30)  | Nombre de usuario                   |
-| firstName       | VARCHAR(50)  | Nombre real del usuario             |
-| lastName        | VARCHAR(100) | Apellidos del usuario               |
-| email           | VARCHAR(100) | Correo electrónico del usuario      |
-| password        | VARCHAR(100) | Contraseña del usuario (hash)       |
-| regCode         | CHAR(30)     | Código de registro                  |
-| recoverPassCode | CHAR(30)     | Código de recuperación de contraseña|
-| birthdate       | DATE         | Fecha de nacimiento                 |
-| avatar          | VARCHAR(100) | URL del avatar del usuario          |
-| role            | ENUM         | Rol del usuario ('admin', 'normal') |
-| active          | BOOLEAN      | Indica si el usuario está activo    |
-| createdAt       | DATETIME     | Fecha de creación                   |
-| modifiedAt      | DATETIME     | Fecha de última modificación        |
+| Campo           | Tipo         | Descripción                          |
+| --------------- | ------------ | ------------------------------------ |
+| userId          | INT UNSIGNED | Identificador único del usuario      |
+| username        | VARCHAR(30)  | Nombre de usuario                    |
+| firstName       | VARCHAR(50)  | Nombre real del usuario              |
+| lastName        | VARCHAR(100) | Apellidos del usuario                |
+| email           | VARCHAR(100) | Correo electrónico del usuario       |
+| password        | VARCHAR(100) | Contraseña del usuario (hash)        |
+| regCode         | CHAR(30)     | Código de registro                   |
+| recoverPassCode | CHAR(30)     | Código de recuperación de contraseña |
+| birthdate       | DATE         | Fecha de nacimiento                  |
+| avatar          | VARCHAR(100) | URL del avatar del usuario           |
+| role            | ENUM         | Rol del usuario ('admin', 'normal')  |
+| active          | BOOLEAN      | Indica si el usuario está activo     |
+| createdAt       | DATETIME     | Fecha de creación                    |
+| modifiedAt      | DATETIME     | Fecha de última modificación         |
 
 ### favorites
 
-| Campo          | Tipo         | Descripción                               |
-| -------------- | ------------ | ------------------------------------------|
-| favoriteId     | INT UNSIGNED | Identificador único del criterio favorito |
-| userId         | INT UNSIGNED | Identificador del usuario                 |
-| title          | VARCHAR(100) | Título personalizado por el usuario       |
-| origin         | VARCHAR(3)   | Código IATA del origen                    |
-| destination    | VARCHAR(3)   | Código IATA del destino                   |
-| departureDate  | DATE         | Fecha de salida                           |
-| returnDate     | DATE         | Fecha de regreso                          |
-| adults         | TINYINT(5)   | Número de adultos en la búsqueda          |
-| createdAt      | DATETIME     | Fecha de creación del registro            |
+| Campo         | Tipo         | Descripción                               |
+| ------------- | ------------ | ----------------------------------------- |
+| favoriteId    | INT UNSIGNED | Identificador único del criterio favorito |
+| userId        | INT UNSIGNED | Identificador del usuario                 |
+| title         | VARCHAR(100) | Título personalizado por el usuario       |
+| origin        | VARCHAR(3)   | Código IATA del origen                    |
+| destination   | VARCHAR(3)   | Código IATA del destino                   |
+| departureDate | DATE         | Fecha de salida                           |
+| returnDate    | DATE         | Fecha de regreso                          |
+| adults        | TINYINT(5)   | Número de adultos en la búsqueda          |
+| createdAt     | DATETIME     | Fecha de creación del registro            |
 
 ### valorations
 
-| Campo         | Tipo         | Descripción                                |
-| ------------- | ------------ | ------------------------------------------ |
-| valorationId  | INT UNSIGNED | Identificador único de la valoración       |
-| userId        | INT UNSIGNED | Identificador del usuario que valoró       |
-| title         | VARCHAR(100) | Título de la valoración                    |
-| rate          | ENUM         | Puntuación ('1', '2', '3', '4', '5')       |
-| comment       | VARCHAR(600) | Comentario sobre la experiencia            |
-| createdAt     | DATETIME     | Fecha de creación                          |
+| Campo        | Tipo         | Descripción                          |
+| ------------ | ------------ | ------------------------------------ |
+| valorationId | INT UNSIGNED | Identificador único de la valoración |
+| userId       | INT UNSIGNED | Identificador del usuario que valoró |
+| title        | VARCHAR(100) | Título de la valoración              |
+| rate         | ENUM         | Puntuación ('1', '2', '3', '4', '5') |
+| comment      | VARCHAR(600) | Comentario sobre la experiencia      |
+| createdAt    | DATETIME     | Fecha de creación                    |
 
 ## Endpoints del usuario
 
