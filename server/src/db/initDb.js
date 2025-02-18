@@ -3,10 +3,10 @@ import bcrypt from 'bcrypt';
 // Accedemos a las variables del fichero ".env" y las añadimos a la lista de variables de entorno.
 import 'dotenv/config';
 const {
-    MYSQL_ADMIN,
+    MYSQL_ADMIN_USER,
     MYSQL_ADMIN_PASSWORD,
-    MYSQL_NAME,
-    MYSQL_LASTNAME,
+    MYSQL_ADMIN_FIRSTNAM,
+    MYSQL_ADMIN_LASTNAME,
     MYSQL_ADMIN_EMAIL,
 } = process.env;
 // Importamos la función que nos permite conectarnos a la base de datos.
@@ -86,9 +86,9 @@ const main = async () => {
             `INSERT INTO users (username, firstName, lastName, password, email, role, active) 
          VALUES (?, ?, ?, ?, ?, ?, ?)`,
             [
-                `${MYSQL_ADMIN}`,
-                `${MYSQL_NAME}`,
-                `${MYSQL_LASTNAME}`,
+                `${MYSQL_ADMIN_USER}`,
+                `${MYSQL_ADMIN_FIRSTNAM}`,
+                `${MYSQL_ADMIN_LASTNAME}`,
                 hashedPass,
                 `${MYSQL_ADMIN_EMAIL}`,
                 'admin',

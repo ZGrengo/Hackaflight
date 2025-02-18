@@ -30,11 +30,11 @@ const selectUserFavoriteModel = async (favoriteId, userId) => {
     } else {
         const [favorites] = await pool.query(
             `
-                SELECT * from favorites WHERE userId = ?
+                SELECT * from favorites WHERE userId = ? ORDER BY createdAt DESC
             `,
             [userId],
         );
-        return favorites[0];
+        return favorites;
     }
 };
 

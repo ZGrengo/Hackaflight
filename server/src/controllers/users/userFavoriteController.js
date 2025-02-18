@@ -1,17 +1,20 @@
-const userFavoriteController = async ( req, res, next ) => {
-    try{
-        const { userId } = req.user.userId;
+//importamos el modelo
+import selectUserFavoriteModel from '../../models/users/selectUserFavoriteModel.js';
 
-        const favorites = await selectUserFavoriteModel(null, userId);
-        res.send( {
+const userFavoriteController = async (req, res, next) => {
+    try {
+        const userId = req.user.userId;
+        const { favoriteId } = req.params;
+
+        const favorites = await selectUserFavoriteModel(favoriteId, userId);
+        res.send({
             status: 'Ok',
             data: {
                 favorites,
             },
-        } );
-    } catch ( err )
-    {
-        next( err );
+        });
+    } catch (err) {
+        next(err);
     }
 };
 

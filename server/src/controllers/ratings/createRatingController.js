@@ -18,7 +18,10 @@ const createRatingController = async (req, res, next) => {
         // Validamos que rate sea un número entre 1 y 5
         const numRate = Number(rate);
         if (isNaN(numRate) || numRate < 1 || numRate > 5) {
-            generateErrorUtil('El rate debe ser un número entre 1 y 5', 400);
+            throw generateErrorUtil(
+                'El rate debe ser un número entre 1 y 5',
+                400,
+            );
         }
 
         //insertamos la valoración y obtenemos el id que mysql ha generado
