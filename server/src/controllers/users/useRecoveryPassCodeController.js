@@ -1,4 +1,4 @@
-import updateUserPassModel from '../../models/users/updateUserPassModel.js';
+import recoverUserPassModel from '../../models/users/recoverUserPassModel.js';
 import generateErrorUtil from '../../utils/generateErrorUtil.js';
 
 const recoveryPassCodeController = async (req, res, next) => {
@@ -15,7 +15,7 @@ const recoveryPassCodeController = async (req, res, next) => {
             generateErrorUtil('Las contraseñas no coinciden', 400);
         }
 
-        await updateUserPassModel(newPassword, recoverPassCode);
+        await recoverUserPassModel(recoverPassCode, newPassword);
 
         res.send({
             status: 'ok',

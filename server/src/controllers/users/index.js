@@ -11,6 +11,7 @@ import updateUserPassController from './updateUserPassController.js';
 import activateUserController from './activateUserController.js';
 import sendRecoveryPassEmailController from './sendRecoveryPassEmailController.js';
 import useRecoveryPassCodeController from './useRecoveryPassCodeController.js';
+import userAvatarController from './userAvatarController.js';
 
 //exportamos las funciones controladoras
 export {
@@ -26,4 +27,5 @@ export {
     activateUserController,
     sendRecoveryPassEmailController,
     useRecoveryPassCodeController,
+    userAvatarController,
 };
