@@ -9,7 +9,6 @@ const {
     MYSQL_LASTNAME,
     MYSQL_ADMIN_EMAIL,
 } = process.env;
-
 // Importamos la función que nos permite conectarnos a la base de datos.
 import { getPool } from './getPool.js';
 
@@ -84,8 +83,8 @@ const main = async () => {
         const hashedPass = await bcrypt.hash(`${MYSQL_ADMIN_PASSWORD}`, 10);
         //insertamos el usuario admin.
         await pool.query(
-            `INSERT INTO users (username, firstname,lastname,password, email, role, active) 
-             VALUES (?,?, ?,?, ?, ?,?)`,
+            `INSERT INTO users (username, firstName, lastName, password, email, role, active) 
+         VALUES (?, ?, ?, ?, ?, ?, ?)`,
             [
                 `${MYSQL_ADMIN}`,
                 `${MYSQL_NAME}`,
