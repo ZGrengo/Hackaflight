@@ -30,16 +30,9 @@ router.delete(
     authAdminMiddleware,
     deleteUserController,
 );
-
-<<<<<<< HEAD
 // Suspende temporalmente al usuario
 router.patch(
     '/users/:id/active',
-=======
-// habilitar / deshabilitar temporalmente al usuario
-router.post(
-    '/users/active',
->>>>>>> 7728498c72ecdaaa3896b0abd35c6b28ebf5fe47
     authUserMiddleware,
     authAdminMiddleware,
     updateUserStatusController,
