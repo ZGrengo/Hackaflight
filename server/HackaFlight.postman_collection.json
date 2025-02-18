@@ -1,10 +1,9 @@
 {
 	"info": {
-		"_postman_id": "fcb6c14e-416f-4d69-ade5-571913de44c8",
+		"_postman_id": "2c1975fe-dc68-4af6-8c75-70cd008abc13",
 		"name": "HackaFlight",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "40399714",
-		"_collection_link": "https://hackaflight-3711.postman.co/workspace/e9bd9a5c-3eac-4d70-8240-486365574b39/collection/40399714-fcb6c14e-416f-4d69-ade5-571913de44c8?action=share&source=collection_link&creator=40399714"
+		"_exporter_id": "40373237"
 	},
 	"item": [
 		{
@@ -386,6 +385,19 @@
 								"avg"
 							]
 						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Search",
+			"item": [
+				{
+					"name": "Search Flight",
+					"request": {
+						"method": "GET",
+						"header": []
 					},
 					"response": []
 				}
