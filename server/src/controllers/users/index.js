@@ -4,6 +4,7 @@ import loginUserController from './loginUserController.js';
 import privateUserProfileController from './privateUserProfileController.js';
 import saveUserFavoriteController from './saveUserFavoriteController.js';
 import userFavoriteController from './userFavoriteController.js';
+import updateUserFavoriteController from './updateUserFavoriteController.js';
 import userFavoriteDetailsController from './userFavoriteDetailsController.js';
 import deleteUserFavoriteController from './deleteUserFavoriteController.js';
 import updateUserPassController from './updateUserPassController.js';
@@ -19,6 +20,7 @@ export {
     userFavoriteController,
     deleteUserFavoriteController,
     userFavoriteDetailsController,
+    updateUserFavoriteController,
     saveUserFavoriteController,
     updateUserPassController,
     activateUserController,
