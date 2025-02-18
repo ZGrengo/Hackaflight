@@ -10,6 +10,7 @@ import {
     privateUserProfileController,
     userFavoriteController,
     deleteUserFavoriteController,
+    updateUserFavoriteController,
     updateUserPassController,
     registerUserController,
     saveUserFavoriteController,
@@ -49,6 +50,13 @@ router.get('/profile', authUserMiddleware, privateUserProfileController);
 
 // Guardar un criterio de búsqueda como favorito (requiere autenticación)
 router.post('/favorites', authUserMiddleware, saveUserFavoriteController);
+
+// Actualizar un criterio de búsqueda favorito del usuario(requiere autenticación)
+router.put(
+    '/favorites/:favoriteId',
+    authUserMiddleware,
+    updateUserFavoriteController,
+);
 
 // Obtener la lista de criterios de búsqueda favoritos del usuario (requiere autenticación)
 router.get('/favorites', authUserMiddleware, userFavoriteController);
