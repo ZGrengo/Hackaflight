@@ -16,6 +16,7 @@ const saveUserFavoriteModel = async (
     // Obtenemos el pool.
     const pool = await getPool();
 
+    //TODO: No permitir guardar con el mismo titulo una busqueda
     // Verificamos si el favorito ya existe para el usuario.
     const [[existingFavorite]] = await pool.query(
         `SELECT favoriteId FROM favorites WHERE origin = ? AND destination = ? 
@@ -25,10 +26,11 @@ const saveUserFavoriteModel = async (
 
     // Si el favorito ya existe, generamos un error.
     if (existingFavorite) {
-        generateErrorUtil('Esta búsqueda ya está guardada en favoritos', 409);
+        throw generateErrorUtil(
+            'Esta búsqueda ya está guardada en favoritos',
+            409,
+        );
     }
-    // Generamos la fecha actual.
-    const now = new Date();
 
     // Insertamos el listado de criterios de busqueda favoritos a la base de datos con el id del usuario.
     const [newFavorite] = await pool.query(
