@@ -11,7 +11,7 @@ const updateUserStatusController = async (req, res, next) => {
         }
 
         // Llamamos la función para actualizar el estado del usuario
-        const { newStatus } = await updateUserStatusModel(id);
+        const { newStatus } = await updateUserStatusModel({ userId: id });
 
         res.send({
             status: 'ok',
