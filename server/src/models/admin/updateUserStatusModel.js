@@ -19,10 +19,12 @@ const updateUserStatusModel = async (userId) => {
     const newStatus = currentStatus === 1 ? 0 : 1;
 
     //Actualizamos el estado del usuario en la base de datos
+
     await pool.query(`UPDATE users SET active = ? WHERE userId = ?`, [
         newStatus,
         userId,
     ]);
+    return { newStatus };
 };
 
 export default updateUserStatusModel;

@@ -39,7 +39,7 @@ const main = async () => {
                 recoverPassCode CHAR(30),
                 birthdate DATE,
                 avatar VARCHAR(100),
-                role ENUM('admin', 'normal') DEFAULT 'normal',
+                role ENUM('admin', 'normal') DEFAULT 'normal' NOT NULL,
                 active BOOLEAN DEFAULT FALSE,
                 createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
                 modifiedAt DATETIME ON UPDATE CURRENT_TIMESTAMP
