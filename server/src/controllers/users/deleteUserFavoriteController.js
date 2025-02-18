@@ -7,8 +7,8 @@ const deleteUserFavoriteController = async (req, res, next) => {
 
         //Llamamos la funcion para borrar el criterio de busqueda.
         const deletedFavoriteId = await deleteUserFavoriteModel(
-            userId,
             favoriteId,
+            userId,
         );
 
         res.send({
