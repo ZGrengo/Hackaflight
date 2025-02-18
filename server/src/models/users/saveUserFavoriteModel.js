@@ -18,7 +18,7 @@ const saveUserFavoriteModel = async (
 
     // Verificamos si el favorito ya existe para el usuario.
     const [[existingFavorite]] = await pool.query(
-        `SELECT id FROM favorites WHERE origin = ? AND destination = ? 
+        `SELECT favoriteId FROM favorites WHERE origin = ? AND destination = ? 
          AND departureDate = ? AND adults = ? AND userId = ?`,
         [origin, destination, departureDate, adults, userId],
     );
@@ -32,8 +32,9 @@ const saveUserFavoriteModel = async (
 
     // Insertamos el listado de criterios de busqueda favoritos a la base de datos con el id del usuario.
     const [newFavorite] = await pool.query(
-        `INSERT INTO favorites (title, origin, destination, departureDate, adults, userId, createdAt) VALUES(?,?,?,?,?)`,
-        [title, origin, destination, departureDate, adults, userId, now],
+        `INSERT INTO favorites (title, origin, destination, departureDate, adults, userId) 
+          VALUES (?, ?, ?, ?, ?, ?)`,
+        [title, origin, destination, departureDate, adults, userId],
     );
 
     // Obtenemos el id del criterio de busqueda que acabamos de insertar.

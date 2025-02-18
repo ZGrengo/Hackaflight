@@ -5,13 +5,17 @@ const deleteUserModel = async (userId) => {
     const pool = await getPool();
 
     //Revisa si el usuario existe
-    const [user] = await pool.query(`SELECT * FROM users WHERE userId = ?`, [
-        userId,
-    ]);
+    const [user] = await pool.query(
+        `SELECT userId FROM users WHERE userId = ?`,
+        [userId],
+    );
 
     if (user.length === 0) {
         generateErrorUtil('Usuario no encontrado.', 404);
     }
+    // Primero eliminamos los registros relacionados
+    await pool.query(`DELETE FROM favorites WHERE userId = ?`, [userId]);
+    await pool.query(`DELETE FROM valorations WHERE userId = ?`, [userId]);
 
     //Borramos el usuario de la base de datos
     await pool.query(`DELETE FROM users WHERE userId = ?`, [userId]);
