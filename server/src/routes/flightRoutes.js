@@ -6,6 +6,6 @@ const router = express.Router();
 
 // Endpoint para buscar vuelos y validarlos con la dependencia joi
 
-router.get('/api/flights/search', joiValidatorError, searchFlightsController);
+router.get('/search', joiValidatorError, searchFlightsController);
 
 export default router;

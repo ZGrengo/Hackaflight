@@ -1,6 +1,6 @@
 import amadeus from '../../utils/amadeusClientUtil.js';
 
-const searchFlightsController = async (req, res) => {
+const searchFlightsController = async (req, res, next) => {
     try {
         const { origin, destination, departureDate, adults } = req.query;
 
@@ -17,9 +17,10 @@ const searchFlightsController = async (req, res) => {
         });
 
         res.json(response.data);
-    } catch (error) {
-        console.error('error detallado', error.response?.result || error);
-        res.status(500).send('error al buscar vuelos');
+    } catch (err) {
+        //console.error('error detallado', error.response?.result || error);
+        //res.status(500).send('error al buscar vuelos');
+        next(err);
     }
 };
 
