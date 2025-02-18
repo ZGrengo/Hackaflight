@@ -3,19 +3,20 @@ import generateErrorUtil from '../../utils/generateErrorUtil.js';
 
 const updateUserStatusController = async (req, res, next) => {
     try {
-        const { userId } = req.body;
+        const { id } = req.params; // ID del usuario
 
         //Revisamos que el usuario haciendo la peticion es administrador
         if (req.user.role !== 'admin') {
             generateErrorUtil('Faltan permisos de administrador', 403);
         }
 
-        //Llamamos la funcion para actualizar el estado del usuario
-        await updateUserStatusModel(userId);
+        // Llamamos la función para actualizar el estado del usuario
+        const { newStatus } = await updateUserStatusModel(id);
 
         res.send({
             status: 'ok',
-            message: 'Estado del usuario actualizado con éxito.',
+            message: 'Estado del usuario actualizado con exito.',
+            active: newStatus, // Devolvemos el nuevo estado
         });
     } catch (err) {
         next(err);
