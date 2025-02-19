@@ -12,6 +12,7 @@ import {
     deleteUserFavoriteController,
     updateUserFavoriteController,
     updateUserPassController,
+    updateUserController,
     registerUserController,
     saveUserFavoriteController,
     activateUserController,
@@ -43,6 +44,9 @@ router.put('/password/reset', sendRecoveryPassEmailController);
 
 // Recuperar contraseña(extra)
 router.put('/password/reset/:recoverPassCode', useRecoveryPassCodeController);
+
+// Actualizar datos de usuario (requiere autenticación)
+router.put('/profile', authUserMiddleware, updateUserController);
 
 //Actualizar avatar de usuario.
 router.put('/avatar', authUserMiddleware, userAvatarController);
