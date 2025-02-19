@@ -10,7 +10,10 @@ const storeFlightListController = (req, res, next) => {
 
         // Validar que haya vuelos para almacenar
         if (!flights || !Array.isArray(flights) || flights.length === 0) {
-            throw generateErrorUtil('No hay vuelos disponibles para almacenar.', 400);
+            throw generateErrorUtil(
+                'No hay vuelos disponibles para almacenar.',
+                400,
+            );
         }
 
         // Almacenar la lista de vuelos en la variable global
@@ -31,7 +34,10 @@ const filterFlightListController = (req, res, next) => {
     try {
         // Validar que haya vuelos almacenados
         if (!globalFlights || globalFlights.length === 0) {
-            throw generateErrorUtil('No hay vuelos disponibles para filtrar.', 404);
+            throw generateErrorUtil(
+                'No hay vuelos disponibles para filtrar.',
+                404,
+            );
         }
 
         // Obtener los parámetros de filtrado del query
@@ -50,10 +56,16 @@ const filterFlightListController = (req, res, next) => {
         const parsedPage = parseInt(page);
         const parsedLimit = parseInt(limit);
         if (isNaN(parsedPage)) {
-            throw generateErrorUtil('El parámetro "page" debe ser un número válido.', 400);
+            throw generateErrorUtil(
+                'El parámetro "page" debe ser un número válido.',
+                400,
+            );
         }
         if (isNaN(parsedLimit)) {
-            throw generateErrorUtil('El parámetro "limit" debe ser un número válido.', 400);
+            throw generateErrorUtil(
+                'El parámetro "limit" debe ser un número válido.',
+                400,
+            );
         }
 
         // Aplicar los filtros
@@ -61,7 +73,7 @@ const filterFlightListController = (req, res, next) => {
 
         // Filtro por aerolínea
         if (airline) {
-            filteredFlights = filteredFlights.filter(flight =>
+            filteredFlights = filteredFlights.filter((flight) =>
                 flight.validatingAirlineCodes?.includes(airline.toUpperCase()),
             );
         }
@@ -70,10 +82,13 @@ const filterFlightListController = (req, res, next) => {
         if (minPrice) {
             const parsedMinPrice = parseFloat(minPrice);
             if (isNaN(parsedMinPrice)) {
-                throw generateErrorUtil('El parámetro "minPrice" debe ser un número válido.', 400);
+                throw generateErrorUtil(
+                    'El parámetro "minPrice" debe ser un número válido.',
+                    400,
+                );
             }
             filteredFlights = filteredFlights.filter(
-                flight => parseFloat(flight.price?.total) >= parsedMinPrice,
+                (flight) => parseFloat(flight.price?.total) >= parsedMinPrice,
             );
         }
 
@@ -81,10 +96,13 @@ const filterFlightListController = (req, res, next) => {
         if (maxPrice) {
             const parsedMaxPrice = parseFloat(maxPrice);
             if (isNaN(parsedMaxPrice)) {
-                throw generateErrorUtil('El parámetro "maxPrice" debe ser un número válido.', 400);
+                throw generateErrorUtil(
+                    'El parámetro "maxPrice" debe ser un número válido.',
+                    400,
+                );
             }
             filteredFlights = filteredFlights.filter(
-                flight => parseFloat(flight.price?.total) <= parsedMaxPrice,
+                (flight) => parseFloat(flight.price?.total) <= parsedMaxPrice,
             );
         }
 
@@ -92,10 +110,15 @@ const filterFlightListController = (req, res, next) => {
         if (departureTime) {
             const parsedDepartureTime = new Date(departureTime);
             if (isNaN(parsedDepartureTime.getTime())) {
-                throw generateErrorUtil('El parámetro "departureTime" debe ser una fecha válida.', 400);
+                throw generateErrorUtil(
+                    'El parámetro "departureTime" debe ser una fecha válida.',
+                    400,
+                );
             }
-            filteredFlights = filteredFlights.filter(flight => {
-                const departure = new Date(flight.itineraries[0]?.segments[0]?.departure?.at);
+            filteredFlights = filteredFlights.filter((flight) => {
+                const departure = new Date(
+                    flight.itineraries[0]?.segments[0]?.departure?.at,
+                );
                 return departure >= parsedDepartureTime;
             });
         }
@@ -104,10 +127,16 @@ const filterFlightListController = (req, res, next) => {
         if (arrivalTime) {
             const parsedArrivalTime = new Date(arrivalTime);
             if (isNaN(parsedArrivalTime.getTime())) {
-                throw generateErrorUtil('El parámetro "arrivalTime" debe ser una fecha válida.', 400);
+                throw generateErrorUtil(
+                    'El parámetro "arrivalTime" debe ser una fecha válida.',
+                    400,
+                );
             }
-            filteredFlights = filteredFlights.filter(flight => {
-                const lastSegment = flight.itineraries[0]?.segments[flight.itineraries[0]?.segments.length - 1];
+            filteredFlights = filteredFlights.filter((flight) => {
+                const lastSegment =
+                    flight.itineraries[0]?.segments[
+                        flight.itineraries[0]?.segments.length - 1
+                    ];
                 const arrival = new Date(lastSegment?.arrival?.at);
                 return arrival <= parsedArrivalTime;
             });
@@ -115,8 +144,10 @@ const filterFlightListController = (req, res, next) => {
 
         // Filtro por clase de billete
         if (travelClass) {
-            filteredFlights = filteredFlights.filter(flight =>
-                flight.travelerPricings?.some(pricing => pricing.travelerType === travelClass),
+            filteredFlights = filteredFlights.filter((flight) =>
+                flight.travelerPricings?.some(
+                    (pricing) => pricing.travelerType === travelClass,
+                ),
             );
         }
 
