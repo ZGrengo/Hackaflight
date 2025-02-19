@@ -49,11 +49,11 @@ const filterFlightListController = (req, res, next) => {
         // Validar que los parámetros de paginación sean números válidos
         const parsedPage = parseInt(page);
         const parsedLimit = parseInt(limit);
-        if (isNaN(parsedPage)) {
-            throw generateErrorUtil('El parámetro "page" debe ser un número válido.', 400);
+        if (isNaN(parsedPage) || parsedPage < 1) {
+            throw generateErrorUtil('El parámetro "page" debe ser un número válido mayor o igual a 1.', 400);
         }
-        if (isNaN(parsedLimit)) {
-            throw generateErrorUtil('El parámetro "limit" debe ser un número válido.', 400);
+        if (isNaN(parsedLimit) || parsedLimit < 1) {
+            throw generateErrorUtil('El parámetro "limit" debe ser un número válido mayor o igual a 1.', 400);
         }
 
         // Aplicar los filtros
@@ -62,7 +62,7 @@ const filterFlightListController = (req, res, next) => {
         // Filtro por aerolínea
         if (airline) {
             filteredFlights = filteredFlights.filter(flight =>
-                flight.validatingAirlineCodes?.includes(airline.toUpperCase()),
+                flight.validatingAirlineCodes?.some(code => code.toUpperCase() === airline.toUpperCase()),
             );
         }
 
@@ -116,7 +116,7 @@ const filterFlightListController = (req, res, next) => {
         // Filtro por clase de billete
         if (travelClass) {
             filteredFlights = filteredFlights.filter(flight =>
-                flight.travelerPricings?.some(pricing => pricing.travelerType === travelClass),
+                flight.travelerPricings?.some(pricing => pricing.travelerType.toUpperCase() === travelClass.toUpperCase()),
             );
         }
 

@@ -15,13 +15,11 @@ router.get(
     joiValidatorMiddleware(searchFlightsSchema),
     searchFlightsController,
 );
-//router.get('/search', joiValidatorError, searchFlightsController);
-
 // Endpoint para listar vuelos
-router.get('/store', joiValidatorMiddleware,storeFlightListController);
+router.post('/store',storeFlightListController);
 
 // Endpoint para filtrar vuelos
-router.get('/filter', joiValidatorMiddleware, filterFlightListController);
+router.get('/filter', filterFlightListController);
 
 
 
