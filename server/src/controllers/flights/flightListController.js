@@ -20,6 +20,7 @@ const filterFlightListController = (req, res, next) => {
             departureTime,
             arrivalTime,
             travelClass,
+            stops,
             page = 1, // Página por defecto: 1
             limit = 10, // Límite de resultados por página: 10
         } = req.query;
@@ -80,16 +81,16 @@ const filterFlightListController = (req, res, next) => {
 
         // Filtro por horario de salida
         if (departureTime) {
-            const parsedDepartureTime = new Date(departureTime);
+            const parsedDepartureTime = new Date(`1970-01-01T${departureTime}Z`);
             if (isNaN(parsedDepartureTime.getTime())) {
                 throw generateErrorUtil(
-                    'El parámetro "departureTime" debe ser una fecha válida.',
+                    'El parámetro "departureTime" debe ser una hora válida en formato HH:MM.',
                     400,
                 );
             }
             filteredFlights = filteredFlights.filter((flight) => {
                 const departure = new Date(
-                    flight.itineraries[0]?.segments[0]?.departure?.at,
+                    `1970-01-01T${new Date(flight.itineraries[0]?.segments[0]?.departure?.at).toISOString().split('T')[1]}Z`
                 );
                 return departure >= parsedDepartureTime;
             });
@@ -97,10 +98,10 @@ const filterFlightListController = (req, res, next) => {
 
         // Filtro por horario de llegada
         if (arrivalTime) {
-            const parsedArrivalTime = new Date(arrivalTime);
+            const parsedArrivalTime = new Date(`1970-01-01T${arrivalTime}Z`);
             if (isNaN(parsedArrivalTime.getTime())) {
                 throw generateErrorUtil(
-                    'El parámetro "arrivalTime" debe ser una fecha válida.',
+                    'El parámetro "arrivalTime" debe ser una hora válida en formato HH:MM.',
                     400,
                 );
             }
@@ -109,7 +110,9 @@ const filterFlightListController = (req, res, next) => {
                     flight.itineraries[0]?.segments[
                         flight.itineraries[0]?.segments.length - 1
                     ];
-                const arrival = new Date(lastSegment?.arrival?.at);
+                const arrival = new Date(
+                    `1970-01-01T${new Date(lastSegment?.arrival?.at).toISOString().split('T')[1]}Z`
+                );
                 return arrival <= parsedArrivalTime;
             });
         }
@@ -120,6 +123,20 @@ const filterFlightListController = (req, res, next) => {
                 flight.travelerPricings?.some(
                     (pricing) => pricing.travelerType === travelClass,
                 ),
+            );
+        }
+
+        // Filtro por cantidad de escalas
+        if (stops) {
+            const parsedStops = parseInt(stops);
+            if (isNaN(parsedStops)) {
+                throw generateErrorUtil(
+                    'El parámetro "stops" debe ser un número válido.',
+                    400,
+                );
+            }
+            filteredFlights = filteredFlights.filter((flight) =>
+                flight.itineraries[0]?.segments.length - 1 === parsedStops,
             );
         }
 
