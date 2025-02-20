@@ -1,6 +1,10 @@
 import amadeus from '../../utils/amadeusClientUtil.js';
+import generateErrorUtil from '../../utils/generateErrorUtil.js';
 
-const searchFlightsController = async (req, res) => {
+// Variable global para almacenar la lista de vuelos
+let globalFlights = [];
+
+const searchFlightsController = async (req, res, next) => {
     try {
         const {
             origin,
@@ -34,8 +38,7 @@ const searchFlightsController = async (req, res) => {
         });
         let flights = response.data;
 
-        //filtrado de vuelos por precio
-
+        // Filtrado de vuelos por precio
         if (minPrice || maxPrice) {
             flights = flights.filter((flight) => {
                 const price = parseFloat(flight.price.total);
@@ -77,10 +80,9 @@ const searchFlightsController = async (req, res) => {
                 }
             });
         }
-        //comprobar que se hayan encontrado vuelos
-        // flights.forEach((flight) => {
-        //     console.log(flight.price.total);
-        // });
+
+        // Almacenar la lista de vuelos en la variable global
+        globalFlights = flights;
 
         res.json(flights);
     } catch (error) {
@@ -90,7 +92,4 @@ const searchFlightsController = async (req, res) => {
 };
 
 export default searchFlightsController;
-
-// Este controlador recibe los parámetros de búsqueda de vuelos,
-// hace la llamada a la API Amadeus para obtener ofertas de vuelos,
-// y devuelve la respuesta en formato JSON.
+export { globalFlights };

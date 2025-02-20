@@ -1,33 +1,5 @@
 import generateErrorUtil from '../../utils/generateErrorUtil.js';
-
-// Variable global para almacenar la lista de vuelos
-let globalFlights = [];
-
-// Controlador para almacenar la lista de vuelos en la variable global
-const storeFlightListController = (req, res, next) => {
-    try {
-        const flights = req.body; // Asume que los vuelos se envían en el cuerpo de la solicitud
-
-        // Validar que haya vuelos para almacenar
-        if (!flights || !Array.isArray(flights) || flights.length === 0) {
-            throw generateErrorUtil(
-                'No hay vuelos disponibles para almacenar.',
-                400,
-            );
-        }
-
-        // Almacenar la lista de vuelos en la variable global
-        globalFlights = flights;
-
-        // Enviar respuesta de éxito
-        res.status(200).send({
-            status: 'ok',
-            message: 'Lista de vuelos almacenada con éxito',
-        });
-    } catch (err) {
-        next(err);
-    }
-};
+import { globalFlights } from './searchFlightsController.js';
 
 // Controlador para filtrar la lista de vuelos almacenada
 const filterFlightListController = (req, res, next) => {
@@ -35,7 +7,7 @@ const filterFlightListController = (req, res, next) => {
         // Validar que haya vuelos almacenados
         if (!globalFlights || globalFlights.length === 0) {
             throw generateErrorUtil(
-                'No hay vuelos disponibles para filtrar.',
+                'No hay vuelos disponibles para filtrar. Realiza una búsqueda primero.',
                 404,
             );
         }
@@ -173,4 +145,4 @@ const filterFlightListController = (req, res, next) => {
     }
 };
 
-export { storeFlightListController, filterFlightListController };
+export { filterFlightListController };
