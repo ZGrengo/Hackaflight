@@ -14,7 +14,7 @@ const registerUserController = async (req, res, next) => {
             !password ||
             !birthdate
         ) {
-            generateErrorUtil('Faltan campos.', 400);
+            throw generateErrorUtil('Faltan campos.', 400);
         }
 
         await insertUserModel(

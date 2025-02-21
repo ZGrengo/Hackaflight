@@ -20,7 +20,7 @@ const selectUserFavoriteModel = async (favoriteId, userId) => {
 
         // Si no encuentra el favorito, generamos un error 404.
         if (favorite.length === 0) {
-            generateErrorUtil(
+            throw generateErrorUtil(
                 'Criterio de búsqueda favorito no encontrado',
                 404,
             );

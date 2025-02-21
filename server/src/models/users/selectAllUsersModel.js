@@ -53,7 +53,7 @@ const selectAllUsersModel = async ({
 
     // Si no se encuentran usuarios, lanzamos un error.
     if (users.length < 1) {
-        generateErrorUtil('Usuario no encontrado.', 404);
+        throw generateErrorUtil('Usuario no encontrado.', 404);
     }
 
     // Retornamos los usuarios.

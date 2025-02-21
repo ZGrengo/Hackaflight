@@ -5,14 +5,10 @@ const recoveryPassCodeController = async (req, res, next) => {
     try {
         const { recoverPassCode } = req.params;
 
-        const { newPassword, repeatedNewPass } = req.body;
+        const { newPassword } = req.body;
 
-        if (!newPassword || !repeatedNewPass) {
+        if (!newPassword) {
             generateErrorUtil('Faltan campos.', 400);
-        }
-
-        if (newPassword !== repeatedNewPass) {
-            generateErrorUtil('Las contraseñas no coinciden', 400);
         }
 
         await recoverUserPassModel(recoverPassCode, newPassword);
