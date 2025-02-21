@@ -15,14 +15,14 @@ const updateUserFavoriteController = async (req, res, next) => {
         } = req.body;
 
         if (!userId) {
-            generateErrorUtil(
+            throw generateErrorUtil(
                 'No tienes permiso para actualizar este favorito',
                 403,
             );
         }
 
         if (!favoriteId) {
-            generateErrorUtil(
+            throw generateErrorUtil(
                 'No se ha indicado el favorito que se quiere actualizar',
                 400,
             );
@@ -36,7 +36,7 @@ const updateUserFavoriteController = async (req, res, next) => {
             !returnDate &&
             !adults
         ) {
-            generateErrorUtil(
+            throw generateErrorUtil(
                 'No se proporcionaron datos para actualizar',
                 400,
             );

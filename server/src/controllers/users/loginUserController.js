@@ -9,7 +9,7 @@ const loginUserController = async (req, res, next) => {
         const { email, password } = req.body;
 
         if (!email || !password) {
-            generateErrorUtil('Faltan campos.', 400);
+            throw generateErrorUtil('Faltan campos.', 400);
         }
 
         const user = await selectUserByEmailModel(email);
@@ -20,11 +20,11 @@ const loginUserController = async (req, res, next) => {
         }
 
         if (!user || !isPassValid) {
-            generateErrorUtil('Credenciales no válidas.', 403);
+            throw generateErrorUtil('Credenciales no válidas.', 403);
         }
 
         if (!user.active) {
-            generateErrorUtil('Cuenta en espera de validacion.', 403);
+            throw generateErrorUtil('Cuenta en espera de validacion.', 403);
         }
 
         // Comprobamos si el usuario es el administrador

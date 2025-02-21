@@ -9,7 +9,7 @@ const sendRecoveryPassEmailController = async (req, res, next) => {
         const { email } = req.body;
 
         if (!email) {
-            generateErrorUtil('Faltan campos.', 400);
+            throw generateErrorUtil('Faltan campos.', 400);
         }
 
         const user = await selectUserByEmailModel(email);
