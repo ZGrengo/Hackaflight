@@ -54,7 +54,6 @@ router.put('/avatar', authUserMiddleware, userAvatarController);
 // Obtener el perfil del usuario (requiere estar autenticado)
 router.get('/profile', authUserMiddleware, privateUserProfileController);
 
-// Actualizar el perfil del usuario (requiere estar autenticado)(extra)
 
 // Guardar un criterio de búsqueda como favorito (requiere autenticación)
 router.post('/favorites', authUserMiddleware, saveUserFavoriteController);
