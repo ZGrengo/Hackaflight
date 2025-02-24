@@ -1,17 +1,18 @@
 import Joi from 'joi';
 
-const filterFlightsSchema = Joi.object({
+const timePattern = /^([01]\d|2[0-3])$/;
+
+const filterFlightsSchema = Joi.object( {
     airline: Joi.string().optional(),
     minPrice: Joi.number().optional(),
     maxPrice: Joi.number().optional(),
-    departureTime: Joi.date().iso().optional(),
-    arrivalTime: Joi.date().iso().optional(),
-    travelClass: Joi.string().optional(),
-    page: Joi.number().integer().min(1).optional(),
-    limit: Joi.number().integer().min(1).optional(),
-    //he añadido estos dos para ordenar y que los valide joi
-    sortBy: Joi.string().valid('price', 'stops', 'duration').optional(),
-    order: Joi.string().valid('asc', 'desc').optional(),
-});
+    departureTime: Joi.string().pattern( timePattern ).optional(),
+    arrivalTime: Joi.string().pattern( timePattern ).optional(),
+    class: Joi.string().valid( 'a', 'f', 'p', 'r', 'c', 'd', 'i', 'j', 'z' ).optional(),
+    page: Joi.number().integer().min( 1 ).optional(),
+    limit: Joi.number().integer().min( 1 ).optional(),
+    sortByPrice: Joi.string().valid( 'true', 'false' ).optional(),
+    stops: Joi.number().integer().min( 0 ).optional(), // Añadir validación para stops
+} );
 
 export default filterFlightsSchema;
