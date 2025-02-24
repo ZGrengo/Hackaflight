@@ -203,6 +203,35 @@ const filterFlightListController = ( req, res, next ) => {
             } );
         }
 
+        // Ordenar por precio, paradas o duración
+        if (sortBy) {
+            filteredFlights = filteredFlights.sort((a, b) => {
+                let valueA, valueB;
+
+                switch (sortBy) {
+                    case 'price':
+                        valueA = parseFloat(a.price?.total);
+                        valueB = parseFloat(b.price?.total);
+                        break;
+                    case 'stops':
+                        valueA = a.itineraries[0]?.segments.length;
+                        valueB = b.itineraries[0]?.segments.length;
+                        break;
+                    case 'duration':
+                        valueA = a.itineraries[0]?.duration;
+                        valueB = b.itineraries[0]?.duration;
+                        break;
+                    default:
+                        return 0;
+                }
+
+                if (order === 'desc') {
+                    return valueB - valueA;
+                }
+                return valueA - valueB; // Orden ascendente por defecto
+            });
+        }
+
         // Paginación
         const startIndex = ( parsedPage - 1 ) * parsedLimit;
         const endIndex = parsedPage * parsedLimit;

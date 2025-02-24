@@ -32,7 +32,7 @@ router.delete(
 );
 // Suspende temporalmente al usuario
 router.patch(
-    '/users/:id/active',
+    '/users/:id/:active',
     authUserMiddleware,
     authAdminMiddleware,
     updateUserStatusController,

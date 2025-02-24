@@ -69,35 +69,35 @@ HackaFlight es una plataforma para la búsqueda de vuelos, donde los usuarios pu
 ## Endpoints del usuario
 
 -   **POST** - [`/api/users/register`] - Crea un nuevo usuario.
+-   **PUT** - [`/api/users/validate/:regCode`] - Validación usuario.
 -   **POST** - [`/api/users/login`] - Inicia sesión y retorna un token.
--   **GET** - [`/api/users/profile`] - Obtiene la información del usuario autenticado.
--   **PUT** - [`/api/users/profile`] - Actualiza el perfil del usuario autenticado.
+-   **POST** - [`/api/users/password`] - Permite cambiar la contraseña.
 -   **PUT** - [`/api/users/password/reset`] - Permite enviar un email de recuperación de contraseña.
 -   **PUT** - [`/api/users/password/reset/:recoverPassCode`] - Permite cambiar la contraseña con un código.
--   **GET** - [`/api/users/favorites`] - Lista los criterios de búsqueda guardados como favoritos.
+-   **GET** - [`/api/users/profile`] - Obtiene la información del usuario autenticado.
+-   **PUT** - [`/api/users/profile`] - Actualiza el perfil del usuario autenticado.
+-   **PUT** - [`/api/users/avatar`] - Actualiza el avatar del usuario autenticado.
 -   **POST** - [`/api/users/favorites`] - Guarda un criterio de búsqueda como favorito.
--   **DELETE** - [`/api/users/favorites/:id`] - Elimina un criterio de búsqueda favorito.
+-   **GET** - [`/api/users/favorites`] - Lista los criterios de búsqueda guardados como favoritos.
+-   **GET** - [`/api/users/favorites/:favoriteId`] - Obtiene detalles de un criterio de búsqueda favorito.
+-   **PUT** - [`/api/users/favorites/:favoriteId`] - Actualiza un criterio de búsqueda favorito.
+-   **DELETE** - [`/api/users/favorites/:favoriteId`] - Elimina un criterio de búsqueda favorito.
 -   **POST** - [`/api/users/ratings`] - Agregar una valoración a la plataforma.
 
 ## Endpoints de vuelos
 
 -   **GET** - [`/api/flights/search`] - Busca vuelos con filtros de origen, destino y fecha.
--   **GET** - [`/api/flights/:flyId`] - Obtiene detalles de un vuelo específico.
+-   **GET** - [`/api/flights/filter`] - Obtiene detalles de un vuelo específico.
 
 ## Endpoints de valoraciones
 
--   **GET** - [`/api/user/ratings`] - Listar todas las valoraciones.
+-   **GET** - [`/api/ratings`] - Listar todas las valoraciones.
+-   **GET** - [`/api/ratings/avg`] - Obtien media de todas las valoraciones.
 
 ## Endpoints administrador/a
 
--   **GET** - [`/api/admin/users`] - Lista todos los usuarios (requiere permisos de administrador).
--   **PUT** - [`/api/admin/users/:id/status`] - Habilita / deshabilita un usuario.
+-   **GET** - [`/api/admin/users/list`] - Lista todos los usuarios (requiere permisos de administrador).
+-   **PATCH** - [`/api/admin/users/:id/:active`] - Habilita / deshabilita un usuario.
 -   **DELETE** - [`/api/admin/users/:id/`] - Elimina un usuario de la plataforma.
-
-## Funcionalidades extra
-
--   **PUT** - [`/api/users/update-service`] - Actualización de criterios de búsqueda guardados.
--   **GET** - [`/api/users/sorted-services`] - Ordenaciones en la lista de criterios guardados.
--   **Middleware** - Validación de datos con Joi para asegurar la calidad de la información enviada en las solicitudes.
 
 Este proyecto está desarrollado en **Node.js con Express** y utiliza **MySQL** como base de datos. 🚀

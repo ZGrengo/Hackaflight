@@ -33,7 +33,7 @@ const insertUserModel = async (
 
     // Lanzamos un error si ya existe un usuario con ese nombre.
     if (users.length > 0) {
-        generateErrorUtil('Nombre de usuario no disponible', 409);
+        throw generateErrorUtil('Nombre de usuario no disponible', 409);
     }
 
     // Obtenemos el listado de usuarios que tengan el email que recibimos por body.
@@ -43,7 +43,7 @@ const insertUserModel = async (
 
     // Lanzamos un error si ya existe un usuario con ese email.
     if (users.length > 0) {
-        generateErrorUtil('Email no disponible', 409);
+        throw generateErrorUtil('Email no disponible', 409);
     }
 
     // Generamos un código de registro de 30 caracteres.

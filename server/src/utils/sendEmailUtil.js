@@ -28,7 +28,7 @@ const sendEmailUtil = async (email, subject, body) => {
         });
     } catch (err) {
         console.error(err);
-        generateErrorUtil('Error al enviar el email', 500);
+        throw generateErrorUtil('Error al enviar el email', 500);
     }
 };
 

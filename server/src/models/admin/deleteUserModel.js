@@ -11,7 +11,7 @@ const deleteUserModel = async (userId) => {
     );
 
     if (user.length === 0) {
-        generateErrorUtil('Usuario no encontrado.', 404);
+        throw generateErrorUtil('Usuario no encontrado.', 404);
     }
     // Primero eliminamos los registros relacionados
     await pool.query(`DELETE FROM favorites WHERE userId = ?`, [userId]);

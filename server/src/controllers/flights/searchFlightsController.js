@@ -1,5 +1,5 @@
+//import formatFlightData from '../../data/formatFlightsData.js';
 import amadeus from '../../utils/amadeusClientUtil.js';
-import generateErrorUtil from '../../utils/generateErrorUtil.js';
 
 // Variable global para almacenar la lista de vuelos
 let globalFlights = [];
@@ -13,8 +13,6 @@ const searchFlightsController = async ( req, res, next ) => {
             departureDate,
             returnDate,
             adults,
-            sortBy,
-            order,
             minPrice,
             maxPrice,
         } = req.query;
@@ -22,7 +20,7 @@ const searchFlightsController = async ( req, res, next ) => {
         if (
             !origin ||
             !destination ||
-            !returnDate ||
+            !depertureDate ||
             !adults
         )
         {
@@ -38,6 +36,7 @@ const searchFlightsController = async ( req, res, next ) => {
             adults: adults,
         } );
         let flights = response.data;
+        // let flights = formatFlightData(response.data); para formatear la respuesta de amadeus
 
         // Filtrado de vuelos por precio
         if ( minPrice || maxPrice )
