@@ -6,7 +6,7 @@ const filterFlightListController = (req, res, next) => {
     try {
         // Validar que haya vuelos almacenados
         if (!globalFlights || globalFlights.length === 0) {
-            throw generateErrorUtil(
+            generateErrorUtil(
                 'No hay vuelos disponibles para filtrar. Realiza una búsqueda primero.',
                 404,
             );
@@ -21,6 +21,8 @@ const filterFlightListController = (req, res, next) => {
             arrivalTime,
             travelClass,
             stops,
+            sortBy,
+            order,
             page = 1, // Página por defecto: 1
             limit = 10, // Límite de resultados por página: 10
         } = req.query;
@@ -29,13 +31,13 @@ const filterFlightListController = (req, res, next) => {
         const parsedPage = parseInt(page);
         const parsedLimit = parseInt(limit);
         if (isNaN(parsedPage)) {
-            throw generateErrorUtil(
+            generateErrorUtil(
                 'El parámetro "page" debe ser un número válido.',
                 400,
             );
         }
         if (isNaN(parsedLimit)) {
-            throw generateErrorUtil(
+            generateErrorUtil(
                 'El parámetro "limit" debe ser un número válido.',
                 400,
             );
@@ -55,7 +57,7 @@ const filterFlightListController = (req, res, next) => {
         if (minPrice) {
             const parsedMinPrice = parseFloat(minPrice);
             if (isNaN(parsedMinPrice)) {
-                throw generateErrorUtil(
+                generateErrorUtil(
                     'El parámetro "minPrice" debe ser un número válido.',
                     400,
                 );
@@ -69,7 +71,7 @@ const filterFlightListController = (req, res, next) => {
         if (maxPrice) {
             const parsedMaxPrice = parseFloat(maxPrice);
             if (isNaN(parsedMaxPrice)) {
-                throw generateErrorUtil(
+                generateErrorUtil(
                     'El parámetro "maxPrice" debe ser un número válido.',
                     400,
                 );
@@ -81,16 +83,18 @@ const filterFlightListController = (req, res, next) => {
 
         // Filtro por horario de salida
         if (departureTime) {
-            const parsedDepartureTime = new Date(`1970-01-01T${departureTime}Z`);
+            const parsedDepartureTime = new Date(
+                `1970-01-01T${departureTime}Z`,
+            );
             if (isNaN(parsedDepartureTime.getTime())) {
-                throw generateErrorUtil(
+                generateErrorUtil(
                     'El parámetro "departureTime" debe ser una hora válida en formato HH:MM.',
                     400,
                 );
             }
             filteredFlights = filteredFlights.filter((flight) => {
                 const departure = new Date(
-                    `1970-01-01T${new Date(flight.itineraries[0]?.segments[0]?.departure?.at).toISOString().split('T')[1]}Z`
+                    `1970-01-01T${new Date(flight.itineraries[0]?.segments[0]?.departure?.at).toISOString().split('T')[1]}Z`,
                 );
                 return departure >= parsedDepartureTime;
             });
@@ -100,7 +104,7 @@ const filterFlightListController = (req, res, next) => {
         if (arrivalTime) {
             const parsedArrivalTime = new Date(`1970-01-01T${arrivalTime}Z`);
             if (isNaN(parsedArrivalTime.getTime())) {
-                throw generateErrorUtil(
+                generateErrorUtil(
                     'El parámetro "arrivalTime" debe ser una hora válida en formato HH:MM.',
                     400,
                 );
@@ -111,7 +115,7 @@ const filterFlightListController = (req, res, next) => {
                         flight.itineraries[0]?.segments.length - 1
                     ];
                 const arrival = new Date(
-                    `1970-01-01T${new Date(lastSegment?.arrival?.at).toISOString().split('T')[1]}Z`
+                    `1970-01-01T${new Date(lastSegment?.arrival?.at).toISOString().split('T')[1]}Z`,
                 );
                 return arrival <= parsedArrivalTime;
             });
@@ -130,14 +134,44 @@ const filterFlightListController = (req, res, next) => {
         if (stops) {
             const parsedStops = parseInt(stops);
             if (isNaN(parsedStops)) {
-                throw generateErrorUtil(
+                generateErrorUtil(
                     'El parámetro "stops" debe ser un número válido.',
                     400,
                 );
             }
-            filteredFlights = filteredFlights.filter((flight) =>
-                flight.itineraries[0]?.segments.length - 1 === parsedStops,
+            filteredFlights = filteredFlights.filter(
+                (flight) =>
+                    flight.itineraries[0]?.segments.length - 1 === parsedStops,
             );
+        }
+
+        // Ordenar por precio, paradas o duración
+        if (sortBy) {
+            filteredFlights = filteredFlights.sort((a, b) => {
+                let valueA, valueB;
+
+                switch (sortBy) {
+                    case 'price':
+                        valueA = parseFloat(a.price?.total);
+                        valueB = parseFloat(b.price?.total);
+                        break;
+                    case 'stops':
+                        valueA = a.itineraries[0]?.segments.length;
+                        valueB = b.itineraries[0]?.segments.length;
+                        break;
+                    case 'duration':
+                        valueA = a.itineraries[0]?.duration;
+                        valueB = b.itineraries[0]?.duration;
+                        break;
+                    default:
+                        return 0;
+                }
+
+                if (order === 'desc') {
+                    return valueB - valueA;
+                }
+                return valueA - valueB; // Orden ascendente por defecto
+            });
         }
 
         // Paginación
