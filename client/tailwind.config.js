@@ -1,15 +1,14 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-    content: [],
+    content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
     theme: {
-        extend: {},
-        colors: {
-            transparent: "transparent",
-            current: "currentColor",
-            fondo: "#e5f7ff",
-            texto: "#083059",
-            boton: "#3951aa",
-            botohover: "#179dd9",
+        extend: {
+            colors: {
+                "light-blue": "#e5f7ff",
+                "dark-blue": "#083059",
+                "medium-blue": "#179dd9",
+                "accent-blue": "#3951aa",
+            },
         },
     },
     plugins: [],

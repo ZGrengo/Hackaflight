@@ -1,35 +1,46 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// Importamos los componentes.
+import { Routes, Route } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
+import Header from './components/Header';
+import Footer from './components/Footer';
 
-function App() {
-  const [count, setCount] = useState(0)
+// Importamos las páginas.
+import RegisterPage from './pages/RegisterPage';
+import HomePage from './pages/HomePage';
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+const App = () => {
+    return (
+        <>
+            <Header />
 
-export default App
+            <Toaster position="top-center" />
+
+            {/* Todos los endpoints han de definirse dentro de este compontente. */}
+            <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/register" element={<RegisterPage />} />
+                {/*<Route path="/login" element={<LoginPage />} />*/}
+                {/*<Route
+                    path="/users/validate/:regCode"
+                    element={<ValidateUserPage />}
+                />*/}
+                {/*<Route path="/users/profile" element={<UserProfilePage />} />*/}
+                {/*<Route
+                    path="/users/password/recovery/request"
+                    element={<SendRecoveryPassPage />}
+                />*/}
+                {/*<Route
+                    path="/users/password/:recoverPassCode"
+                    element={<UseRecoveryPassCode />}
+                />*/}
+                {/* Añadir más rutas de endpoints. */}
+
+                {/*<Route path="*" element={<NotFoundPage />} />*/}
+            </Routes>
+
+            <Footer />
+            </>
+    );
+};
+
+export default App;
