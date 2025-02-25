@@ -107,21 +107,20 @@ const HomePage = () => {
                         />
                     </div>
 
-                    {tipoViaje === 'ida-vuelta' && (
-                        <div>
-                            <label>Fecha de llegada:</label>
-                            <input
-                                type="date"
-                                name="fecha-llegada"
-                                value={fechaLlegada}
-                                onChange={( e ) => setFechaLlegada( e.target.value )}
-                            />
-                        </div>
-                    )}
+                    <div>
+                        <label>Fecha de llegada:</label>
+                        <input
+                            type="date"
+                            name="fecha-llegada"
+                            value={fechaLlegada}
+                            onChange={( e ) => setFechaLlegada( e.target.value )}
+                        />
+                    </div>
 
                     <div>
                         <label>Tipo de viaje:</label>
                         <button type="button" onClick={toggleTipoViaje} className="tipo-viaje-button">
+                            <img src="/public/ida.png" alt="ida-vuelta" />
                             {tipoViaje === 'ida' ? 'Solo Ida' : 'Ida y Vuelta'}
                         </button>
                     </div>
@@ -157,9 +156,14 @@ const HomePage = () => {
 
                 <div className="carrousel-images">
                     {/* Agregar aqui las imágenes del carrusel */}
-                    <img src="/src/img/avion1.jpg" alt="avion1" />
-                    <img src="/src/img/avion2.jpg" alt="avion2" />
-                    <img src="/src/img/avion3.jpg" alt="avion3" />
+                    <img src="/public/image 1.png" alt="img1" />
+                    <img src="/public/image 2.png" alt="img2" />
+                    <img src="/public/image 3.png" alt="img3" />
+                    <img src="/public/image 4.png" alt="img4" />
+                    <img src="/public/image 5.png" alt="img5" />
+                    <img src="/public/image 6.png" alt="img6" />
+                    <img src="/public/image 7.png" alt="img7" />
+                    <img src="/public/image 8.png" alt="img8" />
                     {/* ... más imágenes */}
                 </div>
             </section>
@@ -170,8 +174,8 @@ const HomePage = () => {
                 <div className="search-card">
                     <p>Origen: Madrid</p>
                     <p>Destino: Nueva York</p>
-                    <button><img src='/src/img/buscar.png' alt='buscar' /></button>
-                    <button><img src='/src/img/marcador.png' alt='guardar' /></button>
+                    <button><img src='/public/search.png' alt='buscar' /></button>
+                    <button><img src='/public/fav.png' alt='guardar' /></button>
                 </div>
             </section>
 
@@ -179,19 +183,19 @@ const HomePage = () => {
             <section className="popular-destinations-ratings-section">
                 <div className="popular-destinations">
                     <h2>Destinos Más Buscados...</h2>
-                    <button><img src='/src/img/flecha.png' alt='retroceder' /></button>
+                    <button><img src='/public/flecha.png' alt='retroceder' /></button>
 
                     <ul>
                         {popularDestinations.map( ( destino, index ) => (
                             <div key={index} className='search-cards'>
                                 <img src="" alt="" />
                                 <li className='origen'>{destino.origen}</li>
-                                <img src='/src/img/avion-cards.png' alt='avion' />
+                                <img src='/public/plane.png' alt='avion' />
                                 <li className='llegada'>{destino.destino}</li>
                             </div>
                         ) )}
                     </ul>
-                    <button><img src='/src/img/flecha.png' alt='avanzar' /></button>
+                    <button><img src='/public/flecha.png' alt='avanzar' /></button>
                 </div>
                 <div className="ratings-summary">
                     <h2>Lo que piensan nuestros usuarios...</h2>

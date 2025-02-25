@@ -53,9 +53,9 @@ const Footer = () => {
                     { /*Sección de redes sociales*/}
                     <div className="footer-social">
                         <ul>
-                            <li><img src="/src/img/facebook.png" alt="Facebook" /><a href="https://www.flaticon.es/iconos-gratis/facebook" title="Facebook iconos">Facebook iconos creados por Freepik - Flaticon</a></li>
-                            <li><img src="/src/img/instagram.png" alt="Instagram" /><a href="https://www.flaticon.es/iconos-gratis/instagram" title="Instagram iconos">Instagram iconos creados por Grow studio - Flaticon</a></li>
-                            <li><img src="/src/img/X.png" alt="X" /><a href="https://www.flaticon.es/iconos-gratis/marcas-y-logotipos" title="marcas y logotipos iconos">Marcas y logotipos iconos creados por Freepik - Flaticon</a></li>
+                            <li><img src="/public/face.png" alt="Facebook" /></li>
+                            <li><img src="/public/insta.png" alt="Instagram" /></li>
+                            <li><img src="/public/x.png" alt="X" /></li>
                         </ul>
                     </div>
                 </div>

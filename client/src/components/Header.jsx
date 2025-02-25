@@ -8,15 +8,13 @@ const Header = () => {
             <nav>
                 <ul>
                     <li>
-                        <Link to="/"><img src="/src/img/logo.svg" alt="home" /></Link>
+                        <Link to="/"><img src="/public/logo.svg" alt="home" /></Link>
                     </li>
                     <li>
-                        <Link to="/favorites"><img src="/src/img/corazon.png" alt="favoritos" /></Link>
-                        <a href="https://www.flaticon.es/iconos-gratis/fechado" title="fechado iconos">Fechado iconos creados por Hat Tech - Flaticon</a>
+                        <Link to="/favorites"><img src="/public/corazon.png" alt="favoritos" /></Link>
                     </li>
                     <li>
-                        <Link to="/login"><img src="/src/img/usuario.png" alt="login" /></Link>
-                        <a href="https://www.flaticon.es/iconos-gratis/usuario" title="usuario iconos">Usuario iconos creados por Freepik - Flaticon</a>
+                        <Link to="/login"><img src="/public/Users.png" alt="login" /></Link>
                     </li>
                 </ul>
             </nav>
