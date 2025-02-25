@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 
 
 // Importamos la URL de nuestra API.
-const { VITE_API_URL } = import.meta.env;
+
 
 // Inicializamos el componente
 const Footer = () => {
