@@ -1,4 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useEffect } from 'react';
+
+
+
 
 const HomePage = () => {
     const [ tipoViaje, setTipoViaje ] = useState( 'ida' );
@@ -69,6 +73,7 @@ const HomePage = () => {
     };
 
     return (
+
         <div className="homepage">
             {/* Sección de búsqueda de vuelos */}
             <section className="search-section">

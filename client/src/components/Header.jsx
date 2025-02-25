@@ -1,4 +1,4 @@
-// importamos los componentes necesarios
+// Importamos los componentes necesarios
 import { Link } from 'react-router-dom';
 
 // Inicializamos el componente
