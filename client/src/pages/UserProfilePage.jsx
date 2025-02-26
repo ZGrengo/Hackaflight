@@ -1,57 +1,99 @@
+// Importamos los hooks.
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+// Importamos la función que muestra un mensaje al usuario.
 import toast from 'react-hot-toast';
+// Importamos el contexto de autorización.
 import useAuthContext from '../hooks/useAuthContext.js';
+// Importamos la URL de nuestra API.
 const { VITE_API_URL } = import.meta.env;
+// Inicializamos el componente
 const UserProfilePage = () => {
+    // obtenemos el toquen de autenticación del contexto
     const { authToken } = useAuthContext();
-    const [userData, setUserData] = useState({
-        firstName: '',
-        lastName: '',
-        username: '',
-        email: '',
-        avatar: '',
-    });
+    const navigate = useNavigate();
+
+    // Para almacenar los datos del usuario
+    const [userData, setUserData] = useState(null);
+
+    // para el cambio de contraseña
     const [currentPassword, setCurrentPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [loading, setLoading] = useState(false);
 
+    // cargando
+    const [loading, setLoading] = useState(false);
+    const [profileLoading, SetProfileLoading] = useState(true);
+
+    // obtenemos los datos del usuario al cargar la página
     useEffect(() => {
+        // si no hay toquen, regresamos a la página de login
+        // if (!authToken) {
+        //     navigate('/login');
+        //     return;
+        // }
+
         const fetchUserData = async () => {
             try {
+                // Realizamos una precisión a la API para la información del usuario
                 const response = await fetch(
                     `${VITE_API_URL}/api/users/profile`,
                     { headers: { Authorization: `Bearer ${authToken}` } }
                 );
+
+                // Si no hay respuesta, se lanza un error
+                if (!response.ok)
+                    throw new Error(
+                        `Error ${response.status}: ${response.statusText}`
+                    );
+
                 const data = await response.json();
-                setUserData(data);
+
+                setUserData(data.data.user);
             } catch (error) {
-                console.error('Error fetching user data:', error);
+                toast.error(
+                    error.message || 'Error al obtener los datos del usuario'
+                );
+            } finally {
+                SetProfileLoading(false);
             }
         };
-        fetchUserData();
-    }, [authToken]);
 
+        fetchUserData();
+    }, [authToken, navigate]);
+
+    // Cambio de contraseña
     const hanlePassawordChange = async (e) => {
         e.preventDefault();
+        // Doble validación de la nueva contraseña
         if (newPassword !== confirmPassword) {
             toast.error('Las contraseñas no coinciden');
             return;
         }
         try {
             setLoading(true);
+            // realizamos la petición a la API para la actualización de contraseña
             const response = await fetch(`${VITE_API_URL}/api/users/password`, {
-                method: 'post',
-                headers: { 'Content-Type': 'application/json' },
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${authToken}`,
+                },
                 body: JSON.stringify({ currentPassword, newPassword }),
             });
 
+            // Si la respuesta no es positiva, se lanza un error
             const result = await response.json();
-            if (result.status === 'error') {
-                throw new Error(result.message);
+            if (!response.ok) {
+                throw new Error(
+                    result.message || 'Error al actualizar la contraseña'
+                );
             }
-
+            // si todo está bien, muestra un mensaje de éxito y se limpian los campos del formulario
             toast.success('Contraseña actualizada correctamente');
+            setCurrentPassword('');
+            SetNewPassword('');
+            setConfirmPassword('');
         } catch (error) {
             toast.error(`Error: ${error.message}`);
         } finally {
@@ -59,9 +101,19 @@ const UserProfilePage = () => {
         }
     };
 
+    // Mostramos mensajes de perfil cargando...
+    if (profileLoading) {
+        return <p>Cargando perfil...</p>;
+    }
+    // Si el perfil no carga, mostramos un error.
+    if (!userData) {
+        return <p>No se pudo cargar la información del usuario.</p>;
+    }
     return (
         <div className="user-profile-page">
             <h2>Perfil de Usuario</h2>
+
+            {/* Muestra la información de usuario*/}
             <div className="user-info">
                 <img src={userData.avatar} alt="Avatar" />
                 <p>
@@ -76,6 +128,7 @@ const UserProfilePage = () => {
                 </p>
             </div>
 
+            {/* Formulario para cambiar la contraseña*/}
             <form onSubmit={hanlePassawordChange}>
                 <h3>Cambiar Contraseña</h3>
                 <div>
