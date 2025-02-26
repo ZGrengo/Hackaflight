@@ -1,16 +1,15 @@
-import { useState, useEffect } from "react";
-import useFetch from "./useFetch";
+import { useState } from "react";
 
 const { VITE_API_URL } = import.meta.env;
 
-// Inicializamos el hook.
-const useUsersList = (searchValues) => {
-    const { fetchData, loading } = useFetch();
-
+const useUsersList = () => {
     const [users, setUsers] = useState([]);
+    const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
-        const fetchUsers = async () => {
+    const getUsers = async (searchValues) => {
+        setLoading(true);
+
+        try {
             const {
                 username = "",
                 email = "",
@@ -18,21 +17,24 @@ const useUsersList = (searchValues) => {
                 lastName = "",
             } = searchValues;
 
-            const body = await fetchData({
-                url: `${VITE_API_URL}/api/players?username=${username}&email=${email}&firstName=${firstName}&lastName=${lastName}`,
-                showToast: false,
-            });
+            const response = await fetch(
+                `${VITE_API_URL}/api/players?username=${username}&email=${email}&firstName=${firstName}&lastName=${lastName}`
+            );
 
-            if (body) {
-                setUsers(body.data.users);
+            if (!response.ok) {
+                throw new Error("Error al obtener usuarios");
             }
-        };
 
-        fetchUsers();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [searchValues]);
+            const body = await response.json();
+            setUsers(body.data.users);
+        } catch (error) {
+            console.error("Error en la petición:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
-    return { users, loading };
+    return { users, loading, getUsers };
 };
 
 export default useUsersList;
