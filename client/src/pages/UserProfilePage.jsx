@@ -23,7 +23,7 @@ const UserProfilePage = () => {
 
     // cargando
     const [loading, setLoading] = useState(false);
-    const [profileLoading, SetProfileLoading] = useState(true);
+    const [profileLoading, setProfileLoading] = useState(false);
 
     // obtenemos los datos del usuario al cargar la página
     useEffect(() => {
@@ -55,7 +55,7 @@ const UserProfilePage = () => {
                     error.message || 'Error al obtener los datos del usuario',
                 );
             } finally {
-                SetProfileLoading(false);
+                setProfileLoading(false);
             }
         };
 
@@ -63,7 +63,7 @@ const UserProfilePage = () => {
     }, [authToken, navigate]);
 
     // Cambio de contraseña
-    const hanlePassawordChange = async (e) => {
+    const handlePasswordChange = async (e) => {
         e.preventDefault();
         // Doble validación de la nueva contraseña
         if (newPassword !== confirmPassword) {
@@ -77,7 +77,7 @@ const UserProfilePage = () => {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${authToken}`,
+                    Authorization: `${authToken}`,
                 },
                 body: JSON.stringify({ currentPassword, newPassword }),
             });
@@ -129,8 +129,16 @@ const UserProfilePage = () => {
             </div>
 
             {/* Formulario para cambiar la contraseña*/}
-            <form onSubmit={hanlePassawordChange}>
+            <form onSubmit={handlePasswordChange}>
                 <h3>Cambiar Contraseña</h3>
+                {/* Campo oculto para el nombre de usuario */}
+                <input
+                    type="text"
+                    value={userData.username}
+                    readOnly
+                    style={{ display: 'none' }}
+                    autoComplete="username"
+                />
                 <div>
                     <label>Contraseña Actual:</label>
                     <input
@@ -138,6 +146,8 @@ const UserProfilePage = () => {
                         value={currentPassword}
                         onChange={(e) => setCurrentPassword(e.target.value)}
                         required
+                        autoComplete="current-password"
+                        disabled={loading}
                     />
                 </div>
                 <div>
@@ -147,6 +157,8 @@ const UserProfilePage = () => {
                         value={newPassword}
                         onChange={(e) => setNewPassword(e.target.value)}
                         required
+                        autoComplete="new-password"
+                        disabled={loading}
                     />
                 </div>
                 <div>
@@ -156,6 +168,8 @@ const UserProfilePage = () => {
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
                         required
+                        autoComplete="new-password"
+                        disabled={loading}
                     />
                 </div>
                 <button type="submit" disabled={loading}>
