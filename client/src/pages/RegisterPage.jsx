@@ -109,22 +109,22 @@ const RegisterPage = () => {
                         />
                     </div>
                     <div>
-                        <div>
-                            <label
-                                htmlFor='lastName'
-                                className='block text-[#083059] font-medium'
-                            >
-                                Apellidos
-                            </label>
-                            <input
-                                type='text'
-                                id='lastName'
-                                value={lastName}
-                                onChange={(e) => setLastName(e.target.value)}
-                                className='w-full p-3 border border-[#3951AA] rounded-md focus:outline-none focus:ring-2 focus:ring-[#179DD9]'
-                                required
-                            />
-                        </div>
+                        <label
+                            htmlFor='lastName'
+                            className='block text-[#083059] font-medium'
+                        >
+                            Apellidos
+                        </label>
+                        <input
+                            type='text'
+                            id='lastName'
+                            value={lastName}
+                            onChange={(e) => setLastName(e.target.value)}
+                            className='w-full p-3 border border-[#3951AA] rounded-md focus:outline-none focus:ring-2 focus:ring-[#179DD9]'
+                            required
+                        />
+                    </div>
+                    <div>
                         <label
                             htmlFor='username'
                             className='block text-[#083059] font-medium'
