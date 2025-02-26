@@ -1,16 +1,16 @@
 // Importamos los componentes.
-import { Routes, Route } from "react-router-dom";
-import { Toaster } from "react-hot-toast";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
+import { Routes, Route } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
+import Header from './components/Header';
+import Footer from './components/Footer';
 
 // Importamos las páginas.
-import RegisterPage from "./pages/RegisterPage";
-import HomePage from "./pages/HomePage";
-import AdminListUsers from "./pages/AdminListUsers";
-import NotFoundPage from "./pages/NotFoundPage";
-import ValidateUserPage from "./pages/ValidateUserPage";
-import UserProfilePage from "./pages/UserProfilePage";
+import RegisterPage from './pages/RegisterPage';
+import HomePage from './pages/HomePage';
+import AdminListUsers from './pages/AdminListUsers';
+import NotFoundPage from './pages/NotFoundPage';
+import ValidateUserPage from './pages/ValidateUserPage';
+import UserProfilePage from './pages/UserProfilePage';
 
 const App = () => {
     return (

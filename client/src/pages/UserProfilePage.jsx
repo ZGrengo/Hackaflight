@@ -1,19 +1,19 @@
-import { useState, useEffect } from "react";
-import toast from "react-hot-toast";
-import useAuthContext from "../hooks/useAuthContext.js";
+import { useState, useEffect } from 'react';
+import toast from 'react-hot-toast';
+import useAuthContext from '../hooks/useAuthContext.js';
 const { VITE_API_URL } = import.meta.env;
 const UserProfilePage = () => {
     const { authToken } = useAuthContext();
     const [userData, setUserData] = useState({
-        firstName: "",
-        lastName: "",
-        username: "",
-        email: "",
-        avatar: "",
+        firstName: '',
+        lastName: '',
+        username: '',
+        email: '',
+        avatar: '',
     });
-    const [currentPassword, setCurrentPassword] = useState("");
-    const [newPassword, setNewPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
+    const [currentPassword, setCurrentPassword] = useState('');
+    const [newPassword, setNewPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
@@ -26,7 +26,7 @@ const UserProfilePage = () => {
                 const data = await response.json();
                 setUserData(data);
             } catch (error) {
-                console.error("Error fetching user data:", error);
+                console.error('Error fetching user data:', error);
             }
         };
         fetchUserData();
@@ -35,23 +35,23 @@ const UserProfilePage = () => {
     const hanlePassawordChange = async (e) => {
         e.preventDefault();
         if (newPassword !== confirmPassword) {
-            toast.error("Las contraseñas no coinciden");
+            toast.error('Las contraseñas no coinciden');
             return;
         }
         try {
             setLoading(true);
             const response = await fetch(`${VITE_API_URL}/api/users/password`, {
-                method: "post",
-                headers: { "Content-Type": "application/json" },
+                method: 'post',
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ currentPassword, newPassword }),
             });
 
             const result = await response.json();
-            if (result.status === "error") {
+            if (result.status === 'error') {
                 throw new Error(result.message);
             }
 
-            toast.success("Contraseña actualizada correctamente");
+            toast.success('Contraseña actualizada correctamente');
         } catch (error) {
             toast.error(`Error: ${error.message}`);
         } finally {
@@ -65,7 +65,7 @@ const UserProfilePage = () => {
             <div className="user-info">
                 <img src={userData.avatar} alt="Avatar" />
                 <p>
-                    <strong>Nombre:</strong> {userData.firstName}{" "}
+                    <strong>Nombre:</strong> {userData.firstName}{' '}
                     {userData.lastName}
                 </p>
                 <p>
@@ -106,7 +106,7 @@ const UserProfilePage = () => {
                     />
                 </div>
                 <button type="submit" disabled={loading}>
-                    {loading ? "Actualizando..." : "Actualizar Contraseña"}
+                    {loading ? 'Actualizando...' : 'Actualizar Contraseña'}
                 </button>
             </form>
         </div>

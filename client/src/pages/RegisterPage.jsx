@@ -1,10 +1,10 @@
 //Importamos hooks
-import { useContext, useState } from "react";
-import { AuthContext } from "../contexts/AuthContext";
+import { useContext, useState } from 'react';
+import { AuthContext } from '../contexts/AuthContext';
 
 //Importamos dependencias
-import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 //importamos variables de entorno
 const { VITE_API_URL } = import.meta.env;
@@ -16,13 +16,13 @@ const RegisterPage = () => {
     //obtenemos navigate
     const navigate = useNavigate();
     //Creamos una variable en el State por cada elemento del forumlario
-    const [username, setUsername] = useState("");
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [passConfirm, setPassConfirm] = useState("");
-    const [birthdate, setBirthdate] = useState("");
+    const [username, setUsername] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [passConfirm, setPassConfirm] = useState('');
+    const [birthdate, setBirthdate] = useState('');
 
     //Creamos una variable en el State para indicar si estamos haciendo fecth
     const [loading, setLoading] = useState(false);
@@ -34,14 +34,14 @@ const RegisterPage = () => {
             e.preventDefault();
             //Realizamos la comprobación de si coinciden las contraseñas
             if (password !== passConfirm) {
-                throw new Error("Las contraseñas no coinciden");
+                throw new Error('Las contraseñas no coinciden');
             }
             //indicamos  que estamos haciendo fetch
             setLoading(true);
             //obtenemos una respuesta
             const res = await fetch(`${VITE_API_URL}/api/users/register`, {
-                method: "post",
-                headers: { "Content-Type": "application/json" },
+                method: 'post',
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     firstName,
                     lastName,
@@ -56,21 +56,21 @@ const RegisterPage = () => {
             const body = await res.json();
 
             //Si  hay un error, lanzamos un mensaje
-            if (body.status === "error") {
+            if (body.status === 'error') {
                 throw new Error(body.message);
             }
 
             //si sale el registro bien, lanzamos un mensaje
-            toast.success("Usuario/a registrado/a correctamente", {
-                id: "register",
+            toast.success('Usuario/a registrado/a correctamente', {
+                id: 'register',
                 duration: 5000,
             });
 
             //redirigimos a la página de login
-            navigate("/login");
+            navigate('/login');
         } catch (err) {
             toast.error(err.message, {
-                id: "register",
+                id: 'register',
             });
         } finally {
             //Indicamos que el fetch ha terminado
@@ -79,7 +79,7 @@ const RegisterPage = () => {
     };
     //Si el usuario está logueado, redirigimos a la página de home
     if (authUser) {
-        navigate("/");
+        navigate('/');
     }
     return (
         <main className="bg-[#E5F7FF] flex items-center justify-center min-h-screen p-4 sm:p-6 md:p-8">
@@ -214,16 +214,16 @@ const RegisterPage = () => {
                         className={`w-full py-3 font-bold rounded-md transition 
                             ${
                                 loading
-                                    ? "bg-gray-400 cursor-not-allowed"
-                                    : "bg-[#179DD9] text-white hover:bg-[#083059]"
+                                    ? 'bg-gray-400 cursor-not-allowed'
+                                    : 'bg-[#179DD9] text-white hover:bg-[#083059]'
                             }`}
                     >
-                        {loading ? "Registrando..." : "Registrarse"}
+                        {loading ? 'Registrando...' : 'Registrarse'}
                     </button>
                 </form>
 
                 <p className="text-center text-[#083059] mt-4">
-                    ¿Ya tienes cuenta?{" "}
+                    ¿Ya tienes cuenta?{' '}
                     <a
                         href="/login"
                         className="text-[#3951AA] font-bold hover:underline"
