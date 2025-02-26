@@ -18,7 +18,11 @@ const useUsersList = () => {
             } = searchValues;
 
             const response = await fetch(
-                `${VITE_API_URL}/api/players?username=${username}&email=${email}&firstName=${firstName}&lastName=${lastName}`
+                `${VITE_API_URL}/api/players?username=${username}&email=${email}&firstName=${firstName}&lastName=${lastName}`,
+                {
+                    method: "GET",
+                    credentials: "include",
+                }
             );
 
             if (!response.ok) {
