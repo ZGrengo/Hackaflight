@@ -7,11 +7,13 @@ import Footer from './components/Footer';
 // Importamos las páginas.
 import RegisterPage from './pages/RegisterPage';
 import HomePage from './pages/HomePage';
+import AdminListUsers from './pages/AdminListUsers';
+import NotFoundPage from './pages/NotFoundPage';
 
 const App = () => {
     return (
         <>
-            <Header />
+            <Header />  
 
             <Toaster position="top-center" />
 
@@ -19,6 +21,9 @@ const App = () => {
             <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/register" element={<RegisterPage />} />
+                <Route path="/admin/users" element={<AdminListUsers />} />
+
+                
                 {/*<Route path="/login" element={<LoginPage />} />*/}
                 {/*<Route
                     path="/users/validate/:regCode"
@@ -35,7 +40,7 @@ const App = () => {
                 />*/}
                 {/* Añadir más rutas de endpoints. */}
 
-                {/*<Route path="*" element={<NotFoundPage />} />*/}
+                <Route path="*" element={<NotFoundPage />} />
             </Routes>
 
             <Footer />
