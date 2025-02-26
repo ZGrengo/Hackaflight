@@ -1,4 +1,12 @@
 import { useState, useEffect } from 'react';
+import SearchForm from '../components/SearchForm';
+import CarouselImages from '../components/CarouselImages';
+import RecentSearches from '../components/RecentSearches';
+import PopularDestinations from '../components/PopularDestinations';
+import RatingsSummary from '../components/RatingSumary';
+import Header from '../components/Header';
+import LogoAnimation from '../components/LogoAnimation';
+import PaperPlaneAnimation from '../components/PaperPlaneAnimation';
 
 const HomePage = () => {
     const [ tipoViaje, setTipoViaje ] = useState( 'ida' );
@@ -19,8 +27,18 @@ const HomePage = () => {
         Tokio: 'NRT'
     };
 
+    const images = [
+        { src: '/public/image 1.png', alt: 'img1' },
+        { src: '/public/image 2.png', alt: 'img2' },
+        { src: '/public/image 3.png', alt: 'img3' },
+        { src: '/public/image 4.png', alt: 'img4' },
+        { src: '/public/image 5.png', alt: 'img5' },
+        { src: '/public/image 6.png', alt: 'img6' },
+        { src: '/public/image 7.png', alt: 'img7' },
+        { src: '/public/image 8.png', alt: 'img8' }
+    ];
+
     useEffect( () => {
-        // Simulación de datos de destinos más buscados, cambiar por una llamada a la api
         const fetchedPopularDestinations = [
             { origen: 'Madrid', destino: 'Nueva York' },
             { origen: 'Londres', destino: 'Tokio' },
@@ -28,7 +46,6 @@ const HomePage = () => {
         ];
         setPopularDestinations( fetchedPopularDestinations );
 
-        // Simulación de datos de comentarios con ratings, cambiar por una llamada a la api
         const fetchedTopComments = [
             { user: 'Usuario1', comment: 'Excelente servicio!', rating: 5 },
             { user: 'Usuario2', comment: 'Muy buena experiencia.', rating: 4 },
@@ -36,10 +53,6 @@ const HomePage = () => {
         ];
         setTopComments( fetchedTopComments );
     }, [] );
-
-    const toggleTipoViaje = () => {
-        setTipoViaje( ( prevTipoViaje ) => ( prevTipoViaje === 'ida' ? 'ida-vuelta' : 'ida' ) );
-    };
 
     const handleSubmit = async ( e ) => {
         e.preventDefault();
@@ -55,7 +68,7 @@ const HomePage = () => {
             pasajeros,
             claseBillete
         };
-        { /* Aquí puedes hacer la llamada a la API con los datos de búsqueda, solo es un ejemplo*/ }
+
         fetch( 'https://api.example.com/data', {
             method: 'POST',
             headers: {
@@ -69,145 +82,44 @@ const HomePage = () => {
     };
 
     return (
+        <>
 
-        <div className="homepage">
-            {/* Sección de búsqueda de vuelos */}
-            <section className="search-section">
-                <h2>¿Qué aventuras tienes en mente?</h2>
-                <form onSubmit={handleSubmit}>
-                    <div>
-                        <label>Origen:</label>
-                        <input
-                            type="text"
-                            name="origen"
-                            value={origen}
-                            onChange={( e ) => setOrigen( e.target.value )}
-                            placeholder="Origen"
-                        />
-                    </div>
-
-                    <div>
-                        <label>Destino:</label>
-                        <input
-                            type="text"
-                            name="destino"
-                            value={destino}
-                            onChange={( e ) => setDestino( e.target.value )}
-                            placeholder="Destino"
-                        />
-                    </div>
-                    {/* agregar más campos de búsqueda (escalas, aerolíneas, etc) Falta establecer la fecha actual como valor*/}
-                    <div>
-                        <label>Fecha de salida:</label>
-                        <input
-                            type="date"
-                            name="fecha-salida"
-                            value={fechaSalida}
-                            onChange={( e ) => setFechaSalida( e.target.value )}
-                        />
-                    </div>
-
-                    <div>
-                        <label>Fecha de llegada:</label>
-                        <input
-                            type="date"
-                            name="fecha-llegada"
-                            value={fechaLlegada}
-                            onChange={( e ) => setFechaLlegada( e.target.value )}
-                        />
-                    </div>
-
-                    <div>
-                        <label>Tipo de viaje:</label>
-                        <button type="button" onClick={toggleTipoViaje} className="tipo-viaje-button">
-                            <img src="/public/ida.png" alt="ida-vuelta" />
-                            {tipoViaje === 'ida' ? 'Solo Ida' : 'Ida y Vuelta'}
-                        </button>
-                    </div>
-
-                    <div>
-                        <label>Cantidad de pasajeros:</label>
-                        <input
-                            type="number"
-                            name="pasajeros"
-                            min="1"
-                            max="10"
-                            value={pasajeros}
-                            onChange={( e ) => setPasajeros( e.target.value )}
-                        />
-                    </div>
-
-                    <div>
-                        <label>Clase del billete:</label>
-                        <select
-                            name="clase-billete"
-                            value={claseBillete}
-                            onChange={( e ) => setClaseBillete( e.target.value )}
-                        >
-                            <option value="">Selecciona una clase</option>
-                            <option value="economica">Económica</option>
-                            <option value="business">Business</option>
-                            <option value="primera">Primera</option>
-                        </select>
-                    </div>
-
-                    <button type="submit">Buscar</button>
-                </form>
-
-                <div className="carrousel-images">
-                    {/* Agregar aqui las imágenes del carrusel */}
-                    <img src="/public/image 1.png" alt="img1" />
-                    <img src="/public/image 2.png" alt="img2" />
-                    <img src="/public/image 3.png" alt="img3" />
-                    <img src="/public/image 4.png" alt="img4" />
-                    <img src="/public/image 5.png" alt="img5" />
-                    <img src="/public/image 6.png" alt="img6" />
-                    <img src="/public/image 7.png" alt="img7" />
-                    <img src="/public/image 8.png" alt="img8" />
-                    {/* ... más imágenes */}
-                </div>
+            <div>
+                <LogoAnimation />
+                <PaperPlaneAnimation />
+            </div>
+            {/* Aquí va el componente Header */}
+            <Header />
+            <section>
+                {/* Aquí va el componente SearchForm */}
+                <SearchForm
+                    tipoViaje={tipoViaje}
+                    fechaSalida={fechaSalida}
+                    fechaLlegada={fechaLlegada}
+                    origen={origen}
+                    destino={destino}
+                    pasajeros={pasajeros}
+                    claseBillete={claseBillete}
+                    setTipoViaje={setTipoViaje}
+                    setFechaSalida={setFechaSalida}
+                    setFechaLlegada={setFechaLlegada}
+                    setOrigen={setOrigen}
+                    setDestino={setDestino}
+                    setPasajeros={setPasajeros}
+                    setClaseBillete={setClaseBillete}
+                    handleSubmit={handleSubmit}
+                />
+                {/* Aquí va el componente CarouselImages */}
+                <CarouselImages images={images} />
             </section>
-
-            {/* Sección de últimas búsquedas */}
-            <section className="recent-searches-section">
-                <h2>Últimas Búsquedas realizadas...</h2>
-                <div className="search-card">
-                    <p>Origen: Madrid</p>
-                    <p>Destino: Nueva York</p>
-                    <button><img src='/public/search.png' alt='buscar' /></button>
-                    <button><img src='/public/fav.png' alt='guardar' /></button>
-                </div>
-            </section>
-
-            {/* Sección de destinos más buscados y resumen de ratings */}
-            <section className="popular-destinations-ratings-section">
-                <div className="popular-destinations">
-                    <h2>Destinos Más Buscados...</h2>
-                    <button><img src='/public/flecha.png' alt='retroceder' /></button>
-
-                    <ul>
-                        {popularDestinations.map( ( destino, index ) => (
-                            <div key={index} className='search-cards'>
-                                <img src="" alt="" />
-                                <li className='origen'>{destino.origen}</li>
-                                <img src='/public/plane.png' alt='avion' />
-                                <li className='llegada'>{destino.destino}</li>
-                            </div>
-                        ) )}
-                    </ul>
-                    <button><img src='/public/flecha.png' alt='avanzar' /></button>
-                </div>
-                <div className="ratings-summary">
-                    <h2>Lo que piensan nuestros usuarios...</h2>
-                    {topComments.slice( 0, 3 ).map( ( comment, index ) => (
-                        <div key={index} className="comment">
-                            <p><strong>{comment.user}:</strong> {comment.comment}</p>
-                            <p>Rating: {comment.rating}/5</p>
-                        </div>
-                    ) )}
-                </div>
-            </section>
-        </div>
+            {CarouselImages}
+            <RecentSearches />
+            {/* Aquí va el componente PopularDestinations */}
+            <PopularDestinations popularDestinations={popularDestinations} />
+            {/* Aquí va el componente RatingsSummary */}
+            <RatingsSummary topComments={topComments} />
+            {/* teminamos con el footer*/}
+        </>
     );
 };
 

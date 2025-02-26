@@ -1,22 +1,21 @@
-// Importamos los componentes necesarios
 import { Link } from 'react-router-dom';
 
 // Inicializamos el componente
 const Header = () => {
     return (
-        <header>
-            <nav>
-                <ul>
-                    <li>
-                        <Link to="/"><img src="/public/logo.svg" alt="home" /></Link>
-                    </li>
-                    <li>
-                        <Link to="/favorites"><img src="/public/corazon.png" alt="favoritos" /></Link>
-                    </li>
-                    <li>
-                        <Link to="/login"><img src="/public/Users.png" alt="login" /></Link>
-                    </li>
-                </ul>
+        <header className="flex justify-around items-center bg-[#25779b] w-full box-border">
+            <nav className="flex gap-4 max-w-full">
+                <Link to="/">
+                    <img src="/public/logo.svg" alt="home" className="rounded-full w-1/2" />
+                </Link>
+            </nav>
+            <nav className="flex gap-[18px] justify-between items-between w-1/12 ">
+                <Link to="/favorites">
+                    <img src="/public/corazon.png" alt="favoritos" className="w-8 " />
+                </Link>
+                <Link to="/login">
+                    <img src="/public/Users.png" alt="login" className="w-8" />
+                </Link>
             </nav>
         </header>
     );
