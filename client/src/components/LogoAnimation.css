@@ -1,0 +1,129 @@
+@keyframes move1 {
+    0% {
+        transform: translate(-200px, -200px) rotate(0deg);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translate(0, 0) rotate(720deg);
+        opacity: 1;
+    }
+}
+
+@keyframes move2 {
+    0% {
+        transform: translate(200px, -200px) rotate(0deg);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translate(0, 0) rotate(-720deg);
+        opacity: 1;
+    }
+}
+
+@keyframes move3 {
+    0% {
+        transform: translate(-200px, 200px) rotate(0deg);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translate(0, 0) rotate(720deg);
+        opacity: 1;
+    }
+}
+
+@keyframes move4 {
+    0% {
+        transform: translate(200px, 200px) rotate(0deg);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translate(0, 0) rotate(-720deg);
+        opacity: 1;
+    }
+}
+
+@keyframes move5 {
+    0% {
+        transform: translate(0, -200px) rotate(0deg);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translate(0, 0) rotate(720deg);
+        opacity: 1;
+    }
+}
+
+@keyframes move6 {
+    0% {
+        transform: translate(0, 200px) rotate(0deg);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translate(0, 0) rotate(-720deg);
+        opacity: 1;
+    }
+}
+
+@keyframes blink-caret {
+
+    from,
+    to {
+        border-color: transparent
+    }
+
+    50% {
+        border-color: orange;
+    }
+}
+
+
+
+.path1 {
+    animation: move1 5s ease-in-out forwards;
+}
+
+.path2 {
+    animation: move2 5.5s ease-in-out forwards;
+}
+
+.path3 {
+    animation: move3 6s ease-in-out forwards;
+}
+
+.path4 {
+    animation: move4 6.5s ease-in-out forwards;
+}
+
+.path5 {
+    animation: move5 7s ease-in-out forwards;
+}
+
+.path6 {
+    animation: move6 7.5s ease-in-out forwards;
+}
+
+.animate-blink-caret {
+    animation: blink-caret 0.75s step-end infinite;
+}
+
+.logo-animation-section {
+    background-color: lightblue;
+
+}
+
+@media (min-width: 400px) and (max-width: 1080px) {
+    .responsive-h2 {
+        font-size: 2em; /* Double the size */
+    }
+
+    .responsive-logo {
+        width: 120px; /* Double the size */
+        height: 120px; /* Double the size */
+    }
+}
