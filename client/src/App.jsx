@@ -10,6 +10,7 @@ import AdminListUsers from './pages/AdminListUsers';
 import NotFoundPage from './pages/NotFoundPage';
 import ValidateUserPage from './pages/ValidateUserPage';
 import UserProfilePage from './pages/UserProfilePage';
+import LoginPage from "./pages/LoginPage"
 
 const App = () => {
     return (
@@ -21,7 +22,7 @@ const App = () => {
                 <Route path="/register" element={<RegisterPage />} />
                 <Route path="/admin/users" element={<AdminListUsers />} />
 
-                {/*<Route path="/login" element={<LoginPage />} />*/}
+                <Route path="/login" element={<LoginPage />} />
                 <Route
                     path="/validate/:regCode"
                     element={<ValidateUserPage />}
