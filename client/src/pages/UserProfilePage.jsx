@@ -28,23 +28,23 @@ const UserProfilePage = () => {
     // obtenemos los datos del usuario al cargar la página
     useEffect(() => {
         // si no hay toquen, regresamos a la página de login
-        // if (!authToken) {
-        //     navigate('/login');
-        //     return;
-        // }
+        if (!authToken) {
+            navigate('/login');
+            return;
+        }
 
         const fetchUserData = async () => {
             try {
                 // Realizamos una precisión a la API para la información del usuario
                 const response = await fetch(
                     `${VITE_API_URL}/api/users/profile`,
-                    { headers: { Authorization: `Bearer ${authToken}` } }
+                    { headers: { Authorization: `${authToken}` } },
                 );
 
                 // Si no hay respuesta, se lanza un error
                 if (!response.ok)
                     throw new Error(
-                        `Error ${response.status}: ${response.statusText}`
+                        `Error ${response.status}: ${response.statusText}`,
                     );
 
                 const data = await response.json();
@@ -52,7 +52,7 @@ const UserProfilePage = () => {
                 setUserData(data.data.user);
             } catch (error) {
                 toast.error(
-                    error.message || 'Error al obtener los datos del usuario'
+                    error.message || 'Error al obtener los datos del usuario',
                 );
             } finally {
                 SetProfileLoading(false);
@@ -86,13 +86,13 @@ const UserProfilePage = () => {
             const result = await response.json();
             if (!response.ok) {
                 throw new Error(
-                    result.message || 'Error al actualizar la contraseña'
+                    result.message || 'Error al actualizar la contraseña',
                 );
             }
             // si todo está bien, muestra un mensaje de éxito y se limpian los campos del formulario
             toast.success('Contraseña actualizada correctamente');
             setCurrentPassword('');
-            SetNewPassword('');
+            setNewPassword('');
             setConfirmPassword('');
         } catch (error) {
             toast.error(`Error: ${error.message}`);
