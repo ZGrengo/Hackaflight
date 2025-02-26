@@ -7,23 +7,24 @@ import Footer from './components/Footer';
 // Importamos las páginas.
 import RegisterPage from './pages/RegisterPage';
 import HomePage from './pages/HomePage';
+import ValidateUserPage from './pages/ValidateUserPage';
 
 const App = () => {
     return (
         <>
             <Header />
 
-            <Toaster position="top-center" />
+            <Toaster position='top-center' />
 
             {/* Todos los endpoints han de definirse dentro de este compontente. */}
             <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/register" element={<RegisterPage />} />
+                <Route path='/' element={<HomePage />} />
+                <Route path='/register' element={<RegisterPage />} />
                 {/*<Route path="/login" element={<LoginPage />} />*/}
-                {/*<Route
-                    path="/users/validate/:regCode"
+                <Route
+                    path='/validate/:regCode'
                     element={<ValidateUserPage />}
-                />*/}
+                />
                 {/*<Route path="/users/profile" element={<UserProfilePage />} />*/}
                 {/*<Route
                     path="/users/password/recovery/request"
@@ -39,7 +40,7 @@ const App = () => {
             </Routes>
 
             <Footer />
-            </>
+        </>
     );
 };
 
