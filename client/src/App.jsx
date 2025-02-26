@@ -9,6 +9,7 @@ import RegisterPage from './pages/RegisterPage';
 import HomePage from './pages/HomePage';
 import AdminListUsers from './pages/AdminListUsers';
 import NotFoundPage from './pages/NotFoundPage';
+import ValidateUserPage from './pages/ValidateUserPage';
 
 const App = () => {
     return (
