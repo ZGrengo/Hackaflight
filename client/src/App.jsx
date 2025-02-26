@@ -15,7 +15,7 @@ const App = () => {
         <>
             <Header />  
 
-            <Toaster position="top-center" />
+            <Toaster position='top-center' />
 
             {/* Todos los endpoints han de definirse dentro de este compontente. */}
             <Routes>
@@ -25,10 +25,10 @@ const App = () => {
 
                 
                 {/*<Route path="/login" element={<LoginPage />} />*/}
-                {/*<Route
-                    path="/users/validate/:regCode"
+                <Route
+                    path='/validate/:regCode'
                     element={<ValidateUserPage />}
-                />*/}
+                />
                 {/*<Route path="/users/profile" element={<UserProfilePage />} />*/}
                 {/*<Route
                     path="/users/password/recovery/request"
@@ -44,7 +44,7 @@ const App = () => {
             </Routes>
 
             <Footer />
-            </>
+        </>
     );
 };
 
