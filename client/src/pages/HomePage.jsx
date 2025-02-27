@@ -33,32 +33,32 @@ const HomePage = () => {
         { src: '/public/image5.png', alt: 'img5' },
         { src: '/public/image6.png', alt: 'img6' },
         { src: '/public/image7.png', alt: 'img7' },
-        { src: '/public/image8.png', alt: 'img8' }
+        { src: '/public/image8.png', alt: 'img8' },
     ];
 
-    useEffect( () => {
-        setPopularDestinations( [
+    useEffect(() => {
+        setPopularDestinations([
             { origen: 'Madrid', destino: 'Nueva York' },
             { origen: 'Londres', destino: 'Tokio' },
-            { origen: 'Paris', destino: 'Londres' }
-        ] );
-        setTopComments( [
+            { origen: 'Paris', destino: 'Londres' },
+        ]);
+        setTopComments([
             { user: 'Usuario1', comment: 'Excelente servicio!', rating: 5 },
             { user: 'Usuario2', comment: 'Muy buena experiencia.', rating: 4 },
-            { user: 'Usuario3', comment: 'Recomendado!', rating: 4 }
-        ] );
-    }, [] );
+            { user: 'Usuario3', comment: 'Recomendado!', rating: 4 },
+        ]);
+    }, []);
 
     const handleSubmit = async ( e ) => {
         e.preventDefault();
         setLoading( true );
 
-        const searchParams = new URLSearchParams( {
-            origin: origen,
-            destination: destino,
-            departureDate: fechaSalida,
-            adults: pasajeros
-        } );
+            const searchParams = new URLSearchParams({
+                origin: origen,
+                destination: destino,
+                departureDate: fechaSalida,
+                adults: pasajeros,
+            });
 
         if ( tipoViaje === 'ida-vuelta' && fechaRetorno )
         {
@@ -116,7 +116,11 @@ const HomePage = () => {
                     setPasajeros={setPasajeros}
                     handleSubmit={handleSubmit}
                 />
-                {loading ? <p>Loading...</p> : <CarouselImages images={images} />}
+                {loading ? (
+                    <p>Loading...</p>
+                ) : (
+                    <CarouselImages images={images} />
+                )}
             </section>
             <RecentSearches />
             <PopularDestinations popularDestinations={popularDestinations} />

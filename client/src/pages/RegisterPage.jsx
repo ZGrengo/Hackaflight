@@ -82,16 +82,13 @@ const RegisterPage = () => {
         navigate('/');
     }
     return (
-        <main className="bg-[#E5F7FF] flex items-center justify-center min-h-screen p-4 sm:p-6 md:p-8">
-            <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-[90%] sm:max-[70%] md:max-w-md">
-                <h2 className="text-xl sm:text-2xl font-bold text-[#083059] text-center mb-4 sm:mb-6">
+        <main className="bg-[#E5F7FF] flex items-center justify-center min-h-screen p-4">
+            <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+                <h2 className="text-2xl font-bold text-[#083059] text-center mb-6">
                     Crea tu cuenta
                 </h2>
 
-                <form
-                    onSubmit={handleRegister}
-                    className="space-y-3 sm:space-y-4"
-                >
+                <form onSubmit={handleRegister} className="space-y-4">
                     <div>
                         <label
                             htmlFor="firstName"
@@ -109,22 +106,22 @@ const RegisterPage = () => {
                         />
                     </div>
                     <div>
-                        <label
-                            htmlFor="lastName"
-                            className="block text-[#083059] font-medium"
-                        >
-                            Apellidos
-                        </label>
-                        <input
-                            type="text"
-                            id="lastName"
-                            value={lastName}
-                            onChange={(e) => setLastName(e.target.value)}
-                            className="w-full p-3 border border-[#3951AA] rounded-md focus:outline-none focus:ring-2 focus:ring-[#179DD9]"
-                            required
-                        />
-                    </div>
-                    <div>
+                        <div>
+                            <label
+                                htmlFor="lastName"
+                                className="block text-[#083059] font-medium"
+                            >
+                                Apellidos
+                            </label>
+                            <input
+                                type="text"
+                                id="lastName"
+                                value={lastName}
+                                onChange={(e) => setLastName(e.target.value)}
+                                className="w-full p-3 border border-[#3951AA] rounded-md focus:outline-none focus:ring-2 focus:ring-[#179DD9]"
+                                required
+                            />
+                        </div>
                         <label
                             htmlFor="username"
                             className="block text-[#083059] font-medium"
