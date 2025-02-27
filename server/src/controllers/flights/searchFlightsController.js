@@ -15,12 +15,14 @@ const searchFlightsController = async ( req, res, next ) => {
             adults,
             minPrice,
             maxPrice,
+            sortBy,
+            order,
         } = req.query;
 
         if (
             !origin ||
             !destination ||
-            !depertureDate ||
+            !departureDate ||
             !adults
         )
         {
