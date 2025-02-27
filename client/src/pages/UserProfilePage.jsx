@@ -23,7 +23,7 @@ const UserProfilePage = () => {
 
     // cargando
     const [loading, setLoading] = useState(false);
-    const [profileLoading, setProfileLoading] = useState(false);
+    const [profileLoading, setProfileLoading] = useState(true);
 
     // obtenemos los datos del usuario al cargar la página
     useEffect(() => {
@@ -34,6 +34,7 @@ const UserProfilePage = () => {
         }
 
         const fetchUserData = async () => {
+            setProfileLoading(true);
             try {
                 // Realizamos una precisión a la API para la información del usuario
                 const response = await fetch(
@@ -82,8 +83,8 @@ const UserProfilePage = () => {
                 body: JSON.stringify({ currentPassword, newPassword }),
             });
 
-            // Si la respuesta no es positiva, se lanza un error
             const result = await response.json();
+
             if (!response.ok) {
                 throw new Error(
                     result.message || 'Error al actualizar la contraseña',
@@ -115,7 +116,10 @@ const UserProfilePage = () => {
 
             {/* Muestra la información de usuario*/}
             <div className="user-info">
-                <img src={userData.avatar} alt="Avatar" />
+                <img
+                    src={userData.avatar || '/default-avatar.png'}
+                    alt="Avatar"
+                />
                 <p>
                     <strong>Nombre:</strong> {userData.firstName}{' '}
                     {userData.lastName}
