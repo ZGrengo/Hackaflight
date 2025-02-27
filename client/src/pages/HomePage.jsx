@@ -9,22 +9,22 @@ import LogoAnimation from '../components/LogoAnimation';
 import PaperPlaneAnimation from '../components/PaperPlaneAnimation';
 
 const HomePage = () => {
-    const [ tipoViaje, setTipoViaje ] = useState( 'ida' );
-    const [ fechaSalida, setFechaSalida ] = useState( '' );
-    const [ fechaLlegada, setFechaLlegada ] = useState( '' );
-    const [ origen, setOrigen ] = useState( '' );
-    const [ destino, setDestino ] = useState( '' );
-    const [ pasajeros, setPasajeros ] = useState( 1 );
-    const [ claseBillete, setClaseBillete ] = useState( '' );
-    const [ popularDestinations, setPopularDestinations ] = useState( [] );
-    const [ topComments, setTopComments ] = useState( [] );
+    const [tipoViaje, setTipoViaje] = useState('ida');
+    const [fechaSalida, setFechaSalida] = useState('');
+    const [fechaLlegada, setFechaLlegada] = useState('');
+    const [origen, setOrigen] = useState('');
+    const [destino, setDestino] = useState('');
+    const [pasajeros, setPasajeros] = useState(1);
+    const [claseBillete, setClaseBillete] = useState('');
+    const [popularDestinations, setPopularDestinations] = useState([]);
+    const [topComments, setTopComments] = useState([]);
 
     const airportCodes = {
         Madrid: 'MAD',
         NuevaYork: 'JFK',
         Paris: 'CDG',
         Londres: 'LHR',
-        Tokio: 'NRT'
+        Tokio: 'NRT',
     };
 
     const images = [
@@ -35,29 +35,29 @@ const HomePage = () => {
         { src: '/public/image 5.png', alt: 'img5' },
         { src: '/public/image 6.png', alt: 'img6' },
         { src: '/public/image 7.png', alt: 'img7' },
-        { src: '/public/image 8.png', alt: 'img8' }
+        { src: '/public/image 8.png', alt: 'img8' },
     ];
 
-    useEffect( () => {
+    useEffect(() => {
         const fetchedPopularDestinations = [
             { origen: 'Madrid', destino: 'Nueva York' },
             { origen: 'Londres', destino: 'Tokio' },
-            { origen: 'Paris', destino: 'Londres' }
+            { origen: 'Paris', destino: 'Londres' },
         ];
-        setPopularDestinations( fetchedPopularDestinations );
+        setPopularDestinations(fetchedPopularDestinations);
 
         const fetchedTopComments = [
             { user: 'Usuario1', comment: 'Excelente servicio!', rating: 5 },
             { user: 'Usuario2', comment: 'Muy buena experiencia.', rating: 4 },
-            { user: 'Usuario3', comment: 'Recomendado!', rating: 4 }
+            { user: 'Usuario3', comment: 'Recomendado!', rating: 4 },
         ];
-        setTopComments( fetchedTopComments );
-    }, [] );
+        setTopComments(fetchedTopComments);
+    }, []);
 
-    const handleSubmit = async ( e ) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const origenCode = airportCodes[ origen ] || origen;
-        const destinoCode = airportCodes[ destino ] || destino;
+        const origenCode = airportCodes[origen] || origen;
+        const destinoCode = airportCodes[destino] || destino;
 
         const searchParams = {
             tipoViaje,
@@ -66,24 +66,23 @@ const HomePage = () => {
             origen: origenCode,
             destino: destinoCode,
             pasajeros,
-            claseBillete
+            claseBillete,
         };
 
-        fetch( 'https://api.example.com/data', {
+        fetch('https://api.example.com/data', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify( searchParams )
-        } )
-            .then( response => response.json() )
-            .then( data => console.log( data ) )
-            .catch( error => console.error( 'Error:', error ) );
+            body: JSON.stringify(searchParams),
+        })
+            .then((response) => response.json())
+            .then((data) => console.log(data))
+            .catch((error) => console.error('Error:', error));
     };
 
     return (
         <>
-
             <div>
                 <LogoAnimation />
                 <PaperPlaneAnimation />
@@ -112,7 +111,7 @@ const HomePage = () => {
                 {/* Aquí va el componente CarouselImages */}
                 <CarouselImages images={images} />
             </section>
-            {CarouselImages}
+            {/*{CarouselImages}*/}
             <RecentSearches />
             {/* Aquí va el componente PopularDestinations */}
             <PopularDestinations popularDestinations={popularDestinations} />

@@ -14,7 +14,7 @@ const { VITE_API_URL } = import.meta.env;
 //Iniciamos componente
 const RatingPage = () => {
     //obtenemos el token de autorización
-    const { authToken, authUser } = useContext(AuthContext);
+    const { authToken, authUser, authLoading } = useContext(AuthContext);
 
     //obtenemos navigate
     const navigate = useNavigate();
@@ -39,8 +39,15 @@ const RatingPage = () => {
             //Obtenemos la respuesta
             const res = await fetch(`${VITE_API_URL}/api/users/ratings`, {
                 method: 'POST',
-                headers: { Authorization: authToken },
-                body: JSON.stringify({ title, rate, comment }),
+                headers: {
+                    Authorization: authToken,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    title,
+                    rate: Number(rate),
+                    comment,
+                }),
             });
 
             //obtenemos el body
@@ -64,8 +71,13 @@ const RatingPage = () => {
             setLoading(false);
         }
     };
+    // Esperamos a que se cargue el estado de autenticación
+    if (authLoading && authToken) {
+        return <div>Loading...</div>;
+    }
+    //console.log('Auth State:', { authUser, authToken }); // debugging
     //si no estamos logueados, redirigimos a la pagina principal
-    if (!authUser) {
+    if (!authUser || !authToken) {
         return <Navigate to="/login" />;
     }
     return (
