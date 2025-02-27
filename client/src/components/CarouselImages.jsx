@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 // Este componente recibe un array de imágenes y las muestra en un carrusel
 const CarouselImages = ( { images } ) => {
     return (
-        <div className="flex flex-wrap justify-center sm:flex-col">
+        <div className="carousel">
             {images.map( ( image, index ) => (
-                <img key={index} src={image.src} alt={image.alt} className="w-[100px] h-12 rounded-[25%] sm:w-full sm:h-auto" />
+                <div key={index} className="carousel-item">
+                    <img src={image.src} alt={image.alt} />
+                </div>
             ) )}
         </div>
     );
