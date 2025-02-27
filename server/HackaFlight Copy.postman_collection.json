@@ -1,11 +1,109 @@
 {
 	"info": {
-		"_postman_id": "2c1975fe-dc68-4af6-8c75-70cd008abc13",
-		"name": "HackaFlight",
+		"_postman_id": "9efa1c1b-63e0-493c-85a7-05205ccad329",
+		"name": "HackaFlight Copy",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "40373237"
+		"_exporter_id": "40399714",
+		"_collection_link": "https://hackaflight-3711.postman.co/workspace/Hackaflight-Workspace~e9bd9a5c-3eac-4d70-8240-486365574b39/collection/40399714-9efa1c1b-63e0-493c-85a7-05205ccad329?action=share&source=collection_link&creator=40399714"
 	},
 	"item": [
+		{
+			"name": "Flights",
+			"item": [
+				{
+					"name": "Búsqueda de vuelos",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/flights/search?origin=MAD&destination=BCN&departureDate=2025-02-22&returnDate=2025-02-27&adults=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"flights",
+								"search"
+							],
+							"query": [
+								{
+									"key": "origin",
+									"value": "MAD"
+								},
+								{
+									"key": "destination",
+									"value": "BCN"
+								},
+								{
+									"key": "departureDate",
+									"value": "2025-02-22"
+								},
+								{
+									"key": "returnDate",
+									"value": "2025-02-27"
+								},
+								{
+									"key": "adults",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Filtrado de vuelos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/flights/filter?minPrice=100&maxPrice=120",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"flights",
+								"filter"
+							],
+							"query": [
+								{
+									"key": "minPrice",
+									"value": "100"
+								},
+								{
+									"key": "maxPrice",
+									"value": "120"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
 		{
 			"name": "Users",
 			"item": [
@@ -45,7 +143,7 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8000/api/users/validate/6e7c59728c2ebedaed06395e5f77f9",
+							"raw": "http://localhost:8000/api/users/validate/c924d3cf37e8b8a7f6d212770f2574",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -55,7 +153,7 @@
 								"api",
 								"users",
 								"validate",
-								"6e7c59728c2ebedaed06395e5f77f9"
+								"c924d3cf37e8b8a7f6d212770f2574"
 							]
 						}
 					},
@@ -106,8 +204,81 @@
 							}
 						],
 						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/users/profile",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"users",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Avatar",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token_userHack}}",
+								"type": "text"
+							}
+						],
+						"body": {
 							"mode": "formdata",
-							"formdata": []
+							"formdata": [
+								{
+									"key": "avatar",
+									"type": "file",
+									"src": "postman-cloud:///1efd2a20-11a9-4930-9df7-25fe9de8afbe"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/users/avatar",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"users",
+								"avatar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Perfil usuario",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token_userHack}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\" : \"maria\",\n    \"lastName\" : \"del pan\",\n    \"username\": \"pan\",\n    \"email\": \"angeladelpan@gmail.com\",\n    \"password\": \"1234\",\n    \"birthdate\" : \"1985-04-19\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
 						},
 						"url": {
 							"raw": "http://localhost:8000/api/users/profile",
@@ -162,19 +333,19 @@
 					"response": []
 				},
 				{
-					"name": "Nueva Valoración",
+					"name": "Correo de recuperación contraseña",
 					"request": {
-						"method": "POST",
+						"method": "PUT",
 						"header": [
 							{
-								"key": "Authorization",
-								"value": "{{token_userHack}}",
+								"key": "",
+								"value": "",
 								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"title\": \"awesome\",\n    \"rate\": \"4\",\n    \"comment\": \"nice\"\n}",
+							"raw": "{\n    \"email\": \"angeladelpan@gmail.com\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -182,7 +353,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8000/api/users/ratings",
+							"raw": "http://localhost:8000/api/users/password/reset",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -191,7 +362,46 @@
 							"path": [
 								"api",
 								"users",
-								"ratings"
+								"password",
+								"reset"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Recuperación contraseña con código",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"newPassword\" : \"meow\",\n    \"repeatedNewPass\": \"meow\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/users/password/reset/8dc5edf52527fc68b5861757030a0d",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"users",
+								"password",
+								"reset",
+								"8dc5edf52527fc68b5861757030a0d"
 							]
 						}
 					},
@@ -210,7 +420,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"title\": \"Bilbao\",\r\n    \"origin\": \"BIO\",\r\n    \"destination\": \"BCN\",\r\n    \"departureDate\": \"2024-02-29\",\r\n    \"adults\": 1\r\n}",
+							"raw": "{\r\n    \"title\": \"Madrid\",\r\n    \"origin\": \"MAD\",\r\n    \"destination\": \"BCN\",\r\n    \"departureDate\": \"2025-04-28\",\r\n    \"returnDate\": \"2025-05-10\",\r\n    \"adults\": 2\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -272,6 +482,43 @@
 							}
 						],
 						"url": {
+							"raw": "http://localhost:8000/api/users/favorites/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"users",
+								"favorites",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualización búsqueda favorito",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token_userHack}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Madrid\",\n    \"origin\": \"MAD\",\n    \"destination\": \"BCN\",\n    \"departureDate\": \"2025-02-28\",\n    \"returnDate\": \"2025-03-29\",\n    \"adults\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
 							"raw": "http://localhost:8000/api/users/favorites/2",
 							"protocol": "http",
 							"host": [
@@ -300,7 +547,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://localhost:8000/api/users/favorites/2",
+							"raw": "http://localhost:8000/api/users/favorites/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -310,7 +557,43 @@
 								"api",
 								"users",
 								"favorites",
-								"2"
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Nueva Valoración",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token_userHack}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Not bad\",\n    \"rate\": \"4\",\n    \"comment\": \"Easy to use\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/users/ratings",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"users",
+								"ratings"
 							]
 						}
 					},
@@ -347,7 +630,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8000/api/ratings?rating=4",
+							"raw": "http://localhost:8000/api/ratings?rating=2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -360,7 +643,7 @@
 							"query": [
 								{
 									"key": "rating",
-									"value": "4"
+									"value": "2"
 								}
 							]
 						}
@@ -385,19 +668,6 @@
 								"avg"
 							]
 						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Search",
-			"item": [
-				{
-					"name": "Search Flight",
-					"request": {
-						"method": "GET",
-						"header": []
 					},
 					"response": []
 				}
@@ -463,9 +733,9 @@
 					"response": []
 				},
 				{
-					"name": "ACtualizar estado user",
+					"name": "Actualizar estado user",
 					"request": {
-						"method": "POST",
+						"method": "PATCH",
 						"header": [
 							{
 								"key": "Authorization",
@@ -475,7 +745,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"userId\": 3,\n    \"active\": \"false\"\n}",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -483,7 +753,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8000/api/admin/users/active",
+							"raw": "http://localhost:8000/api/admin/users/2/false",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -493,7 +763,8 @@
 								"api",
 								"admin",
 								"users",
-								"active"
+								"2",
+								"false"
 							]
 						}
 					},

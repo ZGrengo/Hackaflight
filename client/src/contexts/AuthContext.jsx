@@ -11,7 +11,7 @@ const AuthContext = createContext(null);
 
 const AuthProvider = ({ children }) => {
     const [authToken, setAuthToken] = useState(
-        cookies.get(VITE_AUTH_TOKEN) || null
+        cookies.get(VITE_AUTH_TOKEN) || null,
     );
 
     const [authUser, setAuthUser] = useState(null);
