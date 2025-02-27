@@ -10,11 +10,13 @@ import AdminListUsers from './pages/AdminListUsers';
 import NotFoundPage from './pages/NotFoundPage';
 import ValidateUserPage from './pages/ValidateUserPage';
 import UserProfilePage from './pages/UserProfilePage';
-import LoginPage from "./pages/LoginPage"
+import LoginPage from './pages/LoginPage';
+import Header from './components/Header';
 
 const App = () => {
     return (
         <>
+            <Header />
             <Toaster position="top-center" />
             {/* Todos los endpoints han de definirse dentro de este compontente. */}
             <Routes>
