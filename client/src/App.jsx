@@ -2,6 +2,7 @@
 import { Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import Footer from './components/Footer';
+import Header from './components/Header';
 
 // Importamos las páginas.
 import RegisterPage from './pages/RegisterPage';
@@ -11,7 +12,7 @@ import NotFoundPage from './pages/NotFoundPage';
 import ValidateUserPage from './pages/ValidateUserPage';
 import UserProfilePage from './pages/UserProfilePage';
 import LoginPage from './pages/LoginPage';
-import Header from './components/Header';
+import RatingPage from './pages/RatingPage';
 
 const App = () => {
     return (
@@ -38,6 +39,7 @@ const App = () => {
                     path="/users/password/:recoverPassCode"
                     element={<UseRecoveryPassCode />}
                 />*/}
+                <Route path="/ratings" element={<RatingPage />} />
                 {/* Añadir más rutas de endpoints. */}
 
                 <Route path="*" element={<NotFoundPage />} />
