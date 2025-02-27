@@ -7,14 +7,12 @@ const SearchForm = ( {
     origen,
     destino,
     pasajeros,
-    claseBillete,
     setTipoViaje,
     setFechaSalida,
     setFechaRetorno,
     setOrigen,
     setDestino,
     setPasajeros,
-    setClaseBillete,
     handleSubmit
 } ) => {
     return (
@@ -68,13 +66,6 @@ const SearchForm = ( {
                     min="1"
                 />
             </div>
-            <div>
-                <label>Clase de Billete:</label>
-                <select value={claseBillete} onChange={( e ) => setClaseBillete( e.target.value )}>
-                    <option value="economica">Económica</option>
-                    <option value="primera">Primera</option>
-                </select>
-            </div>
             <button type="submit">Buscar</button>
         </form>
     );
@@ -87,14 +78,12 @@ SearchForm.propTypes = {
     origen: PropTypes.string.isRequired,
     destino: PropTypes.string.isRequired,
     pasajeros: PropTypes.number.isRequired,
-    claseBillete: PropTypes.string.isRequired,
     setTipoViaje: PropTypes.func.isRequired,
     setFechaSalida: PropTypes.func.isRequired,
     setFechaRetorno: PropTypes.func.isRequired,
     setOrigen: PropTypes.func.isRequired,
     setDestino: PropTypes.func.isRequired,
     setPasajeros: PropTypes.func.isRequired,
-    setClaseBillete: PropTypes.func.isRequired,
     handleSubmit: PropTypes.func.isRequired
 };
 

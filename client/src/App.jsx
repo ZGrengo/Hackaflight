@@ -11,7 +11,7 @@ import AdminListUsers from './pages/AdminListUsers';
 import NotFoundPage from './pages/NotFoundPage';
 import ValidateUserPage from './pages/ValidateUserPage';
 import UserProfilePage from './pages/UserProfilePage';
-import LoginPage from "./pages/LoginPage"
+import LoginPage from './pages/LoginPage';
 
 const App = () => {
     return (
@@ -20,29 +20,14 @@ const App = () => {
             {/* Todos los endpoints han de definirse dentro de este compontente. */}
             <Routes>
                 <Route path="/" element={<HomePage />} />
-                <Route path="/search" element={<SearchResultsPage />} />
+                <Route path="/search-results" element={<SearchResultsPage />} />
                 <Route path="/register" element={<RegisterPage />} />
                 <Route path="/admin/users" element={<AdminListUsers />} />
-
                 <Route path="/login" element={<LoginPage />} />
-                <Route
-                    path="/validate/:regCode"
-                    element={<ValidateUserPage />}
-                />
+                <Route path="/validate/:regCode" element={<ValidateUserPage />} />
                 <Route path="/users/profile" element={<UserProfilePage />} />
-                {/*<Route
-                    path="/users/password/recovery/request"
-                    element={<SendRecoveryPassPage />}
-                />*/}
-                {/*<Route
-                    path="/users/password/:recoverPassCode"
-                    element={<UseRecoveryPassCode />}
-                />*/}
-                {/* Añadir más rutas de endpoints. */}
-
                 <Route path="*" element={<NotFoundPage />} />
             </Routes>
-
             <Footer />
         </>
     );

@@ -1,47 +1,48 @@
-
 import PropTypes from 'prop-types';
 import { useLocation } from 'react-router-dom';
+import FlightCard from '../components/FlightCard';
 
 const SearchResultsPage = () => {
     const location = useLocation();
-    const { flights } = location.state || { flights: [] };
+    console.log( 'Location:', location );
+    const { flights } = location.state || {};
 
-    return (
-        <div>
-            <h2>Resultados de la Búsqueda</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Origen</th>
-                        <th>Destino</th>
-                        <th>Fecha de Salida</th>
-                        <th>Fecha de Retorno</th>
-                        <th>Precio</th>
-                    </tr>
-                </thead>
-                <tbody>
+    console.log( 'Flights:', flights );
+
+    if ( !flights || flights.length === 0 )
+    {
+        return <p>No se encontraron resultados de búsqueda.</p>;
+    } else
+    {
+        return (
+            <div>
+                <h2>Resultados de la Búsqueda</h2>
+                <div className="flight-cards-container">
                     {flights.map( ( flight, index ) => (
-                        <tr key={index}>
-                            <td>{flight.origen}</td>
-                            <td>{flight.destino}</td>
-                            <td>{flight.fechaSalida}</td>
-                            <td>{flight.fechaRetorno}</td>
-                            <td>{flight.precio}</td>
-                        </tr>
+                        <FlightCard key={index} flight={flight} />
                     ) )}
-                </tbody>
-            </table>
-        </div>
-    );
+                </div>
+            </div>
+        );
+    }
 };
 
 SearchResultsPage.propTypes = {
     flights: PropTypes.arrayOf( PropTypes.shape( {
-        origen: PropTypes.string.isRequired,
-        destino: PropTypes.string.isRequired,
-        fechaSalida: PropTypes.string.isRequired,
-        fechaRetorno: PropTypes.string,
-        precio: PropTypes.number.isRequired
+        origin: PropTypes.string.isRequired,
+        destination: PropTypes.string.isRequired,
+        departureDate: PropTypes.string.isRequired,
+        returnDate: PropTypes.string,
+        price: PropTypes.shape( {
+            currency: PropTypes.string.isRequired,
+            total: PropTypes.string.isRequired,
+            base: PropTypes.string,
+            fees: PropTypes.arrayOf( PropTypes.shape( {
+                amount: PropTypes.string,
+                type: PropTypes.string
+            } ) ),
+            grandTotal: PropTypes.string
+        } ).isRequired
     } ) )
 };
 

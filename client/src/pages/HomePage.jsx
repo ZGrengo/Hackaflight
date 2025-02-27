@@ -1,10 +1,11 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+// importacion de componentes
 import SearchForm from '../components/SearchForm';
 import CarouselImages from '../components/CarouselImages';
 import RecentSearches from '../components/RecentSearches';
 import PopularDestinations from '../components/PopularDestinations';
-import RatingSummary from '../components/RatingSumary';
+import RatingSummary from '../components/RatingSumary'; // Corrige el nombre del archivo importado
 import Header from '../components/Header';
 import LogoAnimation from '../components/LogoAnimation';
 import PaperPlaneAnimation from '../components/PaperPlaneAnimation';
@@ -14,11 +15,10 @@ const { VITE_API_URL } = import.meta.env;
 const HomePage = () => {
     const [ tipoViaje, setTipoViaje ] = useState( 'ida' );
     const [ fechaSalida, setFechaSalida ] = useState( '' );
-    const [ fechaLlegada, setFechaLlegada ] = useState( '' );
+    const [ fechaRetorno, setFechaRetorno ] = useState( '' );
     const [ origen, setOrigen ] = useState( '' );
     const [ destino, setDestino ] = useState( '' );
     const [ pasajeros, setPasajeros ] = useState( 1 );
-    const [ claseBillete, setClaseBillete ] = useState( '' );
     const [ popularDestinations, setPopularDestinations ] = useState( [] );
     const [ topComments, setTopComments ] = useState( [] );
     const [ loading, setLoading ] = useState( false );
@@ -49,7 +49,7 @@ const HomePage = () => {
         ] );
     }, [] );
 
-    const handleSubmit = useCallback( async ( e ) => {
+    const handleSubmit = async ( e ) => {
         e.preventDefault();
         setLoading( true );
 
@@ -60,10 +60,13 @@ const HomePage = () => {
             adults: pasajeros
         } );
 
-        if ( tipoViaje === 'ida-vuelta' )
+        if ( tipoViaje === 'ida-vuelta' && fechaRetorno )
         {
-            searchParams.append( 'returnDate', fechaLlegada );
-        } try
+            searchParams.append( 'returnDate', fechaRetorno );
+        }
+        console.log( 'Search Params:', searchParams.toString() ); // Verifica los parámetros de búsqueda
+
+        try
         {
             const res = await fetch( `${ VITE_API_URL }api/flights/search?${ searchParams.toString() }`, {
                 method: 'GET',
@@ -73,8 +76,14 @@ const HomePage = () => {
             if ( !res.ok ) throw new Error( 'Network response was not ok' );
             const body = await res.json();
             if ( body.status === 'error' ) throw new Error( body.message );
-            console.log( body );
-            navigate( '/search', { state: { flights: body.flights } } );
+            console.log( 'API Response:', body );
+            // Verifica la respuesta de la API
+
+            const flights = body || [];
+            console.log( 'Flights:', flights );
+            // Verifica los datos de los Vuelos
+
+            navigate( '/search-results', { state: { flights } } );
         } catch ( err )
         {
             console.log( 'Error al buscar vuelos:', err );
@@ -82,7 +91,7 @@ const HomePage = () => {
         {
             setLoading( false );
         }
-    }, [ origen, destino, fechaSalida, fechaLlegada, pasajeros, tipoViaje, navigate ] );
+    };
 
     return (
         <>
@@ -95,18 +104,16 @@ const HomePage = () => {
                 <SearchForm
                     tipoViaje={tipoViaje}
                     fechaSalida={fechaSalida}
-                    fechaRetorno={fechaLlegada}
+                    fechaLlegada={fechaRetorno}
                     origen={origen}
                     destino={destino}
                     pasajeros={pasajeros}
-                    claseBillete={claseBillete}
                     setTipoViaje={setTipoViaje}
                     setFechaSalida={setFechaSalida}
-                    setFechaRetorno={setFechaLlegada}
+                    setFechaLlegada={setFechaRetorno}
                     setOrigen={setOrigen}
                     setDestino={setDestino}
                     setPasajeros={setPasajeros}
-                    setClaseBillete={setClaseBillete}
                     handleSubmit={handleSubmit}
                 />
                 {loading ? <p>Loading...</p> : <CarouselImages images={images} />}
