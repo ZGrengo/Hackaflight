@@ -1,6 +1,7 @@
 // Inicializamos el componente.
 import { useEffect, useState } from 'react';
 import {useParams} from 'react-router-dom';
+import useAuthContext from '../hooks/useAuthContext.js';
 
 const { VITE_API_URL } = import.meta.env;
 
@@ -10,12 +11,13 @@ const FavoriteDetailsEditPage = () => {
     const [error, setError] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
     const { favoriteId } = useParams();
+    const { authToken, authUser } = useAuthContext();
 // Obtenemos la lista de favoritos del usuario.
 useEffect(()=> {
     const fetchFavorites = async () => {
     try {
         const res = await fetch(
-            `${VITE_API_URL}/api/users/favorites/:${favoriteId}`,
+            `${VITE_API_URL}/api/users/favorites/${favoriteId}`,
             {
                 headers: authUser
                     ? {
@@ -41,8 +43,12 @@ useEffect(()=> {
     }
 };
 
+if (authToken && authUser) { // Solo ejecuta si existen
+    fetchFavorites();
+}
+
 fetchFavorites();
-}, [favoriteId]);
+}, [favoriteId, authToken, authUser]);
 
 
 //Toggle para permitir editar un favorito.
@@ -51,7 +57,7 @@ const handleEditToggle = () => setIsEditing(!isEditing);
 //Cambiamos el valor de un input al editar un favorito.
 const handleChange = (e) => {
     setFavorite({
-        ...favorite,
+        ...favorites,
         [e.target.name]: e.target.value,
     });
 };
@@ -64,7 +70,7 @@ const handleSave = async () => {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(favorite),
+            body: JSON.stringify(favorites),
         });
 
         // Obtenemos el body.
@@ -85,7 +91,7 @@ const handleSave = async () => {
 const handleFavoriteSearch = async () => {
 try {
     const res = await fetch(
-        `${VITE_API_URL}/api/flights/search?origin=${favorite.origin}&destination=${favorite.destination}&departureDate=${favorite.departureDate}&adults=${favorite.adults}`);
+        `${VITE_API_URL}/api/flights/search?origin=${favorites.origin}&destination=${favorites.destination}&departureDate=${favorites.departureDate}&adults=${favorites.adults}`);
             // Obtenemos el body.
             const body = await res.json();
 
@@ -107,19 +113,19 @@ if (error) return <p>Error: {error}</p>;
             <h2>Lista de busquedas favoritas</h2>
             <form>
                 <label>Destino:</label>
-                <input type="text" name="destination" value={favorite.destination} onChange={handleChange} readOnly={!isEditing} />
+                <input type="text" name="destination" value={favorites.destination} onChange={handleChange} readOnly={!isEditing} />
 
                 <label>Origen:</label>
-                <input type="text" name="origin" value={favorite.origin} onChange={handleChange} readOnly={!isEditing} />
+                <input type="text" name="origin" value={favorites.origin} onChange={handleChange} readOnly={!isEditing} />
 
                 <label>Fecha de Salida:</label>
-                <input type="date" name="departureDate" value={favorite.departureDate} onChange={handleChange} readOnly={!isEditing} />
+                <input type="date" name="departureDate" value={favorites.departureDate} onChange={handleChange} readOnly={!isEditing} />
 
                 <label>Fecha de Regreso:</label>
-                <input type="date" name="returnDate" value={favorite.returnDate || ''} onChange={handleChange} readOnly={!isEditing} />
+                <input type="date" name="returnDate" value={favorites.returnDate || ''} onChange={handleChange} readOnly={!isEditing} />
 
                 <label>Adultos:</label>
-                <input type="number" name="adults" value={favorite.adults} onChange={handleChange} readOnly={!isEditing} />
+                <input type="number" name="adults" value={favorites.adults} onChange={handleChange} readOnly={!isEditing} />
 
                 <button type="button" onClick={handleEditToggle}>
                 
@@ -128,7 +134,7 @@ if (error) return <p>Error: {error}</p>;
 
                 {isEditing && <button type="button" onClick={handleSave}>Guardar</button>}
 
-                <button disabled={isEditing} onClick={() => handleFavoriteSearch(favorite)} >Ver vuelos</button>
+                <button disabled={isEditing} onClick={handleFavoriteSearch} >Ver vuelos</button>
             </form>
         </main>
     );
