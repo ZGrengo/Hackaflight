@@ -7,6 +7,7 @@ import Header from './components/Header';
 // Importamos las páginas.
 import RegisterPage from './pages/RegisterPage';
 import HomePage from './pages/HomePage';
+import SearchResultsPage from './pages/SearchResultsPage';
 import AdminListUsers from './pages/AdminListUsers';
 import NotFoundPage from './pages/NotFoundPage';
 import ValidateUserPage from './pages/ValidateUserPage';
@@ -22,6 +23,7 @@ const App = () => {
             {/* Todos los endpoints han de definirse dentro de este compontente. */}
             <Routes>
                 <Route path="/" element={<HomePage />} />
+                <Route path="/search" element={<SearchResultsPage />} />
                 <Route path="/register" element={<RegisterPage />} />
                 <Route path="/admin/users" element={<AdminListUsers />} />
 

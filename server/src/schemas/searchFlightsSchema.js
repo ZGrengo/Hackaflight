@@ -13,10 +13,9 @@ const searchFlightsSchema = joi.object( {
         'date.base': 'La fecha debe ser válida',
         'date.greater': 'La fecha debe ser futura',
     } ),
-    returnDate: joi.date().min( joi.ref( 'departureDate' ) ).messages( {
-        'date.base': 'La fecha de retorno debe ser válida',
-        'date.min':
-            'La fecha de retorno debe ser posterior a la fecha de salida',
+    returnDate: joi.date().greater( 'now' ).messages( {
+        'date.base': 'La fecha debe ser válida',
+        'date.greater': 'La fecha debe ser futura',
     } ),
     adults: joi.number().min( 1 ).max( 9 ).required().messages( {
         'number.base': 'El número de adultos debe ser un número',
