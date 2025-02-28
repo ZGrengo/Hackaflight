@@ -5,6 +5,9 @@ import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 // Importamos el contexto de autorización.
 import useAuthContext from '../hooks/useAuthContext.js';
+//importamos momento para configurar la fehca entregada por el servidor
+import moment from 'moment';
+
 // Importamos la URL de nuestra API.
 const { VITE_API_URL } = import.meta.env;
 // Inicializamos el componente
@@ -15,14 +18,6 @@ const UserProfilePage = () => {
 
     // Para almacenar los datos del usuario
     const [userData, setUserData] = useState(null);
-
-    // para el cambio de contraseña
-    const [currentPassword, setCurrentPassword] = useState('');
-    const [newPassword, setNewPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-
-    // cargando
-    const [loading, setLoading] = useState(false);
     const [profileLoading, setProfileLoading] = useState(true);
 
     // obtenemos los datos del usuario al cargar la página
@@ -49,7 +44,6 @@ const UserProfilePage = () => {
                     );
 
                 const data = await response.json();
-
                 setUserData(data.data.user);
             } catch (error) {
                 toast.error(
@@ -63,45 +57,6 @@ const UserProfilePage = () => {
         fetchUserData();
     }, [authToken, navigate]);
 
-    // Cambio de contraseña
-    const handlePasswordChange = async (e) => {
-        e.preventDefault();
-        // Doble validación de la nueva contraseña
-        if (newPassword !== confirmPassword) {
-            toast.error('Las contraseñas no coinciden');
-            return;
-        }
-        try {
-            setLoading(true);
-            // realizamos la petición a la API para la actualización de contraseña
-            const response = await fetch(`${VITE_API_URL}/api/users/password`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `${authToken}`,
-                },
-                body: JSON.stringify({ currentPassword, newPassword }),
-            });
-
-            const result = await response.json();
-
-            if (!response.ok) {
-                throw new Error(
-                    result.message || 'Error al actualizar la contraseña',
-                );
-            }
-            // si todo está bien, muestra un mensaje de éxito y se limpian los campos del formulario
-            toast.success('Contraseña actualizada correctamente');
-            setCurrentPassword('');
-            setNewPassword('');
-            setConfirmPassword('');
-        } catch (error) {
-            toast.error(`Error: ${error.message}`);
-        } finally {
-            setLoading(false);
-        }
-    };
-
     // Mostramos mensajes de perfil cargando...
     if (profileLoading) {
         return <p>Cargando perfil...</p>;
@@ -110,11 +65,11 @@ const UserProfilePage = () => {
     if (!userData) {
         return <p>No se pudo cargar la información del usuario.</p>;
     }
+
     return (
         <div className="user-profile-page">
             <h2>Perfil de Usuario</h2>
-
-            {/* Muestra la información de usuario*/}
+            {/* Mostramos la información de usuario */}
             <div className="user-info">
                 <img
                     src={userData.avatar || '/default-avatar.png'}
@@ -130,56 +85,21 @@ const UserProfilePage = () => {
                 <p>
                     <strong>Email:</strong> {userData.email}
                 </p>
+                <p>
+                    <strong>Edad:</strong>{' '}
+                    {moment().diff(moment(userData.birthdate), 'years')} años
+                </p>
+                <p>
+                    <strong>Miembro desde:</strong>{' '}
+                    {moment(userData.createdAt).format('DD/MM/YYYY')}
+                </p>
             </div>
-
-            {/* Formulario para cambiar la contraseña*/}
-            <form onSubmit={handlePasswordChange}>
-                <h3>Cambiar Contraseña</h3>
-                {/* Campo oculto para el nombre de usuario */}
-                <input
-                    type="text"
-                    value={userData.username}
-                    readOnly
-                    style={{ display: 'none' }}
-                    autoComplete="username"
-                />
-                <div>
-                    <label>Contraseña Actual:</label>
-                    <input
-                        type="password"
-                        value={currentPassword}
-                        onChange={(e) => setCurrentPassword(e.target.value)}
-                        required
-                        autoComplete="current-password"
-                        disabled={loading}
-                    />
-                </div>
-                <div>
-                    <label>Nueva Contraseña:</label>
-                    <input
-                        type="password"
-                        value={newPassword}
-                        onChange={(e) => setNewPassword(e.target.value)}
-                        required
-                        autoComplete="new-password"
-                        disabled={loading}
-                    />
-                </div>
-                <div>
-                    <label>Confirmar Contraseña:</label>
-                    <input
-                        type="password"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                        required
-                        autoComplete="new-password"
-                        disabled={loading}
-                    />
-                </div>
-                <button type="submit" disabled={loading}>
-                    {loading ? 'Actualizando...' : 'Actualizar Contraseña'}
-                </button>
-            </form>
+            <button onClick={() => navigate('/users/profile/edit')}>
+                Editar perfil
+            </button>
+            <button onClick={() => navigate('/Users/Profile/password')}>
+                Cambiar contraseña
+            </button>
         </div>
     );
 };
