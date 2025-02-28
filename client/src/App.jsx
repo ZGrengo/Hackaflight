@@ -12,6 +12,8 @@ import AdminListUsers from './pages/AdminListUsers';
 import NotFoundPage from './pages/NotFoundPage';
 import ValidateUserPage from './pages/ValidateUserPage';
 import UserProfilePage from './pages/UserProfilePage';
+import EditProfilePage from './pages/EditProfilePage';
+import ChangePasswordPage from './pages/ChangePasswordPage';
 import LoginPage from './pages/LoginPage';
 
 const App = () => {
@@ -28,6 +30,8 @@ const App = () => {
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/validate/:regCode" element={<ValidateUserPage />} />
                 <Route path="/users/profile" element={<UserProfilePage />} />
+                <Route path="/users/profile/edit" element={<EditProfilePage />} />
+                <Route path="/Users/Profile/password" element={<ChangePasswordPage />} />
                 <Route path="*" element={<NotFoundPage />} />
             </Routes>
             <Footer />
