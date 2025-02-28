@@ -1,7 +1,10 @@
 import PropTypes from 'prop-types';
 import { useLocation } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import FlightCard from '../components/FlightCard';
+import FlightFilters from '../components/FlightFilters';
+
+const { VITE_API_URL } = import.meta.env;
 
 const SearchResultsPage = () => {
     const location = useLocation();
@@ -9,51 +12,46 @@ const SearchResultsPage = () => {
     const [ filteredFlights, setFilteredFlights ] = useState( [ ...flights.ida, ...flights.vuelta ] );
     const [ sortOption, setSortOption ] = useState( '' );
 
-    const handleFilterChange = ( filter ) => {
-        // Implementar lógica de filtrado aquí
-        let updatedFlights = [ ...flights.ida, ...flights.vuelta ];
+    const handleFilterChange = async ( filters ) => {
+        const searchParams = new URLSearchParams();
 
-        // Filtrar por destino
-        if ( filter.destination )
+        // Añadir solo los filtros que tienen valores
+        Object.keys( filters ).forEach( ( key ) => {
+            if ( filters[ key ] )
+            {
+                searchParams.append( key, filters[ key ] );
+            }
+        } );
+
+        try
         {
-            updatedFlights = updatedFlights.filter( flight => flight.destination.includes( filter.destination ) );
-        }
+            const res = await fetch(
+                `${ VITE_API_URL }/api/flights/filter?${ searchParams.toString() }`,
+                {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' },
+                }
+            );
 
-        // Filtrar por fechas
-        if ( filter.departureDate )
+            if ( !res.ok ) throw new Error( 'Network response was not ok' );
+            const body = await res.json();
+
+            if ( body.status === 'error' ) throw new Error( body.message );
+            setFilteredFlights( body.data || [] );
+        } catch ( err )
         {
-            updatedFlights = updatedFlights.filter( flight => flight.departureDate === filter.departureDate );
+            console.log( 'Error al filtrar vuelos:', err );
         }
-
-        // Filtrar por número de paradas
-        if ( filter.stops !== undefined )
-        {
-            updatedFlights = updatedFlights.filter( flight => flight.stops === filter.stops );
-        }
-
-        // Filtrar por rango de precios
-        if ( filter.priceRange )
-        {
-            updatedFlights = updatedFlights.filter( flight => flight.price.total >= filter.priceRange.min && flight.price.total <= filter.priceRange.max );
-        }
-
-        setFilteredFlights( updatedFlights );
     };
 
-    const handleSortChange = ( option ) => {
+    const handleSortChange = async ( option ) => {
         setSortOption( option );
-        let sortedFlights = [ ...filteredFlights ];
-
-        if ( option === 'date' )
-        {
-            sortedFlights.sort( ( a, b ) => new Date( a.departureDate ) - new Date( b.departureDate ) );
-        } else if ( option === 'price' )
-        {
-            sortedFlights.sort( ( a, b ) => a.price.total - b.price.total );
-        }
-
-        setFilteredFlights( sortedFlights );
+        await handleFilterChange( { sortByPrice: option } );
     };
+
+    useEffect( () => {
+        setFilteredFlights( [ ...flights.ida, ...flights.vuelta ] );
+    }, [ flights ] );
 
     if ( !flights.ida.length && !flights.vuelta.length )
     {
@@ -62,24 +60,8 @@ const SearchResultsPage = () => {
     {
         return (
             <div>
+                <FlightFilters onFilterChange={handleFilterChange} />
                 <h2>Resultados de la Búsqueda</h2>
-                <div>
-                    <label>
-                        Filtrar por destino:
-                        <input type="text" onChange={( e ) => handleFilterChange( { destination: e.target.value } )} />
-                    </label>
-                </div>
-                {/* Agregar componentes de filtro y ordenamiento aquí */}
-                <div>
-                    <label>
-                        Ordenar por:
-                        <select value={sortOption} onChange={( e ) => handleSortChange( e.target.value )}>
-                            <option value="">Seleccionar</option>
-                            <option value="date">Fecha</option>
-                            <option value="price">Precio</option>
-                        </select>
-                    </label>
-                </div>
                 <div className="flight-cards-container">
                     {filteredFlights.map( ( flight, index ) => (
                         <FlightCard key={index} flight={flight} />
@@ -92,41 +74,49 @@ const SearchResultsPage = () => {
 
 SearchResultsPage.propTypes = {
     flights: PropTypes.shape( {
-        ida: PropTypes.arrayOf( PropTypes.shape( {
-            origin: PropTypes.string.isRequired,
-            destination: PropTypes.string.isRequired,
-            departureDate: PropTypes.string.isRequired,
-            returnDate: PropTypes.string,
-            price: PropTypes.shape( {
-                currency: PropTypes.string.isRequired,
-                total: PropTypes.string.isRequired,
-                base: PropTypes.string,
-                fees: PropTypes.arrayOf( PropTypes.shape( {
-                    amount: PropTypes.string,
-                    type: PropTypes.string
-                } ) ),
-                grandTotal: PropTypes.string
-            } ).isRequired,
-            stops: PropTypes.number
-        } ) ),
-        vuelta: PropTypes.arrayOf( PropTypes.shape( {
-            origin: PropTypes.string.isRequired,
-            destination: PropTypes.string.isRequired,
-            departureDate: PropTypes.string.isRequired,
-            returnDate: PropTypes.string,
-            price: PropTypes.shape( {
-                currency: PropTypes.string.isRequired,
-                total: PropTypes.string.isRequired,
-                base: PropTypes.string,
-                fees: PropTypes.arrayOf( PropTypes.shape( {
-                    amount: PropTypes.string,
-                    type: PropTypes.string
-                } ) ),
-                grandTotal: PropTypes.string
-            } ).isRequired,
-            stops: PropTypes.number
-        } ) )
-    } )
+        ida: PropTypes.arrayOf(
+            PropTypes.shape( {
+                origin: PropTypes.string.isRequired,
+                destination: PropTypes.string.isRequired,
+                departureDate: PropTypes.string.isRequired,
+                returnDate: PropTypes.string,
+                price: PropTypes.shape( {
+                    currency: PropTypes.string.isRequired,
+                    total: PropTypes.string.isRequired,
+                    base: PropTypes.string,
+                    fees: PropTypes.arrayOf(
+                        PropTypes.shape( {
+                            amount: PropTypes.string,
+                            type: PropTypes.string,
+                        } )
+                    ),
+                    grandTotal: PropTypes.string,
+                } ).isRequired,
+                stops: PropTypes.number,
+            } )
+        ),
+        vuelta: PropTypes.arrayOf(
+            PropTypes.shape( {
+                origin: PropTypes.string.isRequired,
+                destination: PropTypes.string.isRequired,
+                departureDate: PropTypes.string.isRequired,
+                returnDate: PropTypes.string,
+                price: PropTypes.shape( {
+                    currency: PropTypes.string.isRequired,
+                    total: PropTypes.string.isRequired,
+                    base: PropTypes.string,
+                    fees: PropTypes.arrayOf(
+                        PropTypes.shape( {
+                            amount: PropTypes.string,
+                            type: PropTypes.string,
+                        } )
+                    ),
+                    grandTotal: PropTypes.string,
+                } ).isRequired,
+                stops: PropTypes.number,
+            } )
+        ),
+    } ),
 };
 
 export default SearchResultsPage;
