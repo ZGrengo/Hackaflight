@@ -35,6 +35,7 @@ const FlightCard = ( { flight } ) => {
         </div>
     );
 };
+// falta meter la aerolinea
 
 // Definimos las propiedades que recibe el componente.
 FlightCard.propTypes = {
