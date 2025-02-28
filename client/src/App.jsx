@@ -16,6 +16,7 @@ import EditProfilePage from './pages/EditProfilePage';
 import ChangePasswordPage from './pages/ChangePasswordPage';
 import LoginPage from './pages/LoginPage';
 import RatingPage from './pages/RatingPage';
+import RatingsListPage from './pages/RatingsListPage';
 
 const App = () => {
     return (
@@ -42,7 +43,8 @@ const App = () => {
                     path='/Users/Profile/password'
                     element={<ChangePasswordPage />}
                 />
-                <Route path='/ratings' element={<RatingPage />} />
+                <Route path='/users/ratings' element={<RatingPage />} />
+                <Route path='/ratings' element={<RatingsListPage />} />
                 <Route path='*' element={<NotFoundPage />} />
             </Routes>
             <Footer />
