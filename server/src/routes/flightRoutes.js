@@ -10,11 +10,11 @@ const router = express.Router();
 // Endpoint para buscar vuelos y validarlos con la dependencia Joi
 router.get(
     '/search',
-    joiValidatorMiddleware(searchFlightsSchema),
+    joiValidatorMiddleware( searchFlightsSchema ),
     searchFlightsController,
 );
 
 // Endpoint para filtrar vuelos
-router.get('/filter', joiValidatorMiddleware(filterFlightsSchema), filterFlightListController);
+router.get( '/filter', joiValidatorMiddleware( filterFlightsSchema ), filterFlightListController );
 
 export default router;

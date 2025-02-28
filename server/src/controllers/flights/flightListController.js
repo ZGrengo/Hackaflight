@@ -2,6 +2,8 @@ import generateErrorUtil from '../../utils/generateErrorUtil.js';
 import { globalFlights } from './searchFlightsController.js';
 
 // Controlador para filtrar la lista de vuelos almacenada
+// ...existing code...
+
 const filterFlightListController = ( req, res, next ) => {
     try
     {
@@ -24,6 +26,11 @@ const filterFlightListController = ( req, res, next ) => {
             class: travelClass,
             stops,
             sortByPrice,
+            sortBy,
+            order,
+            destination,
+            departureDate,
+            arrivalDate,
             page = 1, // Página por defecto: 1
             limit = 10, // Límite de resultados por página: 10
         } = req.query;
@@ -192,6 +199,53 @@ const filterFlightListController = ( req, res, next ) => {
             );
         }
 
+        // Filtro por destino
+        if ( destination )
+        {
+            filteredFlights = filteredFlights.filter( ( flight ) =>
+                flight.itineraries.some( ( itinerary ) =>
+                    itinerary.segments.some( ( segment ) =>
+                        segment.arrival.iataCode === destination.toUpperCase()
+                    )
+                )
+            );
+        }
+
+        // Filtro por fecha de salida
+        if ( departureDate )
+        {
+            const parsedDepartureDate = new Date( departureDate );
+            if ( isNaN( parsedDepartureDate ) )
+            {
+                throw generateErrorUtil(
+                    'El parámetro "departureDate" debe ser una fecha válida en formato YYYY-MM-DD.',
+                    400,
+                );
+            }
+            filteredFlights = filteredFlights.filter( ( flight ) => {
+                const flightDepartureDate = new Date( flight.itineraries[ 0 ]?.segments[ 0 ]?.departure?.at );
+                return flightDepartureDate.toDateString() === parsedDepartureDate.toDateString();
+            } );
+        }
+
+        // Filtro por fecha de llegada
+        if ( arrivalDate )
+        {
+            const parsedArrivalDate = new Date( arrivalDate );
+            if ( isNaN( parsedArrivalDate ) )
+            {
+                throw generateErrorUtil(
+                    'El parámetro "arrivalDate" debe ser una fecha válida en formato YYYY-MM-DD.',
+                    400,
+                );
+            }
+            filteredFlights = filteredFlights.filter( ( flight ) => {
+                const lastSegment = flight.itineraries[ 0 ]?.segments[ flight.itineraries[ 0 ]?.segments.length - 1 ];
+                const flightArrivalDate = new Date( lastSegment?.arrival?.at );
+                return flightArrivalDate.toDateString() === parsedArrivalDate.toDateString();
+            } );
+        }
+
         // Ordenar por precio
         if ( sortByPrice )
         {
@@ -204,32 +258,35 @@ const filterFlightListController = ( req, res, next ) => {
         }
 
         // Ordenar por precio, paradas o duración
-        if (sortBy) {
-            filteredFlights = filteredFlights.sort((a, b) => {
+        if ( sortBy )
+        {
+            filteredFlights = filteredFlights.sort( ( a, b ) => {
                 let valueA, valueB;
 
-                switch (sortBy) {
+                switch ( sortBy )
+                {
                     case 'price':
-                        valueA = parseFloat(a.price?.total);
-                        valueB = parseFloat(b.price?.total);
+                        valueA = parseFloat( a.price?.total );
+                        valueB = parseFloat( b.price?.total );
                         break;
                     case 'stops':
-                        valueA = a.itineraries[0]?.segments.length;
-                        valueB = b.itineraries[0]?.segments.length;
+                        valueA = a.itineraries[ 0 ]?.segments.length;
+                        valueB = b.itineraries[ 0 ]?.segments.length;
                         break;
                     case 'duration':
-                        valueA = a.itineraries[0]?.duration;
-                        valueB = b.itineraries[0]?.duration;
+                        valueA = a.itineraries[ 0 ]?.duration;
+                        valueB = b.itineraries[ 0 ]?.duration;
                         break;
                     default:
                         return 0;
                 }
 
-                if (order === 'desc') {
+                if ( order === 'desc' )
+                {
                     return valueB - valueA;
                 }
                 return valueA - valueB; // Orden ascendente por defecto
-            });
+            } );
         }
 
         // Paginación
@@ -256,3 +313,23 @@ const filterFlightListController = ( req, res, next ) => {
 };
 
 export { filterFlightListController };
+//Filtro por Destino
+// GET /flights?destination=JFK
+
+//Filtro por fecha de salida
+// GET /flights?departureDate=2022-12-25
+
+//Filtro por fecha de llegada
+// GET / flights?ArrivalDate=2022-12-25
+
+//Filtro por cantidad de escalas
+// GET / flights?stops=1
+
+//Filtro por rango de precios
+// GET / flights?minPrice=100&maxPrice=500
+
+// Ordenamiento por precio
+// GET / flights?sortByPrice=true
+
+// combinacion de filtros y ordenamiento
+//GET /flights?destination=JFK&departureDate=2025-03-01&minPrice=100&maxPrice=500&sortBy=price&order=asc
