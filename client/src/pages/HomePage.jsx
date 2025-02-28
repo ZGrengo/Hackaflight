@@ -57,7 +57,7 @@ const HomePage = () => {
         }
     }, [ isAuthenticated ] );
 
-    const loadRecentSearches = async () => {
+    const loadRecentSearches = () => {
         const storedSearches = localStorage.getItem( 'recentSearches' );
         if ( storedSearches )
         {
@@ -132,6 +132,16 @@ const HomePage = () => {
 
             const flights = { ida: flightsIda, vuelta: flightsVuelta };
             navigate( '/search-results', { state: { flights } } );
+
+            // Guardar la búsqueda reciente
+            saveRecentSearch( {
+                origen,
+                destino,
+                fechaSalida,
+                fechaRetorno,
+                pasajeros,
+                tipoViaje,
+            } );
         } catch ( err )
         {
             console.log( 'Error al buscar vuelos:', err );
@@ -144,13 +154,12 @@ const HomePage = () => {
     const handleRepeatSearch = ( search ) => {
         setOrigen( search.origen );
         setDestino( search.destino );
-        setFechaRetorno( search.fechaRetorno );
         setFechaSalida( search.fechaSalida );
+        setFechaRetorno( search.fechaRetorno );
         setPasajeros( search.pasajeros );
         setTipoViaje( search.tipoViaje );
-        saveRecentSearch( search );
         handleSubmit();
-    }
+    };
 
     const handleSaveFavorite = ( search ) => {
         const favorites = localStorage.getItem( 'favorites' );
@@ -158,7 +167,7 @@ const HomePage = () => {
         newFavorites.unshift( search );
         localStorage.setItem( 'favorites', JSON.stringify( newFavorites ) );
         console.log( 'Guardado en favoritos:', search );
-    }
+    };
 
     return (
         <>

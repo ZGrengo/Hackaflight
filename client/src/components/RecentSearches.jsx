@@ -27,6 +27,10 @@ RecentSearches.propTypes = {
         PropTypes.shape( {
             origen: PropTypes.string.isRequired,
             destino: PropTypes.string.isRequired,
+            fechaSalida: PropTypes.string.isRequired,
+            fechaRetorno: PropTypes.string,
+            pasajeros: PropTypes.number.isRequired,
+            tipoViaje: PropTypes.string.isRequired,
         } )
     ).isRequired,
     onRepeatSearch: PropTypes.func.isRequired,
