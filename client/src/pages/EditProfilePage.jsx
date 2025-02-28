@@ -1,5 +1,5 @@
 // Importamos los hooks.
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 // Importamos la función que muestra un mensaje al usuario.
 import toast from 'react-hot-toast';
@@ -28,6 +28,7 @@ const EditProfilePage = () => {
     const [loading, setLoading] = useState(false);
     const [profileLoading, setProfileLoading] = useState(true);
 
+    const inputFileRef = useRef(null);
     // obtenemos los datos del usuario al cargar la página
     useEffect(() => {
         // si no hay toquen, regresamos a la página de login
@@ -70,6 +71,39 @@ const EditProfilePage = () => {
 
         fetchUserData();
     }, [authToken, navigate]);
+
+    const handleAvatarChange = async (e) => {
+        if (e.target.files && e.target.files[0]) {
+            const formData = new FormData();
+            formData.append('avatar', e.target.files[0]);
+
+            try {
+                const response = await fetch(
+                    `${VITE_API_URL}/api/users/avatar`,
+                    {
+                        method: 'PUT',
+                        headers: {
+                            Authorization: `${authToken}`,
+                        },
+                        body: formData,
+                    },
+                );
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(
+                        result.message || 'Error al actualizar el avatar',
+                    );
+                }
+                toast.success('Avatar actualizado');
+                // Actualizamos el avatar en el estado
+                setUserData({ ...userData, avatar: result.data.user.avatar });
+            } catch (error) {
+                toast.error(`Error: ${error.message}`);
+            }
+        }
+    };
 
     // Cambio de contraseña
     const handleProfileUpdate = async (e) => {
@@ -115,13 +149,37 @@ const EditProfilePage = () => {
     }
     // formulario para editar el perfil
     return (
-        <div className="user-profile-page">
+        <div className='user-profile-page'>
             <h2>Editar Perfil</h2>
+            <div>
+                <img
+                    src={
+                        userData.avatar !== null
+                            ? `${VITE_API_URL}/uploads/${userData.avatar}`
+                            : '/default-avatar.png'
+                    }
+                    alt='Avatar'
+                />
+                <br />
+                <button
+                    type='button'
+                    onClick={() => inputFileRef.current.click()}
+                >
+                    Cambiar Avatar
+                </button>
+                <input
+                    type='file'
+                    ref={inputFileRef}
+                    onChange={handleAvatarChange}
+                    style={{ display: 'none' }}
+                    accept='image/*'
+                />
+            </div>
             <form onSubmit={handleProfileUpdate}>
                 <div>
                     <label>Nombre:</label>
                     <input
-                        type="text"
+                        type='text'
                         value={firstName}
                         onChange={(e) => SetFirstName(e.target.value)}
                         required
@@ -131,7 +189,7 @@ const EditProfilePage = () => {
                 <div>
                     <label>Apellido:</label>
                     <input
-                        type="text"
+                        type='text'
                         value={lastName}
                         onChange={(e) => SetLastName(e.target.value)}
                         required
@@ -141,7 +199,7 @@ const EditProfilePage = () => {
                 <div>
                     <label>Usuario:</label>
                     <input
-                        type="text"
+                        type='text'
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                         required
@@ -151,7 +209,7 @@ const EditProfilePage = () => {
                 <div>
                     <label>Email:</label>
                     <input
-                        type="email"
+                        type='email'
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
@@ -162,16 +220,16 @@ const EditProfilePage = () => {
                 <div>
                     <label>Edad:</label>
                     <input
-                        type="text"
+                        type='text'
                         value={`${moment().diff(moment(userData.birthdate), 'years')} años`}
                         disabled
                     />
                 </div>
-                <button type="submit" disabled={loading}>
+                <button type='submit' disabled={loading}>
                     {loading ? 'Actualizando...' : 'Actualizar'}
                 </button>
                 <button
-                    type="button"
+                    type='button'
                     onClick={() => navigate('/users/profile')}
                     disabled={loading}
                 >

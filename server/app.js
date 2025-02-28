@@ -13,12 +13,19 @@ import flightRoutes from './src/routes/flightRoutes.js';
 import userRoutes from './src/routes/userRoutes.js';
 import ratingRoutes from './src/routes/ratingRoutes.js';
 
+import { fileURLToPath } from 'url';
+import path from 'path';
+
 //obtenemos variables de entorno necesarias
 const { PORT, UPLOADS_DIR } = process.env;
 
 //Creamos una aplicación express (server)
 const app = express();
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+app.use('/uploads', express.static(path.join(__dirname, UPLOADS_DIR)));
 //middleware que muestra por consola información de la petición entrante
 app.use(morgan('dev'));
 
