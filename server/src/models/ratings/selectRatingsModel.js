@@ -10,13 +10,13 @@ const selectRatingsModel = async (rating = '') => {
     const [ratings] = await pool.query(
         `
         SELECT
-                v.valorationId AS id,
+                v.ratingId AS id,
                 v.title,
                 v.rate,
                 v.comment,
                 v.createdAt,
                 u.username
-            FROM valorations v
+            FROM ratings v
             INNER JOIN users u ON u.userId = v.userId
             WHERE v.rate LIKE ?
             ORDER BY v.createdAt DESC;`,

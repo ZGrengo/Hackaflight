@@ -15,7 +15,7 @@ const deleteUserModel = async (userId) => {
     }
     // Primero eliminamos los registros relacionados
     await pool.query(`DELETE FROM favorites WHERE userId = ?`, [userId]);
-    await pool.query(`DELETE FROM valorations WHERE userId = ?`, [userId]);
+    await pool.query(`DELETE FROM ratings WHERE userId = ?`, [userId]);
 
     //Borramos el usuario de la base de datos
     await pool.query(`DELETE FROM users WHERE userId = ?`, [userId]);

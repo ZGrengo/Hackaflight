@@ -78,51 +78,76 @@ const RatingPage = () => {
     //console.log('Auth State:', { authUser, authToken }); // debugging
     //si no estamos logueados, redirigimos a la pagina principal
     if (!authUser || !authToken) {
-        return <Navigate to="/login" />;
+        return <Navigate to='/login' />;
     }
     return (
-        <main>
-            <h2>Déjanos un comentario!</h2>
-            <p>
-                Ayúdanos a mejorar nuestra plataforma para poder llevarte cada
-                día más lejos al mejor precio.
-            </p>
-            <section>
-                <form onSubmit={handleRating}>
+        <main className='bg-[#E5F7FF] flex flex-col items-center justify-center min-h-screen p-4'>
+            <section className='bg-white p-8 rounded-lg shadow-md w-full max-w-xs mx-auto'>
+                <h2 className='text-2xl font-bold text-[#083059] text-center mb-6'>
+                    Déjanos un comentario!
+                </h2>
+                <p className='text-gray-600 text-center mb-8'>
+                    Ayúdanos a mejorar nuestra plataforma para poder llevarte
+                    cada día más lejos al mejor precio.
+                </p>
+                <form onSubmit={handleRating} className='space-y-6'>
                     <div>
-                        <label htmlFor="title">Título:</label>
+                        <label
+                            htmlFor='title'
+                            className='block text-[#083059] font-medium mb-2'
+                        >
+                            Título:
+                        </label>
                         <input
-                            type="text"
-                            id="title"
+                            type='text'
+                            id='title'
+                            className='w-full p-3 border border-[#3951AA] rounded-md focus:outline-none focus:ring-2 focus:ring-[#179DD9]'
                             value={title}
                             onChange={(e) => setTitle(e.target.value)}
                             required
                         />
                     </div>
                     <div>
-                        <label htmlFor="rate">Valoración:</label>
+                        <label
+                            htmlFor='rate'
+                            className='block text-[#083059] font-medium mb-2'
+                        >
+                            Valoración:
+                        </label>
                         <input
-                            type="number"
-                            min="1"
-                            max="5"
-                            id="rating"
+                            type='number'
+                            min='1'
+                            max='5'
+                            id='rating'
+                            className='w-full p-3 border border-[#3951AA] rounded-md focus:outline-none focus:ring-2 focus:ring-[#179DD9]'
                             value={rate}
                             onChange={(e) => setRate(e.target.value)}
                             required
                         />
                     </div>
                     <div>
-                        <label htmlFor="comment">Descripción:</label>
+                        <label
+                            htmlFor='comment'
+                            className='block text-[#083059] font-medium mb-2'
+                        >
+                            Descripción:
+                        </label>
                         <textarea
-                            name="comment"
-                            id="comment"
+                            name='comment'
+                            id='comment'
+                            className='w-full p-3 border border-[#3951AA] rounded-md focus:outline-none focus:ring-2 focus:ring-[#179DD9] min-h-[100px]'
                             value={comment}
                             onChange={(e) => setComment(e.target.value)}
                         >
                             Déjanos tu comentario
                         </textarea>
 
-                        <button disabled={loading}>Enviar valoración</button>
+                        <button
+                            disabled={loading}
+                            className='w-full bg-[#179DD9] text-white py-3 px-4 rounded-md hover:bg-[#3951AA] transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed'
+                        >
+                            {loading ? 'Enviando...' : 'Enviar valoración'}
+                        </button>
                     </div>
                 </form>
             </section>

@@ -21,7 +21,7 @@ const main = async () => {
         console.log('Borrando tablas...');
 
         // Borramos las tablas.
-        await pool.query('DROP TABLE IF EXISTS valorations, favorites , users');
+        await pool.query('DROP TABLE IF EXISTS ratings, favorites , users');
 
         console.log('Creando tablas...');
 
@@ -66,8 +66,8 @@ const main = async () => {
 
         // Tabla de valoraciones.
         await pool.query(`
-            CREATE TABLE IF NOT EXISTS valorations (
-                valorationId INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+            CREATE TABLE IF NOT EXISTS ratings (
+                ratingId INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
                 userId INT UNSIGNED NOT NULL,
                 title VARCHAR(100) NOT NULL,
                 rate Enum('1', '2', '3', '4', '5') DEFAULT '5',

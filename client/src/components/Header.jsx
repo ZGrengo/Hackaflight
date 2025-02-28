@@ -27,7 +27,7 @@ const Header = () => {
 
                 {authUser ? (
                     <>
-                        <Link to='/profile'>
+                        <Link to='/users/profile'>
                             <img src='' alt='profile' className='w-8' />
                         </Link>
                         <button onClick={authLogoutState}>

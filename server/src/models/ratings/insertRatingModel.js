@@ -7,7 +7,7 @@ const insertRatingModel = async (title, rate, comment, userId) => {
     const pool = await getPool();
     //insertamos la valoración
     const [newRating] = await pool.query(
-        `INSERT INTO valorations (userId, title, rate, comment) 
+        `INSERT INTO ratings (userId, title, rate, comment) 
         VALUES (?, ?, ?, ?)`,
         [userId, title, rate, comment],
     );
