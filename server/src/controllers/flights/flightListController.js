@@ -26,6 +26,8 @@ const filterFlightListController = ( req, res, next ) => {
             sortByPrice,
             page = 1, // Página por defecto: 1
             limit = 10, // Límite de resultados por página: 10
+            sortBy, // Parámetro de ordenación
+            order = 'asc', // Orden por defecto: ascendente
         } = req.query;
 
         // Validar que los parámetros de paginación sean números válidos
@@ -204,32 +206,35 @@ const filterFlightListController = ( req, res, next ) => {
         }
 
         // Ordenar por precio, paradas o duración
-        if (sortBy) {
-            filteredFlights = filteredFlights.sort((a, b) => {
+        if ( sortBy )
+        {
+            filteredFlights = filteredFlights.sort( ( a, b ) => {
                 let valueA, valueB;
 
-                switch (sortBy) {
+                switch ( sortBy )
+                {
                     case 'price':
-                        valueA = parseFloat(a.price?.total);
-                        valueB = parseFloat(b.price?.total);
+                        valueA = parseFloat( a.price?.total );
+                        valueB = parseFloat( b.price?.total );
                         break;
                     case 'stops':
-                        valueA = a.itineraries[0]?.segments.length;
-                        valueB = b.itineraries[0]?.segments.length;
+                        valueA = a.itineraries[ 0 ]?.segments.length;
+                        valueB = b.itineraries[ 0 ]?.segments.length;
                         break;
                     case 'duration':
-                        valueA = a.itineraries[0]?.duration;
-                        valueB = b.itineraries[0]?.duration;
+                        valueA = a.itineraries[ 0 ]?.duration;
+                        valueB = b.itineraries[ 0 ]?.duration;
                         break;
                     default:
                         return 0;
                 }
 
-                if (order === 'desc') {
+                if ( order === 'desc' )
+                {
                     return valueB - valueA;
                 }
                 return valueA - valueB; // Orden ascendente por defecto
-            });
+            } );
         }
 
         // Paginación
