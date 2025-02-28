@@ -114,16 +114,17 @@ const RatingPage = () => {
                         >
                             Valoración:
                         </label>
-                        <input
-                            type='number'
-                            min='1'
-                            max='5'
-                            id='rating'
-                            className='w-full p-3 border border-[#3951AA] rounded-md focus:outline-none focus:ring-2 focus:ring-[#179DD9]'
+                        <select
                             value={rate}
                             onChange={(e) => setRate(e.target.value)}
-                            required
-                        />
+                        >
+                            <option value=''>Valoración</option>
+                            <option value='1'>⭐</option>
+                            <option value='2'>⭐⭐</option>
+                            <option value='3'>⭐⭐⭐</option>
+                            <option value='4'>⭐⭐⭐⭐</option>
+                            <option value='5'>⭐⭐⭐⭐⭐</option>
+                        </select>
                     </div>
                     <div>
                         <label

@@ -26,7 +26,7 @@ const useRatingList = () => {
                     throw new Error(body.message);
                 }
                 //actualizamos el State con las valoraciones
-                setRatings(body.data.ratings.reverse());
+                setRatings(body.data.ratings);
             } catch (err) {
                 toast.error(err.message, {
                     id: 'listRatings',
