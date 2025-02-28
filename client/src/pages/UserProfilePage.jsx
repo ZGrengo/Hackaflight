@@ -67,13 +67,17 @@ const UserProfilePage = () => {
     }
 
     return (
-        <div className="user-profile-page">
+        <div className='user-profile-page'>
             <h2>Perfil de Usuario</h2>
             {/* Mostramos la información de usuario */}
-            <div className="user-info">
+            <div className='user-info'>
                 <img
-                    src={userData.avatar || '/default-avatar.png'}
-                    alt="Avatar"
+                    src={
+                        userData.avatar !== null
+                            ? `${VITE_API_URL}/uploads/${userData.avatar}`
+                            : '/default-avatar.png'
+                    }
+                    alt='Avatar'
                 />
                 <p>
                     <strong>Nombre:</strong> {userData.firstName}{' '}
