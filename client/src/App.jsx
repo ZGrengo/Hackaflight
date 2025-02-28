@@ -15,24 +15,35 @@ import UserProfilePage from './pages/UserProfilePage';
 import EditProfilePage from './pages/EditProfilePage';
 import ChangePasswordPage from './pages/ChangePasswordPage';
 import LoginPage from './pages/LoginPage';
+import RatingPage from './pages/RatingPage';
 
 const App = () => {
     return (
         <>
             <Header />
-            <Toaster position="top-center" />
+            <Toaster position='top-center' />
             {/* Todos los endpoints han de definirse dentro de este compontente. */}
             <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/search-results" element={<SearchResultsPage />} />
-                <Route path="/register" element={<RegisterPage />} />
-                <Route path="/admin/users" element={<AdminListUsers />} />
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/validate/:regCode" element={<ValidateUserPage />} />
-                <Route path="/users/profile" element={<UserProfilePage />} />
-                <Route path="/users/profile/edit" element={<EditProfilePage />} />
-                <Route path="/Users/Profile/password" element={<ChangePasswordPage />} />
-                <Route path="*" element={<NotFoundPage />} />
+                <Route path='/' element={<HomePage />} />
+                <Route path='/search-results' element={<SearchResultsPage />} />
+                <Route path='/register' element={<RegisterPage />} />
+                <Route path='/admin/users' element={<AdminListUsers />} />
+                <Route path='/login' element={<LoginPage />} />
+                <Route
+                    path='/validate/:regCode'
+                    element={<ValidateUserPage />}
+                />
+                <Route path='/users/profile' element={<UserProfilePage />} />
+                <Route
+                    path='/users/profile/edit'
+                    element={<EditProfilePage />}
+                />
+                <Route
+                    path='/Users/Profile/password'
+                    element={<ChangePasswordPage />}
+                />
+                <Route path='/ratings' element={<RatingPage />} />
+                <Route path='*' element={<NotFoundPage />} />
             </Routes>
             <Footer />
         </>
