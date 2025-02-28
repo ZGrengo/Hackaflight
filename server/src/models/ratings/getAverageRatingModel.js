@@ -12,7 +12,7 @@ const getAverageRatingModel = async () => {
         SELECT 
             COUNT(*) as total_ratings,
             ROUND(AVG(CAST(rate AS DECIMAL)), 1) as average_rating
-        FROM valorations
+        FROM ratings
         `,
     );
     //Devolvemos la media de las valoraciones
