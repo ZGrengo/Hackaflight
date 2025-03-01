@@ -6,7 +6,7 @@ import useAuthContext from '../hooks/useAuthContext.js';
 const { VITE_API_URL } = import.meta.env;
 
 const FavoriteDetailsEditPage = () => {
-    const [favorites, setFavorite] = useState([]);
+    const [favorites, setFavorite] = useState({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
@@ -33,7 +33,7 @@ useEffect(()=> {
                 if (body.status === 'error') {
                     throw new Error(body.message);
                 }
-                setFavorite(body.data);
+                setFavorite(body.data.favorites);
     
     } catch (err) {
         setError(err.message);
@@ -46,10 +46,7 @@ useEffect(()=> {
 if (authToken && authUser) { // Solo ejecuta si existen
     fetchFavorites();
 }
-
-fetchFavorites();
 }, [favoriteId, authToken, authUser]);
-
 
 //Toggle para permitir editar un favorito.
 const handleEditToggle = () => setIsEditing(!isEditing);
@@ -113,19 +110,19 @@ if (error) return <p>Error: {error}</p>;
             <h2>Lista de busquedas favoritas</h2>
             <form>
                 <label>Destino:</label>
-                <input type="text" name="destination" value={favorites.destination} onChange={handleChange} readOnly={!isEditing} />
+                <input type="text" name="destination" value={favorites?.destination || ""} onChange={handleChange} readOnly={!isEditing} />
 
                 <label>Origen:</label>
-                <input type="text" name="origin" value={favorites.origin} onChange={handleChange} readOnly={!isEditing} />
+                <input type="text" name="origin" value={favorites?.origin || ""} onChange={handleChange} readOnly={!isEditing} />
 
                 <label>Fecha de Salida:</label>
-                <input type="date" name="departureDate" value={favorites.departureDate} onChange={handleChange} readOnly={!isEditing} />
+                <input type="date" name="departureDate" value={favorites?.departureDate ? new Date(favorites.departureDate).toISOString().split('T')[0] : ""} onChange={handleChange} readOnly={!isEditing} />
 
                 <label>Fecha de Regreso:</label>
-                <input type="date" name="returnDate" value={favorites.returnDate || ''} onChange={handleChange} readOnly={!isEditing} />
+                <input type="date" name="returnDate" value={favorites?.returnDate ? new Date(favorites.returnDate).toISOString().split('T')[0] : ""} onChange={handleChange} readOnly={!isEditing} />
 
                 <label>Adultos:</label>
-                <input type="number" name="adults" value={favorites.adults} onChange={handleChange} readOnly={!isEditing} />
+                <input type="number" name="adults" value={favorites?.adults || 0} onChange={handleChange} readOnly={!isEditing} />
 
                 <button type="button" onClick={handleEditToggle}>
                 
