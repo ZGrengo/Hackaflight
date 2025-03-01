@@ -10,7 +10,6 @@ const SearchResultsPage = () => {
     const location = useLocation();
     const { flights = { ida: [], vuelta: [] } } = location.state || {};
     const [ filteredFlights, setFilteredFlights ] = useState( [ ...flights.ida, ...flights.vuelta ] );
-    const [ sortOption, setSortOption ] = useState( '' );
 
     const handleFilterChange = async ( filters ) => {
         const searchParams = new URLSearchParams();
@@ -44,17 +43,15 @@ const SearchResultsPage = () => {
         }
     };
 
-    const handleSortChange = async ( option ) => {
-        setSortOption( option );
-        await handleFilterChange( { sortByPrice: option } );
-    };
 
     useEffect( () => {
         setFilteredFlights( [ ...flights.ida, ...flights.vuelta ] );
     }, [ flights ] );
+    console.log( flights.ida, flights.vuelta );
 
     if ( !flights.ida.length && !flights.vuelta.length )
     {
+
         return <p>No se encontraron resultados de búsqueda.</p>;
     } else
     {
