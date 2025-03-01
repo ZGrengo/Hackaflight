@@ -55,7 +55,7 @@ const LogoAnimation = () => {
     }, [] );
 
     return (
-        <section className="logo-animation-section flex flex-col items-center justify-center bg-sky-700 h-screen">
+        <section className="logo-animation-section flex flex-col items-center justify-center bg-medium-blue h-screen">
             <h2 id="first-h2" className='text-3xl font-bold text-white mb-4'></h2>
             <div className="logo-container flex items-center justify-center">
                 <svg className="responsive-logo w-24 h-24" viewBox="0 0 372 345" fill="none" xmlns="http://www.w3.org/2000/svg">

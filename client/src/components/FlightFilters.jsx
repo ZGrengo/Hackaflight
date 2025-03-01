@@ -25,6 +25,7 @@ const FlightFilters = ( { onFilterChange } ) => {
                     <option value="0">Directo</option>
                     <option value="1">1 Parada</option>
                     <option value="2">2 Paradas</option>
+                    <option value="3">3 Paradas</option>
                 </select>
             </div>
             <div>

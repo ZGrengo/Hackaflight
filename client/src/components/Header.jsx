@@ -6,14 +6,14 @@ const Header = () => {
     const { authUser, authLogoutState } = useAuthContext();
 
     return (
-        <header className='flex sticky top-0 justify-around items-center bg-[#25779b] w-full p-4 z-50'>
+        <header className='flex sticky top-0 justify-around items-center bg-medium-blue w-full p-4 z-50 bg-opacity-80 backdrop-blur-md'>
             {/* Logo */}
             <nav className='flex gap-4 max-w-full'>
                 <Link to='/'>
                     <img
                         src='/public/logo.svg'
                         alt='home'
-                        className='rounded-full w-1/2'
+                        className='rounded-full w-1/2 hover:scale-110 transition-transform duration-200'
                     />
                 </Link>
             </nav>
@@ -21,57 +21,57 @@ const Header = () => {
 
             {authUser ? (
                 <>
-                    <div className='flex items-center gap-12'>
-                        <Link to='/users/profile' className='mx-4'>
+                    <div className='flex items-center gap-2'>
+                        <Link to='/users/profile' className='mx-1'>
                             <img
-                                src='/public/users.png'
+                                src='/public/profile.svg'
                                 alt='profile'
-                                className='w-8'
+                                className='w-16 fill-current text-dark-blue hover:text-medium-blue hover:scale-150 transition-transform duration-200'
                             />
                         </Link>
 
-                        <Link to='/users/ratings' className='mx-4'>
+                        <Link to='/users/ratings' className='mx-1'>
                             <img
-                                src='/public/opinion.png'
+                                src='/public/rating.svg'
                                 alt='ratings'
-                                className='w-8'
+                                className='w-16 fill-current text-dark-blue hover:text-medium-blue hover:scale-150 transition-transform duration-200'
                             />
                         </Link>
-                        <button onClick={authLogoutState} className='mx-4'>
+                        <button onClick={authLogoutState} className='mx-1'>
                             <img
-                                src='/public/logout.png'
+                                src='/public/logout.svg'
                                 alt='logout'
-                                className='w-8'
+                                className='w-16 fill-current text-dark-blue hover:text-medium-blue hover:scale-150 transition-transform duration-200'
                             />
                         </button>
                     </div>
                 </>
             ) : (
                 <>
-                    <div className='flex items-center gap-12'>
-                        <Link to='/login' className='mx-4'>
+                    <div className='flex items-center gap-2'>
+                        <Link to='/login' className='mx-1'>
                             <img
-                                src='/public/Users.png'
+                                src='/public/login.svg'
                                 alt='login'
-                                className='w-8'
+                                className='w-16 fill-current text-dark-blue hover:text-medium-blue hover:scale-150 transition-transform duration-200'
                             />
                         </Link>
                         <Link
                             to='/register'
-                            className='mx-4'
+                            className='mx-1'
                         >
                             <img
-                                src='/public/register.png'
+                                src='/public/registerUser.svg'
                                 alt='register'
-                                className='w-8'
+                                className='w-16 fill-current text-dark-blue hover:text-medium-blue hover:scale-150 transition-transform duration-200'
                             />
                         </Link>
 
-                        <Link to='/ratings' className='mx-4'>
+                        <Link to='/ratings' className='mx-1'>
                             <img
-                                src='/public/opinion.png'
+                                src='/public/rating.svg'
                                 alt='ratings'
-                                className='w-8'
+                                className='w-16 fill-current text-dark-blue hover:text-medium-blue hover:scale-150 transition-transform duration-200'
                             />
                         </Link>
                     </div>
