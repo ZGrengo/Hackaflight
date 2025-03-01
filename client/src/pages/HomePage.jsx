@@ -59,6 +59,13 @@ const HomePage = () => {
     // useEffect para tomar los parametros de la pagina de favoritos con la busqueda que el usuario quiere repetir
     const [searchParams] = useSearchParams();
     useEffect(() => {
+        const returnDate = searchParams.get("returnDate");
+        if (returnDate) {
+            setTipoViaje('ida-vuelta');
+        }
+    }, [searchParams]);
+    
+    useEffect(() => {
         const origin = searchParams.get("origin");
         const destination = searchParams.get("destination");
         const departureDate = searchParams.get("departureDate");
@@ -67,10 +74,18 @@ const HomePage = () => {
         if (origin && destination && departureDate && adults) {
             setOrigen(origin);
             setDestino(destination);
-            setFechaSalida(departureDate.split('T')[0]); //Extrae solo la fecha en formato YYYY-MM-DD
+            setFechaSalida(departureDate.split('T')[0]);
             setPasajeros(Number(adults));
         }
     }, [searchParams]);
+    
+    // Nuevo useEffect SOLO para fecha de retorno, ejecutado después de actualizar `tipoViaje`
+    useEffect(() => {
+        const returnDate = searchParams.get("returnDate");
+        if (tipoViaje === 'ida-vuelta' && returnDate) {
+            setFechaRetorno(returnDate.split('T')[0]);
+        }
+    }, [tipoViaje, searchParams]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
