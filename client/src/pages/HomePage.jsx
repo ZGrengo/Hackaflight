@@ -34,14 +34,16 @@ const HomePage = () => {
     const { isAuthenticated } = useContext( AuthContext );
 
     const images = [
-        { src: '/public/image1.png', alt: 'img1' },
-        { src: '/public/image2.png', alt: 'img2' },
-        { src: '/public/image3.png', alt: 'img3' },
-        { src: '/public/image4.png', alt: 'img4' },
-        { src: '/public/image5.png', alt: 'img5' },
-        { src: '/public/image6.png', alt: 'img6' },
-        { src: '/public/image7.png', alt: 'img7' },
-        { src: '/public/image8.png', alt: 'img8' },
+        { src: '/public/imagen 1.jpg', alt: 'img1' },
+        { src: '/public/imagen 2.jpg', alt: 'img2' },
+        { src: '/public/imagen 3.jpg', alt: 'img3' },
+        { src: '/public/imagen 4.jpg', alt: 'img4' },
+        { src: '/public/imagen 5.jpg', alt: 'img5' },
+        { src: '/public/imagen 6.jpg', alt: 'img6' },
+        { src: '/public/imagen 7.jpg', alt: 'img7' },
+        { src: '/public/imagen 8.jpg', alt: 'img8' },
+        { src: '/public/imagen 9.jpg', alt: 'img9' },
+        { src: '/public/imagen 10.jpg', alt: 'img10' },
     ];
 
     useEffect( () => {
@@ -177,34 +179,40 @@ const HomePage = () => {
             </div>
             <Header />
             <section>
-                <SearchForm
-                    tipoViaje={tipoViaje}
-                    fechaSalida={fechaSalida}
-                    fechaRetorno={fechaRetorno}
-                    origen={origen}
-                    destino={destino}
-                    pasajeros={pasajeros}
-                    setTipoViaje={setTipoViaje}
-                    setFechaSalida={setFechaSalida}
-                    setFechaRetorno={setFechaRetorno}
-                    setOrigen={setOrigen}
-                    setDestino={setDestino}
-                    setPasajeros={setPasajeros}
-                    handleSubmit={handleSubmit}
-                />
-                {loading ? (
-                    <div className="text-center">
-                        <div
-                            className="w-16 h-16 border-4 border-dashed rounded-full animate-spin border-dark-blue mx-auto"
-                        ></div>
-                        <h2 className="text-zinc-900 dark:text-zinc-400 mt-4">Loading...</h2>
-                        <p className="text-zinc-600 dark:text-zinc-400">
-                            Your adventure is about to begin
-                        </p>
-                    </div>
-                ) : (
+                <div className="relative">
                     <CarouselImages images={images} />
-                )}
+                    <div >
+                        <SearchForm
+                            tipoViaje={tipoViaje}
+                            fechaSalida={fechaSalida}
+                            fechaRetorno={fechaRetorno}
+                            origen={origen}
+                            destino={destino}
+                            pasajeros={pasajeros}
+                            setTipoViaje={setTipoViaje}
+                            setFechaSalida={setFechaSalida}
+                            setFechaRetorno={setFechaRetorno}
+                            setOrigen={setOrigen}
+                            setDestino={setDestino}
+                            setPasajeros={setPasajeros}
+                            handleSubmit={handleSubmit}
+                        />
+                    </div>
+                </div>
+                <div className="relative w-full h-full">
+                    <div className="relative z-10"></div>
+                    {loading ? (
+                        <div className="text-center">
+                            <div
+                                className="w-16 h-16 border-4 border-dashed rounded-full animate-spin border-dark-blue mx-auto"
+                            ></div>
+                            <h2 className="text-zinc-900 dark:text-zinc-400 mt-4">Loading...</h2>
+                            <p className="text-zinc-600 dark:text-zinc-400">
+                                Your adventure is about to begin
+                            </p>
+                        </div>
+                    ) : null}
+                </div>
             </section>
             {isAuthenticated && (
                 <RecentSearches
