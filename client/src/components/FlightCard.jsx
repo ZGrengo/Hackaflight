@@ -6,6 +6,7 @@ const FlightCard = ( { flight } ) => {
     const departure = segments[ 0 ].departure;
     const arrival = segments[ segments.length - 1 ].arrival;
     const ticketClass = travelerPricings[ 0 ].fareDetailsBySegment[ 0 ].class;
+    const validatingAirlineCodes = segments.map( ( segment ) => segment.carrierCode ).join( ', ' );
 
     const getTicketClass = ( ticketClass ) => {
         if ( [ 'a', 'f', 'p', 'r' ].includes( ticketClass.toLowerCase() ) )
@@ -22,17 +23,21 @@ const FlightCard = ( { flight } ) => {
 
     // Retorna la estructura HTML del componente FlightCard
     return (
-        <div className="flight-card">
-            <h3>Vuelo {flight.id}</h3>
-            <p>Origen: {departure.iataCode}</p>
-            <p>Destino: {arrival.iataCode}</p>
-            <p>Fecha de Salida: {departure.at}</p>
-            <p>Fecha de Llegada: {arrival.at}</p>
-            <p>Duración: {itineraries[ 0 ].duration}</p>
-            <p>Escalas: {segments.length - 1}</p>
-            <p>Tipo de billete: {getTicketClass( ticketClass )}</p>
-            <p>Precio: {price.currency} {price.total}</p>
-        </div>
+        <div className="flight-card max-w-xl w-full mx-auto bg-dark-blue border-solid border-accent-blue border-4 rounded-xl overflow-hidden pb-5">
+            <div className="max-w-md mx-auto pt-12 pb-14 px-5 text-center">
+
+                <h3 className="text-xl text-light-blue font-bold underline mb-5">Vuelo {flight.id}</h3>
+                <p className="text-gray-300 font-medium">Origen: {departure.iataCode}</p>
+                <p className="text-gray-300 font-medium">Destino: {arrival.iataCode}</p>
+                <p className="text-gray-300 font-medium">Aerolinea:{validatingAirlineCodes}</p>
+                <p className="text-gray-300 font-medium">Fecha de Salida: {departure.at}</p>
+                <p className="text-gray-300 font-medium">Fecha de Llegada: {arrival.at}</p>
+                <p className="text-gray-300 font-medium">Duración: {itineraries[ 0 ].duration}</p>
+                <p className="text-gray-300 font-medium">Escalas: {segments.length - 1}</p>
+                <p className="text-gray-300 font-medium">Tipo de billete: {getTicketClass( ticketClass )}</p>
+                <p className="text-gray-300 font-medium">Precio: {price.currency} {price.total}</p>
+            </div>
+        </div >
     );
 };
 
