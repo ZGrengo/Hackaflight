@@ -34,14 +34,14 @@ const PaperPlaneAnimation = () => {
                 trigger: ".animation",
                 start: "top top",
                 end: "bottom bottom",
-                scrub: 5,
+                scrub: 12,
                 pin: true,
-                anticipatePin: 0.5,
+                anticipatePin: 1,
             },
         } );
 
         gsap.set( ".paper-plane", {
-            scale: 10,
+            scale: 15,
         } );
     }, [] );
 

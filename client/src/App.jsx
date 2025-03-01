@@ -2,7 +2,6 @@
 import { Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import Footer from './components/Footer';
-import Header from './components/Header';
 
 // Importamos las páginas.
 import RegisterPage from './pages/RegisterPage';
@@ -23,7 +22,6 @@ import FavoriteDetailsEditPage from './pages/FavoriteDetailsEditPage';
 const App = () => {
     return (
         <>
-            <Header />
             <Toaster position='top-center' />
             {/* Todos los endpoints han de definirse dentro de este compontente. */}
             <Routes>

@@ -33,6 +33,8 @@ const filterFlightListController = ( req, res, next ) => {
             arrivalDate,
             page = 1, // Página por defecto: 1
             limit = 10, // Límite de resultados por página: 10
+            sortBy, // Parámetro de ordenación
+            order = 'asc', // Orden por defecto: ascendente
         } = req.query;
 
         // Validar que los parámetros de paginación sean números válidos
