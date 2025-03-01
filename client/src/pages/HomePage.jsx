@@ -1,6 +1,7 @@
 import useRatingList from '../hooks/useRatingList';
 import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSearchParams } from "react-router-dom";
 
 // importacion de componentes
 import SearchForm from '../components/SearchForm';
@@ -49,6 +50,31 @@ const HomePage = () => {
             { origen: 'Madrid', destino: 'Nueva York' },
             { origen: 'Londres', destino: 'Tokio' },
             { origen: 'Paris', destino: 'Londres' },
+        ]);
+        // setTopComments([
+        //     { user: 'Usuario1', comment: 'Excelente servicio!', rating: 5 },
+        //     { user: 'Usuario2', comment: 'Muy buena experiencia.', rating: 4 },
+        //     { user: 'Usuario3', comment: 'Recomendado!', rating: 4 },
+        // ]);
+    }, []);
+
+    // useEffect para tomar los parametros de la pagina de favoritos con la busqueda que el usuario quiere repetir
+    const [searchParams] = useSearchParams();
+    useEffect(() => {
+        const origin = searchParams.get("origin");
+        const destination = searchParams.get("destination");
+        const departureDate = searchParams.get("departureDate");
+        const adults = searchParams.get("adults");
+    
+        if (origin && destination && departureDate && adults) {
+            setOrigen(origin);
+            setDestino(destination);
+            setFechaSalida(departureDate.split('T')[0]); //Extrae solo la fecha en formato YYYY-MM-DD
+            setPasajeros(Number(adults));
+        }
+    }, [searchParams]);
+
+    const handleSubmit = async (e) => {
         ] );
 
         if ( isAuthenticated )
