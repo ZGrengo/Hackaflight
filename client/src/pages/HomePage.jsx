@@ -21,7 +21,7 @@ const HomePage = () => {
     const [ origen, setOrigen ] = useState( '' );
     const [ destino, setDestino ] = useState( '' );
     const [ pasajeros, setPasajeros ] = useState( 1 );
-    const [ popularDestinations, setPopularDestinations ] = useState( [] );
+    const [ popularDestinations ] = useState( [] );
     const [ recentSearches, setRecentSearches ] = useState( [] );
     const { ratings } = useRatingList();
     const [ loading, setLoading ] = useState( false );
@@ -30,11 +30,6 @@ const HomePage = () => {
     const { isAuthenticated } = useContext( AuthContext );
 
     useEffect( () => {
-        setPopularDestinations( [
-            { origen: 'Madrid', destino: 'Nueva York' },
-            { origen: 'Londres', destino: 'Tokio' },
-            { origen: 'Paris', destino: 'Londres' },
-        ] );
 
         if ( isAuthenticated )
         {
@@ -158,7 +153,7 @@ const HomePage = () => {
             <LogoAnimation />
             <PaperPlaneAnimation />
             <Header />
-            <section className="relative w-full h-screen">
+            <section className="relative w-full h-1/2">
                 <CarouselImages />
                 <div className="absolute inset-0 flex items-center justify-center z-10">
                     <SearchForm

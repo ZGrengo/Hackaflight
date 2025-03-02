@@ -32,7 +32,7 @@ const CarouselImages = () => {
                     key={index}
                     className={`carousel-item ${ index === currentImageIndex ? 'block' : 'hidden' }`}
                 >
-                    <img src={image.src} alt={image.alt} className='w-[1900px] h-[1000px] object-cover' />
+                    <img src={image.src} alt={image.alt} className='w-[450px] h-[400px] object-cover' />
                 </div>
             ) )}
         </div>
