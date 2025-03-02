@@ -1,8 +1,6 @@
-import useRatingList from '../hooks/useRatingList';
 import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-// importacion de componentes
+import useRatingList from '../hooks/useRatingList';
 import SearchForm from '../components/SearchForm';
 import CarouselImages from '../components/CarouselImages';
 import RecentSearches from '../components/RecentSearches';
@@ -12,8 +10,6 @@ import LogoAnimation from '../components/LogoAnimation';
 import PaperPlaneAnimation from '../components/PaperPlaneAnimation';
 import Footer from '../components/Footer';
 import RatingSumary from '../components/RatingSumary';
-
-// importacion del contexto de autenticación
 import { AuthContext } from '../contexts/AuthContext';
 
 const { VITE_API_URL } = import.meta.env;
@@ -32,19 +28,6 @@ const HomePage = () => {
 
     const navigate = useNavigate();
     const { isAuthenticated } = useContext( AuthContext );
-
-    const images = [
-        { src: '/public/imagen 1.jpg', alt: 'img1' },
-        { src: '/public/imagen 2.jpg', alt: 'img2' },
-        { src: '/public/imagen 3.jpg', alt: 'img3' },
-        { src: '/public/imagen 4.jpg', alt: 'img4' },
-        { src: '/public/imagen 5.jpg', alt: 'img5' },
-        { src: '/public/imagen 6.jpg', alt: 'img6' },
-        { src: '/public/imagen 7.jpg', alt: 'img7' },
-        { src: '/public/imagen 8.jpg', alt: 'img8' },
-        { src: '/public/imagen 9.jpg', alt: 'img9' },
-        { src: '/public/imagen 10.jpg', alt: 'img10' },
-    ];
 
     useEffect( () => {
         setPopularDestinations( [
@@ -135,7 +118,6 @@ const HomePage = () => {
             const flights = { ida: flightsIda, vuelta: flightsVuelta };
             navigate( '/search-results', { state: { flights } } );
 
-            // Guardar la búsqueda reciente
             saveRecentSearch( {
                 origen,
                 destino,
@@ -173,47 +155,41 @@ const HomePage = () => {
 
     return (
         <>
-            <div>
-                <LogoAnimation />
-                <PaperPlaneAnimation />
-            </div>
+            <LogoAnimation />
+            <PaperPlaneAnimation />
             <Header />
-            <section>
-                <div className="relative">
-                    <CarouselImages images={images} />
-                    <div >
-                        <SearchForm
-                            tipoViaje={tipoViaje}
-                            fechaSalida={fechaSalida}
-                            fechaRetorno={fechaRetorno}
-                            origen={origen}
-                            destino={destino}
-                            pasajeros={pasajeros}
-                            setTipoViaje={setTipoViaje}
-                            setFechaSalida={setFechaSalida}
-                            setFechaRetorno={setFechaRetorno}
-                            setOrigen={setOrigen}
-                            setDestino={setDestino}
-                            setPasajeros={setPasajeros}
-                            handleSubmit={handleSubmit}
-                        />
-                    </div>
-                </div>
-                <div className="relative w-full h-full">
-                    <div className="relative z-10"></div>
-                    {loading ? (
-                        <div className="text-center">
-                            <div
-                                className="w-16 h-16 border-4 border-dashed rounded-full animate-spin border-dark-blue mx-auto"
-                            ></div>
-                            <h2 className="text-zinc-900 dark:text-zinc-400 mt-4">Loading...</h2>
-                            <p className="text-zinc-600 dark:text-zinc-400">
-                                Your adventure is about to begin
-                            </p>
-                        </div>
-                    ) : null}
+            <section className="relative w-full h-screen">
+                <CarouselImages />
+                <div className="absolute inset-0 flex items-center justify-center z-10">
+                    <SearchForm
+                        tipoViaje={tipoViaje}
+                        fechaSalida={fechaSalida}
+                        fechaRetorno={fechaRetorno}
+                        origen={origen}
+                        destino={destino}
+                        pasajeros={pasajeros}
+                        setTipoViaje={setTipoViaje}
+                        setFechaSalida={setFechaSalida}
+                        setFechaRetorno={setFechaRetorno}
+                        setOrigen={setOrigen}
+                        setDestino={setDestino}
+                        setPasajeros={setPasajeros}
+                        handleSubmit={handleSubmit}
+                    />
                 </div>
             </section>
+            <div className="relative w-full h-full">
+                <div className="relative z-10"></div>
+                {loading ? (
+                    <div className="text-center">
+                        <div className="w-16 h-16 border-4 border-dashed rounded-full animate-spin border-dark-blue mx-auto"></div>
+                        <h2 className="text-zinc-900 dark:text-zinc-400 mt-4">Loading...</h2>
+                        <p className="text-zinc-600 dark:text-zinc-400">
+                            Your adventure is about to begin
+                        </p>
+                    </div>
+                ) : null}
+            </div>
             {isAuthenticated && (
                 <RecentSearches
                     recentSearches={recentSearches}
