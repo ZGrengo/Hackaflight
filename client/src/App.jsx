@@ -16,6 +16,8 @@ import ChangePasswordPage from './pages/ChangePasswordPage';
 import LoginPage from './pages/LoginPage';
 import RatingPage from './pages/RatingPage';
 import RatingsListPage from './pages/RatingsListPage';
+import FavoritesPage from './pages/FavoritesPage';
+import FavoriteDetailsEditPage from './pages/FavoriteDetailsEditPage';
 
 const App = () => {
     return (
@@ -41,6 +43,8 @@ const App = () => {
                     path='/Users/Profile/password'
                     element={<ChangePasswordPage />}
                 />
+                <Route path='/favorites' element={<FavoritesPage />} />
+                <Route path='/favorites/:favoriteId' element={<FavoriteDetailsEditPage />} />
                 <Route path='/users/ratings' element={<RatingPage />} />
                 <Route path='/ratings' element={<RatingsListPage />} />
                 <Route path='*' element={<NotFoundPage />} />

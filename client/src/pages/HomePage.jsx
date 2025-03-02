@@ -38,6 +38,46 @@ const HomePage = () => {
             { origen: 'Madrid', destino: 'Nueva York' },
             { origen: 'Londres', destino: 'Tokio' },
             { origen: 'Paris', destino: 'Londres' },
+        ]);
+        // setTopComments([
+        //     { user: 'Usuario1', comment: 'Excelente servicio!', rating: 5 },
+        //     { user: 'Usuario2', comment: 'Muy buena experiencia.', rating: 4 },
+        //     { user: 'Usuario3', comment: 'Recomendado!', rating: 4 },
+        // ]);
+    }, []);
+
+    // useEffect para tomar los parametros de la pagina de favoritos con la busqueda que el usuario quiere repetir
+    const [searchParams] = useSearchParams();
+    useEffect(() => {
+        const returnDate = searchParams.get("returnDate");
+        if (returnDate) {
+            setTipoViaje('ida-vuelta');
+        }
+    }, [searchParams]);
+    
+    useEffect(() => {
+        const origin = searchParams.get("origin");
+        const destination = searchParams.get("destination");
+        const departureDate = searchParams.get("departureDate");
+        const adults = searchParams.get("adults");
+    
+        if (origin && destination && departureDate && adults) {
+            setOrigen(origin);
+            setDestino(destination);
+            setFechaSalida(departureDate.split('T')[0]);
+            setPasajeros(Number(adults));
+        }
+    }, [searchParams]);
+    
+    // Nuevo useEffect SOLO para fecha de retorno, ejecutado después de actualizar `tipoViaje`
+    useEffect(() => {
+        const returnDate = searchParams.get("returnDate");
+        if (tipoViaje === 'ida-vuelta' && returnDate) {
+            setFechaRetorno(returnDate.split('T')[0]);
+        }
+    }, [tipoViaje, searchParams]);
+
+    const handleSubmit = async (e) => {
         ] );
 
         // si el usuario está autenticado, cargamos las búsquedas recientes
