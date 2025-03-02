@@ -24,29 +24,9 @@ const filterFlightListController = ( req, res, next ) => {
             class: travelClass,
             stops,
             sortByPrice,
-            page = 1, // Página por defecto: 1
-            limit = 10, // Límite de resultados por página: 10
             sortBy, // Parámetro de ordenación
             order = 'asc', // Orden por defecto: ascendente
         } = req.query;
-
-        // Validar que los parámetros de paginación sean números válidos
-        const parsedPage = parseInt( page );
-        const parsedLimit = parseInt( limit );
-        if ( isNaN( parsedPage ) )
-        {
-            throw generateErrorUtil(
-                'El parámetro "page" debe ser un número válido.',
-                400,
-            );
-        }
-        if ( isNaN( parsedLimit ) )
-        {
-            throw generateErrorUtil(
-                'El parámetro "limit" debe ser un número válido.',
-                400,
-            );
-        }
 
         // Validar que no se filtren ambas horas al mismo tiempo
         if ( departureTime && arrivalTime )
@@ -58,7 +38,7 @@ const filterFlightListController = ( req, res, next ) => {
         }
 
         // Aplicar los filtros
-        let filteredFlights = globalFlights;
+        let filteredFlights = [ ...globalFlights ];
 
         // Filtro por aerolínea
         if ( airline )
@@ -237,22 +217,11 @@ const filterFlightListController = ( req, res, next ) => {
             } );
         }
 
-        // Paginación
-        const startIndex = ( parsedPage - 1 ) * parsedLimit;
-        const endIndex = parsedPage * parsedLimit;
-        const paginatedFlights = filteredFlights.slice( startIndex, endIndex );
-
-        // Enviar la respuesta con los vuelos filtrados y paginados
+        // Enviar la respuesta con los vuelos filtrados
         res.status( 200 ).send( {
             status: 'ok',
-            data: paginatedFlights,
-            pagination: {
-                totalFlights: filteredFlights.length,
-                totalPages: Math.ceil( filteredFlights.length / parsedLimit ),
-                currentPage: parsedPage,
-                flightsPerPage: parsedLimit,
-            },
-            message: 'Lista de vuelos filtrada y paginada con éxito',
+            data: filteredFlights,
+            message: 'Lista de vuelos filtrada con éxito',
         } );
     } catch ( err )
     {

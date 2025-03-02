@@ -12,8 +12,10 @@ import Footer from '../components/Footer';
 import RatingSumary from '../components/RatingSumary';
 import { AuthContext } from '../contexts/AuthContext';
 
+// importamos la variable de entorno
 const { VITE_API_URL } = import.meta.env;
 
+// definimos los estados iniciales
 const HomePage = () => {
     const [ tipoViaje, setTipoViaje ] = useState( 'ida' );
     const [ fechaSalida, setFechaSalida ] = useState( '' );
@@ -21,22 +23,31 @@ const HomePage = () => {
     const [ origen, setOrigen ] = useState( '' );
     const [ destino, setDestino ] = useState( '' );
     const [ pasajeros, setPasajeros ] = useState( 1 );
-    const [ popularDestinations ] = useState( [] );
+    const [ popularDestinations, setPopularDestinations ] = useState( [] );
     const [ recentSearches, setRecentSearches ] = useState( [] );
     const { ratings } = useRatingList();
     const [ loading, setLoading ] = useState( false );
 
+    // usamos el hook useNavigate para navegar entre rutas
     const navigate = useNavigate();
     const { isAuthenticated } = useContext( AuthContext );
 
+    // usamos el hook useEffect para cargar las búsquedas recientes de ejemplo
     useEffect( () => {
+        setPopularDestinations( [
+            { origen: 'Madrid', destino: 'Nueva York' },
+            { origen: 'Londres', destino: 'Tokio' },
+            { origen: 'Paris', destino: 'Londres' },
+        ] );
 
+        // si el usuario está autenticado, cargamos las búsquedas recientes
         if ( isAuthenticated )
         {
             loadRecentSearches();
         }
     }, [ isAuthenticated ] );
 
+    // definimos las funciones para cargar y guardar las búsquedas recientes
     const loadRecentSearches = () => {
         const storedSearches = localStorage.getItem( 'recentSearches' );
         if ( storedSearches )
@@ -45,6 +56,7 @@ const HomePage = () => {
         }
     };
 
+    // definimos la función para guardar las búsquedas recientes
     const saveRecentSearch = ( search ) => {
         let searches = localStorage.getItem( 'recentSearches' );
         searches = searches ? JSON.parse( searches ) : [];
@@ -57,6 +69,7 @@ const HomePage = () => {
         setRecentSearches( searches );
     };
 
+    // definimos la función para buscar vuelos
     const handleSubmit = async ( e ) => {
         e.preventDefault();
         setLoading( true );
@@ -70,6 +83,7 @@ const HomePage = () => {
 
         try
         {
+            // realizamos la petición a la API para vuelos de ida
             const resIda = await fetch(
                 `${ VITE_API_URL }/api/flights/search?${ searchParams.toString() }`,
                 {
@@ -80,18 +94,18 @@ const HomePage = () => {
 
             if ( !resIda.ok ) throw new Error( 'Network response was not ok' );
             const bodyIda = await resIda.json();
-
             if ( bodyIda.status === 'error' ) throw new Error( bodyIda.message );
-            const flightsIda = bodyIda || [];
 
-            let flightsVuelta = [];
+            let flights = bodyIda || [];
 
+            // si el tipo de viaje es de ida y vuelta, buscamos también los vuelos de vuelta
             if ( tipoViaje === 'ida-vuelta' && fechaRetorno )
             {
                 const searchParamsVuelta = new URLSearchParams( {
-                    origin: destino,
-                    destination: origen,
-                    departureDate: fechaRetorno,
+                    origin: origen,
+                    destination: destino,
+                    departureDate: fechaSalida,
+                    returnDate: fechaRetorno,
                     adults: pasajeros,
                 } );
 
@@ -105,14 +119,15 @@ const HomePage = () => {
 
                 if ( !resVuelta.ok ) throw new Error( 'Network response was not ok' );
                 const bodyVuelta = await resVuelta.json();
-
                 if ( bodyVuelta.status === 'error' ) throw new Error( bodyVuelta.message );
-                flightsVuelta = bodyVuelta || [];
+
+                flights = [ ...flights || [] ];
             }
 
-            const flights = { ida: flightsIda, vuelta: flightsVuelta };
+            // navegamos a la página de resultados de búsqueda con los vuelos unificados
             navigate( '/search-results', { state: { flights } } );
 
+            // guardamos la búsqueda reciente
             saveRecentSearch( {
                 origen,
                 destino,
@@ -130,6 +145,7 @@ const HomePage = () => {
         }
     };
 
+    // definimos las funciones para repetir y guardar búsquedas
     const handleRepeatSearch = ( search ) => {
         setOrigen( search.origen );
         setDestino( search.destino );
@@ -140,6 +156,7 @@ const HomePage = () => {
         handleSubmit();
     };
 
+    // definimos la función para guardar en favoritos
     const handleSaveFavorite = ( search ) => {
         const favorites = localStorage.getItem( 'favorites' );
         const newFavorites = favorites ? JSON.parse( favorites ) : [];
@@ -153,7 +170,7 @@ const HomePage = () => {
             <LogoAnimation />
             <PaperPlaneAnimation />
             <Header />
-            <section className="relative w-full h-1/2">
+            <section className="relative w-full h-screen">
                 <CarouselImages />
                 <div className="absolute inset-0 flex items-center justify-center z-10">
                     <SearchForm

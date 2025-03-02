@@ -8,8 +8,8 @@ const { VITE_API_URL } = import.meta.env;
 
 const SearchResultsPage = () => {
     const location = useLocation();
-    const { flights = { ida: [], vuelta: [] } } = location.state || {};
-    const [ filteredFlights, setFilteredFlights ] = useState( [ ...flights.ida, ...flights.vuelta ] );
+    const { flights = [] } = location.state || {};
+    const [ filteredFlights, setFilteredFlights ] = useState( [ ...flights ] );
 
     const handleFilterChange = async ( filters ) => {
         const searchParams = new URLSearchParams();
@@ -45,11 +45,11 @@ const SearchResultsPage = () => {
 
 
     useEffect( () => {
-        setFilteredFlights( [ ...flights.ida, ...flights.vuelta ] );
+        setFilteredFlights( [ ...flights ] );
     }, [ flights ] );
-    console.log( flights.ida, flights.vuelta );
+    console.log( flights );
 
-    if ( !flights.ida.length && !flights.vuelta.length )
+    if ( !flights.length )
     {
 
         return <p>No se encontraron resultados de búsqueda.</p>;
@@ -70,50 +70,28 @@ const SearchResultsPage = () => {
 };
 
 SearchResultsPage.propTypes = {
-    flights: PropTypes.shape( {
-        ida: PropTypes.arrayOf(
-            PropTypes.shape( {
-                origin: PropTypes.string.isRequired,
-                destination: PropTypes.string.isRequired,
-                departureDate: PropTypes.string.isRequired,
-                returnDate: PropTypes.string,
-                price: PropTypes.shape( {
-                    currency: PropTypes.string.isRequired,
-                    total: PropTypes.string.isRequired,
-                    base: PropTypes.string,
-                    fees: PropTypes.arrayOf(
-                        PropTypes.shape( {
-                            amount: PropTypes.string,
-                            type: PropTypes.string,
-                        } )
-                    ),
-                    grandTotal: PropTypes.string,
-                } ).isRequired,
-                stops: PropTypes.number,
-            } )
-        ),
-        vuelta: PropTypes.arrayOf(
-            PropTypes.shape( {
-                origin: PropTypes.string.isRequired,
-                destination: PropTypes.string.isRequired,
-                departureDate: PropTypes.string.isRequired,
-                returnDate: PropTypes.string,
-                price: PropTypes.shape( {
-                    currency: PropTypes.string.isRequired,
-                    total: PropTypes.string.isRequired,
-                    base: PropTypes.string,
-                    fees: PropTypes.arrayOf(
-                        PropTypes.shape( {
-                            amount: PropTypes.string,
-                            type: PropTypes.string,
-                        } )
-                    ),
-                    grandTotal: PropTypes.string,
-                } ).isRequired,
-                stops: PropTypes.number,
-            } )
-        ),
-    } ),
+    flights: PropTypes.arrayOf(
+        PropTypes.shape( {
+            origin: PropTypes.string.isRequired,
+            destination: PropTypes.string.isRequired,
+            departureDate: PropTypes.string.isRequired,
+            returnDate: PropTypes.string,
+            price: PropTypes.shape( {
+                currency: PropTypes.string.isRequired,
+                total: PropTypes.string.isRequired,
+                base: PropTypes.string,
+                fees: PropTypes.arrayOf(
+                    PropTypes.shape( {
+                        amount: PropTypes.string,
+                        type: PropTypes.string,
+                    } )
+                ),
+                grandTotal: PropTypes.string,
+            } ).isRequired,
+            stops: PropTypes.number,
+        } )
+    ),
 };
 
 export default SearchResultsPage;
+
