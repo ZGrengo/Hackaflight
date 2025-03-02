@@ -2,57 +2,66 @@ import PropTypes from 'prop-types';
 import { useState } from 'react';
 
 const FlightFilters = ( { onFilterChange } ) => {
-    const [ stops, setStops ] = useState( '' );
-    const [ minPrice, setMinPrice ] = useState( '' );
-    const [ maxPrice, setMaxPrice ] = useState( '' );
-    const [ sortByPrice, setSortByPrice ] = useState( '' );
+    const [ filters, setFilters ] = useState( {
+        stops: '',
+        minPrice: '',
+        maxPrice: '',
+        sortByPrice: '',
+    } );
 
-    const handleFilterChange = () => {
-        onFilterChange( {
-            stops,
-            minPrice,
-            maxPrice,
-            sortByPrice,
-        } );
+    // Función para manejar el cambio de filtros
+    const handleInputChange = ( e ) => {
+        const { name, value } = e.target;
+        setFilters( ( prevFilters ) => ( {
+            ...prevFilters,
+            [ name ]: value,
+        } ) );
+    };
+
+    // Función para aplicar los filtros
+    const applyFilters = () => {
+        console.log( 'Aplicando filtros:', filters );
+        onFilterChange( filters );
     };
 
     return (
         <div>
             <div>
                 <label>Paradas:</label>
-                <select value={stops} onChange={( e ) => setStops( e.target.value )}>
+                <select name="stops" value={filters.stops} onChange={handleInputChange}>
                     <option value="">Cualquiera</option>
                     <option value="0">Directo</option>
                     <option value="1">1 Parada</option>
                     <option value="2">2 Paradas</option>
-                    <option value="3">3 Paradas</option>
                 </select>
             </div>
             <div>
                 <label>Precio Mínimo:</label>
                 <input
                     type="number"
-                    value={minPrice}
-                    onChange={( e ) => setMinPrice( e.target.value )}
+                    name="minPrice"
+                    value={filters.minPrice}
+                    onChange={handleInputChange}
                 />
             </div>
             <div>
                 <label>Precio Máximo:</label>
                 <input
                     type="number"
-                    value={maxPrice}
-                    onChange={( e ) => setMaxPrice( e.target.value )}
+                    name="maxPrice"
+                    value={filters.maxPrice}
+                    onChange={handleInputChange}
                 />
             </div>
             <div>
                 <label>Ordenar por:</label>
-                <select value={sortByPrice} onChange={( e ) => setSortByPrice( e.target.value )}>
+                <select name="sortByPrice" value={filters.sortByPrice} onChange={handleInputChange}>
                     <option value="">Seleccionar</option>
                     <option value="true">Precio Ascendente</option>
                     <option value="false">Precio Descendente</option>
                 </select>
             </div>
-            <button onClick={handleFilterChange}>Aplicar Filtros</button>
+            <button onClick={applyFilters}>Aplicar Filtros</button>
         </div>
     );
 };

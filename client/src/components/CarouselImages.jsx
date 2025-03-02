@@ -1,9 +1,22 @@
-import PropTypes from 'prop-types';
+// importamos el hook useEffect y useState de react
 import { useEffect, useState } from 'react';
 
 // Este componente recibe un array de imágenes y las muestra en un carrusel
-const CarouselImages = ( { images } ) => {
+const CarouselImages = () => {
     const [ currentImageIndex, setCurrentImageIndex ] = useState( 0 );
+
+    const images = [
+        { src: '/public/imagen 1.jpg', alt: 'img1' },
+        { src: '/public/imagen 2.jpg', alt: 'img2' },
+        { src: '/public/imagen 3.jpg', alt: 'img3' },
+        { src: '/public/imagen 4.jpg', alt: 'img4' },
+        { src: '/public/imagen 5.jpg', alt: 'img5' },
+        { src: '/public/imagen 6.jpg', alt: 'img6' },
+        { src: '/public/imagen 7.jpg', alt: 'img7' },
+        { src: '/public/imagen 8.jpg', alt: 'img8' },
+        { src: '/public/imagen 9.jpg', alt: 'img9' },
+        { src: '/public/imagen 10.jpg', alt: 'img10' },
+    ];
 
     useEffect( () => {
         const interval = setInterval( () => {
@@ -13,27 +26,17 @@ const CarouselImages = ( { images } ) => {
     }, [ images.length ] );
 
     return (
-        <div className="carousel absolute inset-0 z-0 bg-medium-blue">
+        <div className="carousel absolute w-full h-full">
             {images.map( ( image, index ) => (
                 <div
                     key={index}
                     className={`carousel-item ${ index === currentImageIndex ? 'block' : 'hidden' }`}
                 >
-                    <img src={image.src} alt={image.alt} className="w-full h-full object-cover" />
+                    <img src={image.src} alt={image.alt} className='w-[450px] h-[400px] object-cover' />
                 </div>
             ) )}
         </div>
     );
-};
-
-// Validamos las propiedades
-CarouselImages.propTypes = {
-    images: PropTypes.arrayOf(
-        PropTypes.shape( {
-            src: PropTypes.string.isRequired,
-            alt: PropTypes.string.isRequired
-        } )
-    ).isRequired
 };
 
 // Exportamos el componente

@@ -1,9 +1,6 @@
-import useRatingList from '../hooks/useRatingList';
 import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSearchParams } from "react-router-dom";
-
-// importacion de componentes
+import useRatingList from '../hooks/useRatingList';
 import SearchForm from '../components/SearchForm';
 import CarouselImages from '../components/CarouselImages';
 import RecentSearches from '../components/RecentSearches';
@@ -13,12 +10,12 @@ import LogoAnimation from '../components/LogoAnimation';
 import PaperPlaneAnimation from '../components/PaperPlaneAnimation';
 import Footer from '../components/Footer';
 import RatingSumary from '../components/RatingSumary';
-
-// importacion del contexto de autenticación
 import { AuthContext } from '../contexts/AuthContext';
 
+// importamos la variable de entorno
 const { VITE_API_URL } = import.meta.env;
 
+// definimos los estados iniciales
 const HomePage = () => {
     const [ tipoViaje, setTipoViaje ] = useState( 'ida' );
     const [ fechaSalida, setFechaSalida ] = useState( '' );
@@ -31,22 +28,11 @@ const HomePage = () => {
     const { ratings } = useRatingList();
     const [ loading, setLoading ] = useState( false );
 
+    // usamos el hook useNavigate para navegar entre rutas
     const navigate = useNavigate();
     const { isAuthenticated } = useContext( AuthContext );
 
-    const images = [
-        { src: '/public/imagen 1.jpg', alt: 'img1' },
-        { src: '/public/imagen 2.jpg', alt: 'img2' },
-        { src: '/public/imagen 3.jpg', alt: 'img3' },
-        { src: '/public/imagen 4.jpg', alt: 'img4' },
-        { src: '/public/imagen 5.jpg', alt: 'img5' },
-        { src: '/public/imagen 6.jpg', alt: 'img6' },
-        { src: '/public/imagen 7.jpg', alt: 'img7' },
-        { src: '/public/imagen 8.jpg', alt: 'img8' },
-        { src: '/public/imagen 9.jpg', alt: 'img9' },
-        { src: '/public/imagen 10.jpg', alt: 'img10' },
-    ];
-
+    // usamos el hook useEffect para cargar las búsquedas recientes de ejemplo
     useEffect( () => {
         setPopularDestinations( [
             { origen: 'Madrid', destino: 'Nueva York' },
@@ -94,12 +80,14 @@ const HomePage = () => {
     const handleSubmit = async (e) => {
         ] );
 
+        // si el usuario está autenticado, cargamos las búsquedas recientes
         if ( isAuthenticated )
         {
             loadRecentSearches();
         }
     }, [ isAuthenticated ] );
 
+    // definimos las funciones para cargar y guardar las búsquedas recientes
     const loadRecentSearches = () => {
         const storedSearches = localStorage.getItem( 'recentSearches' );
         if ( storedSearches )
@@ -108,6 +96,7 @@ const HomePage = () => {
         }
     };
 
+    // definimos la función para guardar las búsquedas recientes
     const saveRecentSearch = ( search ) => {
         let searches = localStorage.getItem( 'recentSearches' );
         searches = searches ? JSON.parse( searches ) : [];
@@ -120,6 +109,7 @@ const HomePage = () => {
         setRecentSearches( searches );
     };
 
+    // definimos la función para buscar vuelos
     const handleSubmit = async ( e ) => {
         e.preventDefault();
         setLoading( true );
@@ -133,6 +123,7 @@ const HomePage = () => {
 
         try
         {
+            // realizamos la petición a la API para vuelos de ida
             const resIda = await fetch(
                 `${ VITE_API_URL }/api/flights/search?${ searchParams.toString() }`,
                 {
@@ -143,18 +134,18 @@ const HomePage = () => {
 
             if ( !resIda.ok ) throw new Error( 'Network response was not ok' );
             const bodyIda = await resIda.json();
-
             if ( bodyIda.status === 'error' ) throw new Error( bodyIda.message );
-            const flightsIda = bodyIda || [];
 
-            let flightsVuelta = [];
+            let flights = bodyIda || [];
 
+            // si el tipo de viaje es de ida y vuelta, buscamos también los vuelos de vuelta
             if ( tipoViaje === 'ida-vuelta' && fechaRetorno )
             {
                 const searchParamsVuelta = new URLSearchParams( {
-                    origin: destino,
-                    destination: origen,
-                    departureDate: fechaRetorno,
+                    origin: origen,
+                    destination: destino,
+                    departureDate: fechaSalida,
+                    returnDate: fechaRetorno,
                     adults: pasajeros,
                 } );
 
@@ -168,15 +159,15 @@ const HomePage = () => {
 
                 if ( !resVuelta.ok ) throw new Error( 'Network response was not ok' );
                 const bodyVuelta = await resVuelta.json();
-
                 if ( bodyVuelta.status === 'error' ) throw new Error( bodyVuelta.message );
-                flightsVuelta = bodyVuelta || [];
+
+                flights = [ ...flights || [] ];
             }
 
-            const flights = { ida: flightsIda, vuelta: flightsVuelta };
+            // navegamos a la página de resultados de búsqueda con los vuelos unificados
             navigate( '/search-results', { state: { flights } } );
 
-            // Guardar la búsqueda reciente
+            // guardamos la búsqueda reciente
             saveRecentSearch( {
                 origen,
                 destino,
@@ -194,6 +185,7 @@ const HomePage = () => {
         }
     };
 
+    // definimos las funciones para repetir y guardar búsquedas
     const handleRepeatSearch = ( search ) => {
         setOrigen( search.origen );
         setDestino( search.destino );
@@ -204,6 +196,7 @@ const HomePage = () => {
         handleSubmit();
     };
 
+    // definimos la función para guardar en favoritos
     const handleSaveFavorite = ( search ) => {
         const favorites = localStorage.getItem( 'favorites' );
         const newFavorites = favorites ? JSON.parse( favorites ) : [];
@@ -214,47 +207,41 @@ const HomePage = () => {
 
     return (
         <>
-            <div>
-                <LogoAnimation />
-                <PaperPlaneAnimation />
-            </div>
+            <LogoAnimation />
+            <PaperPlaneAnimation />
             <Header />
-            <section>
-                <div className="relative">
-                    <CarouselImages images={images} />
-                    <div >
-                        <SearchForm
-                            tipoViaje={tipoViaje}
-                            fechaSalida={fechaSalida}
-                            fechaRetorno={fechaRetorno}
-                            origen={origen}
-                            destino={destino}
-                            pasajeros={pasajeros}
-                            setTipoViaje={setTipoViaje}
-                            setFechaSalida={setFechaSalida}
-                            setFechaRetorno={setFechaRetorno}
-                            setOrigen={setOrigen}
-                            setDestino={setDestino}
-                            setPasajeros={setPasajeros}
-                            handleSubmit={handleSubmit}
-                        />
-                    </div>
-                </div>
-                <div className="relative w-full h-full">
-                    <div className="relative z-10"></div>
-                    {loading ? (
-                        <div className="text-center">
-                            <div
-                                className="w-16 h-16 border-4 border-dashed rounded-full animate-spin border-dark-blue mx-auto"
-                            ></div>
-                            <h2 className="text-zinc-900 dark:text-zinc-400 mt-4">Loading...</h2>
-                            <p className="text-zinc-600 dark:text-zinc-400">
-                                Your adventure is about to begin
-                            </p>
-                        </div>
-                    ) : null}
+            <section className="relative w-full h-screen">
+                <CarouselImages />
+                <div className="absolute inset-0 flex items-center justify-center z-10">
+                    <SearchForm
+                        tipoViaje={tipoViaje}
+                        fechaSalida={fechaSalida}
+                        fechaRetorno={fechaRetorno}
+                        origen={origen}
+                        destino={destino}
+                        pasajeros={pasajeros}
+                        setTipoViaje={setTipoViaje}
+                        setFechaSalida={setFechaSalida}
+                        setFechaRetorno={setFechaRetorno}
+                        setOrigen={setOrigen}
+                        setDestino={setDestino}
+                        setPasajeros={setPasajeros}
+                        handleSubmit={handleSubmit}
+                    />
                 </div>
             </section>
+            <div className="relative w-full h-full">
+                <div className="relative z-10"></div>
+                {loading ? (
+                    <div className="text-center">
+                        <div className="w-16 h-16 border-4 border-dashed rounded-full animate-spin border-dark-blue mx-auto"></div>
+                        <h2 className="text-zinc-900 dark:text-zinc-400 mt-4">Loading...</h2>
+                        <p className="text-zinc-600 dark:text-zinc-400">
+                            Your adventure is about to begin
+                        </p>
+                    </div>
+                ) : null}
+            </div>
             {isAuthenticated && (
                 <RecentSearches
                     recentSearches={recentSearches}

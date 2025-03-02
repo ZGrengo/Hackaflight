@@ -10,8 +10,6 @@ const filterFlightsSchema = Joi.object( {
     departureTime: Joi.string().pattern( timePattern ).optional(),
     arrivalTime: Joi.string().pattern( timePattern ).optional(),
     class: Joi.string().valid( 'a', 'f', 'p', 'r', 'c', 'd', 'i', 'j', 'z' ).optional(),
-    page: Joi.number().integer().min( 1 ).optional(),
-    limit: Joi.number().integer().min( 1 ).optional(),
     sortByPrice: Joi.string().valid( 'true', 'false' ).optional(),
     stops: Joi.number().integer().min( 0 ).optional(),
     destination: Joi.string().length( 3 ).optional(), // Validación para el código IATA del destino
