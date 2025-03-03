@@ -9,7 +9,7 @@ import Header from '../components/Header';
 import LogoAnimation from '../components/LogoAnimation';
 import PaperPlaneAnimation from '../components/PaperPlaneAnimation';
 import Footer from '../components/Footer';
-import RatingSummary from '../components/RatingSumary';
+import RatingSumary from '../components/RatingSumary';
 import { AuthContext } from '../contexts/AuthContext';
 
 const { VITE_API_URL } = import.meta.env;
@@ -22,13 +22,12 @@ const HomePage = () => {
     const [ destino, setDestino ] = useState( '' );
     const [ pasajeros, setPasajeros ] = useState( 1 );
     const [ popularDestinations, setPopularDestinations ] = useState( [] );
-    const { ratings } = useRatingList();
     const [ recentSearches, setRecentSearches ] = useState( [] );
-    const { isAuthenticated } = useContext( AuthContext );
+    const { ratings } = useRatingList();
     const [ loading, setLoading ] = useState( false );
 
     const navigate = useNavigate();
-    const [ searchParams ] = useSearchParams();
+    const { isAuthenticated } = useContext( AuthContext );
 
     useEffect( () => {
         setPopularDestinations( [
@@ -38,6 +37,7 @@ const HomePage = () => {
         ] );
     }, [] );
 
+    const [ searchParams ] = useSearchParams();
     useEffect( () => {
         const returnDate = searchParams.get( "returnDate" );
         if ( returnDate )
@@ -69,13 +69,6 @@ const HomePage = () => {
         }
     }, [ tipoViaje, searchParams ] );
 
-    useEffect( () => {
-        if ( isAuthenticated )
-        {
-            loadRecentSearches();
-        }
-    }, [ isAuthenticated ] );
-
     const loadRecentSearches = () => {
         const storedSearches = localStorage.getItem( 'recentSearches' );
         if ( storedSearches )
@@ -100,11 +93,16 @@ const HomePage = () => {
         e.preventDefault();
         setLoading( true );
 
+        if ( isAuthenticated )
+        {
+            loadRecentSearches();
+        }
+
         const searchParams = new URLSearchParams( {
             origin: origen,
             destination: destino,
             departureDate: fechaSalida,
-            adults: pasajeros.toString(),
+            adults: pasajeros,
         } );
 
         try
@@ -130,7 +128,7 @@ const HomePage = () => {
                     destination: destino,
                     departureDate: fechaSalida,
                     returnDate: fechaRetorno,
-                    adults: pasajeros.toString(),
+                    adults: pasajeros,
                 } );
 
                 const resVuelta = await fetch(
@@ -145,7 +143,7 @@ const HomePage = () => {
                 const bodyVuelta = await resVuelta.json();
                 if ( bodyVuelta.status === 'error' ) throw new Error( bodyVuelta.message );
 
-                flights = [ ...flights, ...bodyVuelta || [] ];
+                flights = [ ...flights || [] ];
             }
 
             navigate( '/search-results', { state: { flights } } );
@@ -160,7 +158,7 @@ const HomePage = () => {
             } );
         } catch ( err )
         {
-            console.error( 'Error al buscar vuelos:', err );
+            console.log( 'Error al buscar vuelos:', err );
         } finally
         {
             setLoading( false );
@@ -171,11 +169,12 @@ const HomePage = () => {
         setOrigen( search.origen );
         setDestino( search.destino );
         setFechaSalida( search.fechaSalida );
-        setFechaRetorno( search.fechaRetorno || '' );
+        setFechaRetorno( search.fechaRetorno );
         setPasajeros( search.pasajeros );
         setTipoViaje( search.tipoViaje );
-        handleSubmit( { preventDefault: () => { } } ); // Simula un evento para evitar errores
+        handleSubmit();
     };
+
 
     const handleSaveFavorite = ( search ) => {
         const favorites = localStorage.getItem( 'favorites' );
@@ -186,11 +185,10 @@ const HomePage = () => {
     };
 
     return (
-        <>
-            <section>
-                <LogoAnimation />
-                <PaperPlaneAnimation />
-            </section>
+
+        <section>
+            <LogoAnimation />
+            <PaperPlaneAnimation />
             <Header />
             <section className="relative w-full h-screen">
                 <CarouselImages />
@@ -213,17 +211,17 @@ const HomePage = () => {
                 </section>
             </section>
             <section className="relative w-full h-full">
-                {loading && (
-                    <div className="text-center">
-                        <div className="w-16 h-16 border-4 border-dashed rounded-full animate-spin border-dark-blue mx-auto"></div>
-                        <h2 className="text-zinc-900 dark:text-zinc-400 mt-4">Loading...</h2>
-                        <p className="text-zinc-600 dark:text-zinc-400">
-                            Your adventure is about to begin
-                        </p>
-                    </div>
-                )}
-            </section>
-            <section>
+                <section className="relative z-10">
+                    {loading ? (
+                        <section className="text-center">
+                            <section className="w-16 h-16 border-4 border-dashed rounded-full animate-spin border-dark-blue mx-auto"></section>
+                            <h2 className="text-zinc-900 dark:text-zinc-400 mt-4">Loading...</h2>
+                            <p className="text-zinc-600 dark:text-zinc-400">
+                                Your adventure is about to begin
+                            </p>
+                        </section>
+                    ) : null}
+                </section>
                 {isAuthenticated && (
                     <RecentSearches
                         recentSearches={recentSearches}
@@ -231,14 +229,13 @@ const HomePage = () => {
                         onSaveFavorite={handleSaveFavorite}
                     />
                 )}
-            </section>
-            <section>
+
                 <PopularDestinations popularDestinations={popularDestinations} />
-                <RatingSummary ratings={ratings} />
+                <RatingSumary ratings={ratings} />
+                <Footer />
             </section>
-            <Footer />
-        </>
+        </section>
     );
-};
+}
 
 export default HomePage;

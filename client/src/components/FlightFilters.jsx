@@ -9,24 +9,23 @@ const FlightFilters = ( { onFilterChange } ) => {
         sortByPrice: '',
     } );
 
-    // Función para manejar el cambio de filtros
     const handleInputChange = ( e ) => {
         const { name, value } = e.target;
+        console.log( `Filter changed: ${ name } = ${ value }` );
         setFilters( ( prevFilters ) => ( {
             ...prevFilters,
             [ name ]: value,
         } ) );
     };
 
-    // Función para aplicar los filtros
     const applyFilters = () => {
-        console.log( 'Aplicando filtros:', filters );
+        console.log( "Applying filters:", filters );
         onFilterChange( filters );
     };
 
     return (
-        <div>
-            <div>
+        <section>
+            <section>
                 <label>Paradas:</label>
                 <select name="stops" value={filters.stops} onChange={handleInputChange}>
                     <option value="">Cualquiera</option>
@@ -34,8 +33,8 @@ const FlightFilters = ( { onFilterChange } ) => {
                     <option value="1">1 Parada</option>
                     <option value="2">2 Paradas</option>
                 </select>
-            </div>
-            <div>
+            </section>
+            <section>
                 <label>Precio Mínimo:</label>
                 <input
                     type="number"
@@ -43,8 +42,8 @@ const FlightFilters = ( { onFilterChange } ) => {
                     value={filters.minPrice}
                     onChange={handleInputChange}
                 />
-            </div>
-            <div>
+            </section>
+            <section>
                 <label>Precio Máximo:</label>
                 <input
                     type="number"
@@ -52,17 +51,17 @@ const FlightFilters = ( { onFilterChange } ) => {
                     value={filters.maxPrice}
                     onChange={handleInputChange}
                 />
-            </div>
-            <div>
+            </section>
+            <section>
                 <label>Ordenar por:</label>
                 <select name="sortByPrice" value={filters.sortByPrice} onChange={handleInputChange}>
                     <option value="">Seleccionar</option>
                     <option value="true">Precio Ascendente</option>
                     <option value="false">Precio Descendente</option>
                 </select>
-            </div>
+            </section>
             <button onClick={applyFilters}>Aplicar Filtros</button>
-        </div>
+        </section>
     );
 };
 

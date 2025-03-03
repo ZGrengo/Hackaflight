@@ -8,22 +8,18 @@ const { VITE_API_URL } = import.meta.env;
 
 const SearchResultsPage = () => {
     const location = useLocation();
-    const { flights = [] } = location.state || {};
-    const [ filteredFlights, setFilteredFlights ] = useState( [ ...flights ] );
+    const [ flights ] = useState( () => location.state || { ida: [], vuelta: [] } );
+    const [ filteredFlights, setFilteredFlights ] = useState( { ida: [], vuelta: [] } );
+
+    console.log( "Initial flights data:", flights );
 
     const handleFilterChange = async ( filters ) => {
-        const searchParams = new URLSearchParams();
-
-        // Añadir solo los filtros que tienen valores
-        Object.keys( filters ).forEach( ( key ) => {
-            if ( filters[ key ] )
-            {
-                searchParams.append( key, filters[ key ] );
-            }
-        } );
-
         try
         {
+            console.log( "Filters applied:", filters );
+
+            const searchParams = new URLSearchParams( filters );
+
             const res = await fetch(
                 `${ VITE_API_URL }/api/flights/filter?${ searchParams.toString() }`,
                 {
@@ -36,41 +32,55 @@ const SearchResultsPage = () => {
             const body = await res.json();
 
             if ( body.status === 'error' ) throw new Error( body.message );
-            setFilteredFlights( body.data || [] );
+
+            const { flights: filteredFlights } = body.data || {};
+            setFilteredFlights( filteredFlights );
+
+            console.log( 'Filtered flights data:', body.data );
         } catch ( err )
         {
             console.log( 'Error al filtrar vuelos:', err );
         }
     };
 
-
     useEffect( () => {
-        setFilteredFlights( [ ...flights ] );
+        setFilteredFlights( flights );
+        console.log( "Updated flights data:", flights );
     }, [ flights ] );
-    console.log( flights );
 
     if ( !flights.length )
     {
-
         return <p>No se encontraron resultados de búsqueda.</p>;
-    } else
-    {
-        return (
-            <div>
-                <FlightFilters onFilterChange={handleFilterChange} />
-                <h2>Resultados de la Búsqueda</h2>
-                <div className="flight-cards-container">
-                    {filteredFlights.map( ( flight, index ) => (
-                        <FlightCard key={index} flight={flight} />
-                    ) )}
-                </div>
-            </div>
-        );
     }
+
+    return (
+        <section>
+            <FlightFilters onFilterChange={handleFilterChange} />
+            <h2>Resultados de la Búsqueda</h2>
+            <section className="flight-cards-container">
+                <h3>Vuelos de Ida</h3>
+                {filteredFlights.ida.length > 0 ? (
+                    filteredFlights.ida.map( ( flight, index ) => (
+                        <FlightCard key={index} flight={flight} />
+                    ) )
+                ) : (
+                    <p>No hay vuelos de ida que coincidan con los filtros.</p>
+                )}
+                <h3>Vuelos de Vuelta</h3>
+                {filteredFlights.vuelta.length > 0 ? (
+                    filteredFlights.vuelta.map( ( flight, index ) => (
+                        <FlightCard key={index} flight={flight} />
+                    ) )
+                ) : (
+                    <p>No hay vuelos de vuelta que coincidan con los filtros.</p>
+                )}
+            </section>
+        </section>
+    );
 };
 
 SearchResultsPage.propTypes = {
-    flights: PropTypes.arrayOf(
+    flights: PropTypes.shape(
         PropTypes.shape( {
             origin: PropTypes.string.isRequired,
             destination: PropTypes.string.isRequired,
@@ -90,8 +100,7 @@ SearchResultsPage.propTypes = {
             } ).isRequired,
             stops: PropTypes.number,
         } )
-    ),
+    )
 };
 
 export default SearchResultsPage;
-
