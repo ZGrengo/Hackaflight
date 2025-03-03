@@ -4,8 +4,10 @@ import { useState, useEffect } from 'react';
 import FlightCard from '../components/FlightCard';
 import FlightFilters from '../components/FlightFilters';
 
+//  obtiene la variable de entorno
 const { VITE_API_URL } = import.meta.env;
 
+// definimos la página de resultados de búsqueda
 const SearchResultsPage = () => {
     const location = useLocation();
     const [ flights ] = useState( () => location.state?.flights || [] );
@@ -13,6 +15,7 @@ const SearchResultsPage = () => {
 
     console.log( "Initial flights data:", flights );
 
+    // función para manejar el cambio de filtros
     const handleFilterChange = async ( filters ) => {
         try
         {
@@ -27,6 +30,7 @@ const SearchResultsPage = () => {
                 }
             } );
 
+            // Realizar la petición a la API para vuelos filtrados
             const res = await fetch(
                 `${ VITE_API_URL }/api/flights/filter?${ searchParams.toString() }`,
                 {
@@ -35,9 +39,11 @@ const SearchResultsPage = () => {
                 }
             );
 
+            // Manejar la respuesta de la API
             if ( !res.ok ) throw new Error( 'Network response was not ok' );
             const body = await res.json();
 
+            //
             if ( body.status === 'error' ) throw new Error( body.message );
 
             const { flights: filteredFlights } = body.data || {};
@@ -50,16 +56,20 @@ const SearchResultsPage = () => {
         }
     };
 
+    // Actualizar los vuelos filtrados cuando cambie la lista de vuelos
     useEffect( () => {
         setFilteredFlights( flights );
         console.log( "Updated flights data:", flights );
     }, [ flights ] );
 
+    // Mostrar un mensaje si no hay vuelos
     if ( !flights.length )
     {
         return <p>No se encontraron resultados de búsqueda.</p>;
     }
 
+
+    // Renderizar la página de resultados de búsqueda
     return (
         <section>
             <FlightFilters onFilterChange={handleFilterChange} />

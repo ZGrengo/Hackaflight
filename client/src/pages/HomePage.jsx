@@ -128,6 +128,7 @@ const HomePage = () => {
                     adults: pasajeros,
                 } );
 
+                // realizamos la petición a la API para vuelos de vuelta
                 const res = await fetch(
                     `${ VITE_API_URL }/api/flights/search?${ searchParamsVuelta.toString() }`,
                     {
@@ -136,10 +137,10 @@ const HomePage = () => {
                     }
                 );
 
+                // si la respuesta no es correcta, lanzamos un error
                 if ( !res.ok ) throw new Error( 'Network response was not ok' );
                 const body = await res.json();
                 if ( body.status === 'error' ) throw new Error( body.message );
-
                 flights = [ ...flights || [] ];
             }
 
