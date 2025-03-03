@@ -118,7 +118,7 @@ const RatingPage = () => {
                             value={rate}
                             onChange={(e) => setRate(e.target.value)}
                         >
-                            <option value=''>Valoración</option>
+                            <option value=''>--Elige un valor--</option>
                             <option value='1'>⭐</option>
                             <option value='2'>⭐⭐</option>
                             <option value='3'>⭐⭐⭐</option>

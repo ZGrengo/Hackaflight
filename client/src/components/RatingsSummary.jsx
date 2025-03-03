@@ -6,13 +6,15 @@ import RatingListItem from './RatingListItem';
 import useAvgRating from '../hooks/useAvgRating';
 
 // Este componente recibe un array de comentarios y muestra los 3 primeros
-const RatingsSummary = ( { ratings } ) => {
+const RatingsSummary = ({ ratings }) => {
     // Declaramos las variables
     const { avgRating, totalRatings } = useAvgRating();
     // Calculamos la media de las valoraciones
 
     // Filtramos las valoraciones con puntuación de 5
-    const topRatings = ratings.filter( rating => rating.rate === 5 ).slice( 0, 3 );
+    const topRatings = ratings
+        .filter((rating) => rating.rate === 5)
+        .slice(0, 3);
 
     return (
         <div className='bg-medium-blue p-4 text-light-blue text-center'>
@@ -29,7 +31,7 @@ const RatingsSummary = ( { ratings } ) => {
 
             <ul>
                 {/* Mostramos los 3 primeros comentarios de valoracion 5 */}
-                {topRatings.map( ( rating ) => (
+                {topRatings.map((rating) => (
                     <RatingListItem
                         key={rating.id}
                         title={rating.title}
@@ -37,7 +39,7 @@ const RatingsSummary = ( { ratings } ) => {
                         comment={rating.comment}
                         username={rating.username}
                     />
-                ) )}
+                ))}
             </ul>
         </div>
     );
@@ -46,14 +48,13 @@ const RatingsSummary = ( { ratings } ) => {
 // Validamos las propiedades
 RatingsSummary.propTypes = {
     ratings: PropTypes.arrayOf(
-        PropTypes.shape( {
+        PropTypes.shape({
             id: PropTypes.number.isRequired,
             title: PropTypes.string.isRequired,
             rate: PropTypes.number.isRequired,
             comment: PropTypes.string.isRequired,
             username: PropTypes.string.isRequired,
-
-        } ),
+        }),
     ).isRequired,
 };
 
