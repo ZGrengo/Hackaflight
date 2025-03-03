@@ -8,8 +8,8 @@ const { VITE_API_URL } = import.meta.env;
 
 const SearchResultsPage = () => {
     const location = useLocation();
-    const [ flights ] = useState( () => location.state || { ida: [], vuelta: [] } );
-    const [ filteredFlights, setFilteredFlights ] = useState( { ida: [], vuelta: [] } );
+    const [ flights ] = useState( () => location.state?.flights || [] );
+    const [ filteredFlights, setFilteredFlights ] = useState( [] );
 
     console.log( "Initial flights data:", flights );
 
@@ -18,7 +18,14 @@ const SearchResultsPage = () => {
         {
             console.log( "Filters applied:", filters );
 
-            const searchParams = new URLSearchParams( filters );
+            // Filtrar los parámetros vacíos
+            const searchParams = new URLSearchParams();
+            Object.keys( filters ).forEach( key => {
+                if ( filters[ key ] )
+                {
+                    searchParams.append( key, filters[ key ] );
+                }
+            } );
 
             const res = await fetch(
                 `${ VITE_API_URL }/api/flights/filter?${ searchParams.toString() }`,
@@ -58,21 +65,12 @@ const SearchResultsPage = () => {
             <FlightFilters onFilterChange={handleFilterChange} />
             <h2>Resultados de la Búsqueda</h2>
             <section className="flight-cards-container">
-                <h3>Vuelos de Ida</h3>
-                {filteredFlights.ida.length > 0 ? (
-                    filteredFlights.ida.map( ( flight, index ) => (
-                        <FlightCard key={index} flight={flight} />
+                {filteredFlights.length > 0 ? (
+                    filteredFlights.map( ( flight, index ) => (
+                        <FlightCard key={flight.id || index} flight={flight} />
                     ) )
                 ) : (
-                    <p>No hay vuelos de ida que coincidan con los filtros.</p>
-                )}
-                <h3>Vuelos de Vuelta</h3>
-                {filteredFlights.vuelta.length > 0 ? (
-                    filteredFlights.vuelta.map( ( flight, index ) => (
-                        <FlightCard key={index} flight={flight} />
-                    ) )
-                ) : (
-                    <p>No hay vuelos de vuelta que coincidan con los filtros.</p>
+                    <p>No hay vuelos que coincidan con los filtros.</p>
                 )}
             </section>
         </section>
@@ -80,12 +78,39 @@ const SearchResultsPage = () => {
 };
 
 SearchResultsPage.propTypes = {
-    flights: PropTypes.shape(
+    flights: PropTypes.arrayOf(
         PropTypes.shape( {
-            origin: PropTypes.string.isRequired,
-            destination: PropTypes.string.isRequired,
-            departureDate: PropTypes.string.isRequired,
-            returnDate: PropTypes.string,
+            itineraries: PropTypes.arrayOf(
+                PropTypes.shape( {
+                    duration: PropTypes.string.isRequired,
+                    segments: PropTypes.arrayOf(
+                        PropTypes.shape( {
+                            departure: PropTypes.shape( {
+                                iataCode: PropTypes.string.isRequired,
+                                terminal: PropTypes.string,
+                                at: PropTypes.string.isRequired,
+                            } ).isRequired,
+                            arrival: PropTypes.shape( {
+                                iataCode: PropTypes.string.isRequired,
+                                terminal: PropTypes.string,
+                                at: PropTypes.string.isRequired,
+                            } ).isRequired,
+                            carrierCode: PropTypes.string.isRequired,
+                            number: PropTypes.string.isRequired,
+                            aircraft: PropTypes.shape( {
+                                code: PropTypes.string.isRequired,
+                            } ).isRequired,
+                            operating: PropTypes.shape( {
+                                carrierCode: PropTypes.string.isRequired,
+                            } ).isRequired,
+                            duration: PropTypes.string.isRequired,
+                            id: PropTypes.string.isRequired,
+                            numberOfStops: PropTypes.number.isRequired,
+                            blacklistedInEU: PropTypes.bool.isRequired,
+                        } ).isRequired
+                    ).isRequired,
+                } ).isRequired
+            ).isRequired,
             price: PropTypes.shape( {
                 currency: PropTypes.string.isRequired,
                 total: PropTypes.string.isRequired,
@@ -98,9 +123,35 @@ SearchResultsPage.propTypes = {
                 ),
                 grandTotal: PropTypes.string,
             } ).isRequired,
-            stops: PropTypes.number,
-        } )
-    )
+            validatingAirlineCodes: PropTypes.arrayOf( PropTypes.string ).isRequired,
+            travelerPricings: PropTypes.arrayOf(
+                PropTypes.shape( {
+                    travelerId: PropTypes.string.isRequired,
+                    fareOption: PropTypes.string.isRequired,
+                    travelerType: PropTypes.string.isRequired,
+                    price: PropTypes.shape( {
+                        currency: PropTypes.string.isRequired,
+                        total: PropTypes.string.isRequired,
+                        base: PropTypes.string,
+                    } ).isRequired,
+                    fareDetailsBySegment: PropTypes.arrayOf(
+                        PropTypes.shape( {
+                            segmentId: PropTypes.string.isRequired,
+                            cabin: PropTypes.string.isRequired,
+                            fareBasis: PropTypes.string.isRequired,
+                            class: PropTypes.string.isRequired,
+                            includedCheckedBags: PropTypes.shape( {
+                                quantity: PropTypes.number.isRequired,
+                            } ).isRequired,
+                            includedCabinBags: PropTypes.shape( {
+                                quantity: PropTypes.number.isRequired,
+                            } ).isRequired,
+                        } ).isRequired
+                    ).isRequired,
+                } ).isRequired
+            ).isRequired,
+        } ).isRequired
+    ).isRequired,
 };
 
 export default SearchResultsPage;

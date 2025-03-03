@@ -12,8 +12,10 @@ import Footer from '../components/Footer';
 import RatingSumary from '../components/RatingSumary';
 import { AuthContext } from '../contexts/AuthContext';
 
+// importamos la variable de entorno
 const { VITE_API_URL } = import.meta.env;
 
+// definimos los estados iniciales
 const HomePage = () => {
     const [ tipoViaje, setTipoViaje ] = useState( 'ida' );
     const [ fechaSalida, setFechaSalida ] = useState( '' );
@@ -26,9 +28,11 @@ const HomePage = () => {
     const { ratings } = useRatingList();
     const [ loading, setLoading ] = useState( false );
 
+    // usamos el hook useNavigate para navegar entre rutas
     const navigate = useNavigate();
     const { isAuthenticated } = useContext( AuthContext );
 
+    // usamos el hook useEffect para cargar las búsquedas recientes de ejemplo
     useEffect( () => {
         setPopularDestinations( [
             { origen: 'Madrid', destino: 'Nueva York' },
@@ -37,6 +41,7 @@ const HomePage = () => {
         ] );
     }, [] );
 
+    // useEffect para tomar los parametros de la pagina de favoritos con la busqueda que el usuario quiere repetir
     const [ searchParams ] = useSearchParams();
     useEffect( () => {
         const returnDate = searchParams.get( "returnDate" );
@@ -61,6 +66,7 @@ const HomePage = () => {
         }
     }, [ searchParams ] );
 
+    // Nuevo useEffect SOLO para fecha de retorno, ejecutado después de actualizar `tipoViaje`
     useEffect( () => {
         const returnDate = searchParams.get( "returnDate" );
         if ( tipoViaje === 'ida-vuelta' && returnDate )
@@ -69,14 +75,7 @@ const HomePage = () => {
         }
     }, [ tipoViaje, searchParams ] );
 
-    const loadRecentSearches = () => {
-        const storedSearches = localStorage.getItem( 'recentSearches' );
-        if ( storedSearches )
-        {
-            setRecentSearches( JSON.parse( storedSearches ) );
-        }
-    };
-
+    // definimos la función para guardar las búsquedas recientes
     const saveRecentSearch = ( search ) => {
         let searches = localStorage.getItem( 'recentSearches' );
         searches = searches ? JSON.parse( searches ) : [];
@@ -89,14 +88,10 @@ const HomePage = () => {
         setRecentSearches( searches );
     };
 
+    // definimos la función para buscar vuelos
     const handleSubmit = async ( e ) => {
         e.preventDefault();
         setLoading( true );
-
-        if ( isAuthenticated )
-        {
-            loadRecentSearches();
-        }
 
         const searchParams = new URLSearchParams( {
             origin: origen,
@@ -107,7 +102,8 @@ const HomePage = () => {
 
         try
         {
-            const resIda = await fetch(
+            // realizamos la petición a la API para vuelos de ida
+            const res = await fetch(
                 `${ VITE_API_URL }/api/flights/search?${ searchParams.toString() }`,
                 {
                     method: 'GET',
@@ -115,12 +111,13 @@ const HomePage = () => {
                 }
             );
 
-            if ( !resIda.ok ) throw new Error( 'Network response was not ok' );
-            const bodyIda = await resIda.json();
-            if ( bodyIda.status === 'error' ) throw new Error( bodyIda.message );
+            if ( !res.ok ) throw new Error( 'Network response was not ok' );
+            const body = await res.json();
+            if ( body.status === 'error' ) throw new Error( body.message );
 
-            let flights = bodyIda || [];
+            let flights = body || [];
 
+            // si el tipo de viaje es de ida y vuelta, buscamos también los vuelos de vuelta
             if ( tipoViaje === 'ida-vuelta' && fechaRetorno )
             {
                 const searchParamsVuelta = new URLSearchParams( {
@@ -131,7 +128,7 @@ const HomePage = () => {
                     adults: pasajeros,
                 } );
 
-                const resVuelta = await fetch(
+                const res = await fetch(
                     `${ VITE_API_URL }/api/flights/search?${ searchParamsVuelta.toString() }`,
                     {
                         method: 'GET',
@@ -139,15 +136,17 @@ const HomePage = () => {
                     }
                 );
 
-                if ( !resVuelta.ok ) throw new Error( 'Network response was not ok' );
-                const bodyVuelta = await resVuelta.json();
-                if ( bodyVuelta.status === 'error' ) throw new Error( bodyVuelta.message );
+                if ( !res.ok ) throw new Error( 'Network response was not ok' );
+                const body = await res.json();
+                if ( body.status === 'error' ) throw new Error( body.message );
 
                 flights = [ ...flights || [] ];
             }
 
+            // navegamos a la página de resultados de búsqueda con los vuelos unificados
             navigate( '/search-results', { state: { flights } } );
 
+            // guardamos la búsqueda reciente
             saveRecentSearch( {
                 origen,
                 destino,
@@ -165,6 +164,7 @@ const HomePage = () => {
         }
     };
 
+    // definimos las funciones para repetir y guardar búsquedas
     const handleRepeatSearch = ( search ) => {
         setOrigen( search.origen );
         setDestino( search.destino );
@@ -175,7 +175,7 @@ const HomePage = () => {
         handleSubmit();
     };
 
-
+    // definimos la función para guardar en favoritos
     const handleSaveFavorite = ( search ) => {
         const favorites = localStorage.getItem( 'favorites' );
         const newFavorites = favorites ? JSON.parse( favorites ) : [];
@@ -185,10 +185,11 @@ const HomePage = () => {
     };
 
     return (
-
-        <section>
-            <LogoAnimation />
-            <PaperPlaneAnimation />
+        <>
+            <section>
+                <LogoAnimation />
+                <PaperPlaneAnimation />
+            </section>
             <Header />
             <section className="relative w-full h-screen">
                 <CarouselImages />
@@ -211,31 +212,29 @@ const HomePage = () => {
                 </section>
             </section>
             <section className="relative w-full h-full">
-                <section className="relative z-10">
-                    {loading ? (
-                        <section className="text-center">
-                            <section className="w-16 h-16 border-4 border-dashed rounded-full animate-spin border-dark-blue mx-auto"></section>
-                            <h2 className="text-zinc-900 dark:text-zinc-400 mt-4">Loading...</h2>
-                            <p className="text-zinc-600 dark:text-zinc-400">
-                                Your adventure is about to begin
-                            </p>
-                        </section>
-                    ) : null}
-                </section>
-                {isAuthenticated && (
-                    <RecentSearches
-                        recentSearches={recentSearches}
-                        onRepeatSearch={handleRepeatSearch}
-                        onSaveFavorite={handleSaveFavorite}
-                    />
-                )}
-
-                <PopularDestinations popularDestinations={popularDestinations} />
-                <RatingSumary ratings={ratings} />
-                <Footer />
+                <section className="relative z-10"></section>
+                {loading ? (
+                    <section className="text-center">
+                        <section className="w-16 h-16 border-4 border-dashed rounded-full animate-spin border-dark-blue mx-auto"></section>
+                        <h2 className="text-zinc-900 dark:text-zinc-400 mt-4">Loading...</h2>
+                        <p className="text-zinc-600 dark:text-zinc-400">
+                            Your adventure is about to begin
+                        </p>
+                    </section>
+                ) : null}
             </section>
-        </section>
+            {isAuthenticated && (
+                <RecentSearches
+                    recentSearches={recentSearches}
+                    onRepeatSearch={handleRepeatSearch}
+                    onSaveFavorite={handleSaveFavorite}
+                />
+            )}
+            <PopularDestinations popularDestinations={popularDestinations} />
+            <RatingSumary ratings={ratings} />
+            <Footer />
+        </>
     );
-}
+};
 
 export default HomePage;

@@ -39,7 +39,7 @@ const FlightCard = ( { flight } ) => {
                     console.log( `Validating Airline Codes:`, validatingAirlineCodes );
 
                     return (
-                        <section key={index}>
+                        <section key={`${ flight.id }-${ index }`}>
                             <p className="text-gray-300 font-medium">Origen: {departure.iataCode}</p>
                             <p className="text-gray-300 font-medium">Destino: {arrival.iataCode}</p>
                             <p className="text-gray-300 font-medium">Aerolinea: {validatingAirlineCodes}</p>

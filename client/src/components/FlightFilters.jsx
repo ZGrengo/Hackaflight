@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const FlightFilters = ( { onFilterChange } ) => {
     const [ filters, setFilters ] = useState( {
@@ -22,6 +22,10 @@ const FlightFilters = ( { onFilterChange } ) => {
         console.log( "Applying filters:", filters );
         onFilterChange( filters );
     };
+
+    useEffect( () => {
+        console.log( "Filters state updated:", filters );
+    }, [ filters ] );
 
     return (
         <section>

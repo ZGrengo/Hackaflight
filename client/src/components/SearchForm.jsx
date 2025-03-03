@@ -15,21 +15,9 @@ const SearchForm = ( {
     setPasajeros,
     handleSubmit
 } ) => {
-    const handleFormSubmit = ( e ) => {
-        e.preventDefault();
-        console.log( "Form submitted" );
-        console.log( "tipoViaje:", tipoViaje );
-        console.log( "fechaSalida:", fechaSalida );
-        console.log( "fechaRetorno:", fechaRetorno );
-        console.log( "origen:", origen );
-        console.log( "destino:", destino );
-        console.log( "pasajeros:", pasajeros );
-        handleSubmit( e );
-    };
-
     return (
         <section className='relative z-10 top-48 opacity-90 flex justify-center items-center text-sm'>
-            <form onSubmit={handleFormSubmit} className='flex flex-col items-center w-3/4 space-y-4 p-8 bg-dark-blue text-light-blue shadow-lg rounded-lg'>
+            <form onSubmit={handleSubmit} className='flex flex-col items-center w-3/4 space-y-4 p-8 bg-dark-blue text-light-blue shadow-lg rounded-lg'>
                 <section className='grid grid-cols-2 gap-4 w-full'>
                     <section className='flex flex-col items-center'>
                         <label>Pasajeros:</label>
@@ -37,7 +25,7 @@ const SearchForm = ( {
                             type="number"
                             value={pasajeros}
                             onChange={( e ) => {
-                                console.log( "Pasajeros changed:", e.target.value );
+                                console.log( `Pasajeros changed: ${ e.target.value }` );
                                 setPasajeros( e.target.value );
                             }}
                             min="1"
@@ -47,7 +35,7 @@ const SearchForm = ( {
                     <section className='flex flex-col items-center'>
                         <label>Tipo de Viaje:</label>
                         <select value={tipoViaje} onChange={( e ) => {
-                            console.log( "Tipo de Viaje changed:", e.target.value );
+                            console.log( `Tipo de Viaje changed: ${ e.target.value }` );
                             setTipoViaje( e.target.value );
                         }} className='text-slate-900  w-4/5 h-1/2 border-2 border-medium-blue rounded-md'>
                             <option value="ida">Ida</option>
@@ -60,7 +48,7 @@ const SearchForm = ( {
                             type="text"
                             value={origen}
                             onChange={( e ) => {
-                                console.log( "Origen changed:", e.target.value );
+                                console.log( `Origen changed: ${ e.target.value }` );
                                 setOrigen( e.target.value );
                             }}
                             className='text-slate-900  w-1/2 text-center border-2 border-medium-blue rounded-md' />
@@ -71,7 +59,7 @@ const SearchForm = ( {
                             type="text"
                             value={destino}
                             onChange={( e ) => {
-                                console.log( "Destino changed:", e.target.value );
+                                console.log( `Destino changed: ${ e.target.value }` );
                                 setDestino( e.target.value );
                             }}
                             className='text-slate-900  w-1/2 text-center border-2 border-medium-blue rounded-md' />
@@ -82,7 +70,7 @@ const SearchForm = ( {
                             type="date"
                             value={fechaSalida}
                             onChange={( e ) => {
-                                console.log( "Fecha de Salida changed:", e.target.value );
+                                console.log( `Fecha de Salida changed: ${ e.target.value }` );
                                 setFechaSalida( e.target.value );
                             }}
                             className='text-slate-900 text-center border-2 border-medium-blue rounded-md' />
@@ -94,7 +82,7 @@ const SearchForm = ( {
                                 type="date"
                                 value={fechaRetorno}
                                 onChange={( e ) => {
-                                    console.log( "Fecha de Retorno changed:", e.target.value );
+                                    console.log( `Fecha de Retorno changed: ${ e.target.value }` );
                                     setFechaRetorno( e.target.value );
                                 }}
                                 className='text-slate-900 text-center border-2 border-medium-blue rounded-md' />
