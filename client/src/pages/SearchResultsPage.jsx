@@ -11,7 +11,7 @@ const { VITE_API_URL } = import.meta.env;
 const SearchResultsPage = () => {
     const location = useLocation();
     const [ flights ] = useState( () => location.state?.flights || [] );
-    const [ filteredFlights, setFilteredFlights ] = useState( [] );
+    const [ filteredFlights, setFilteredFlights ] = useState( flights );
 
     console.log( "Initial flights data:", flights );
 
@@ -47,7 +47,7 @@ const SearchResultsPage = () => {
             if ( body.status === 'error' ) throw new Error( body.message );
 
             const { flights: filteredFlights } = body.data || {};
-            setFilteredFlights( filteredFlights );
+            setFilteredFlights( filteredFlights || [] );
 
             console.log( 'Filtered flights data:', body.data );
         } catch ( err )
