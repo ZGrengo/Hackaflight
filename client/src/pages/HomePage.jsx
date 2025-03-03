@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import useRatingList from '../hooks/useRatingList';
 import SearchForm from '../components/SearchForm';
 import CarouselImages from '../components/CarouselImages';
@@ -9,13 +9,11 @@ import Header from '../components/Header';
 import LogoAnimation from '../components/LogoAnimation';
 import PaperPlaneAnimation from '../components/PaperPlaneAnimation';
 import Footer from '../components/Footer';
-import RatingSumary from '../components/RatingSumary';
+import RatingSummary from '../components/RatingSumary';
 import { AuthContext } from '../contexts/AuthContext';
 
-// importamos la variable de entorno
 const { VITE_API_URL } = import.meta.env;
 
-// definimos los estados iniciales
 const HomePage = () => {
     const [ tipoViaje, setTipoViaje ] = useState( 'ida' );
     const [ fechaSalida, setFechaSalida ] = useState( '' );
@@ -24,70 +22,60 @@ const HomePage = () => {
     const [ destino, setDestino ] = useState( '' );
     const [ pasajeros, setPasajeros ] = useState( 1 );
     const [ popularDestinations, setPopularDestinations ] = useState( [] );
-    const [ recentSearches, setRecentSearches ] = useState( [] );
     const { ratings } = useRatingList();
+    const [ recentSearches, setRecentSearches ] = useState( [] );
+    const { isAuthenticated } = useContext( AuthContext );
     const [ loading, setLoading ] = useState( false );
 
-    // usamos el hook useNavigate para navegar entre rutas
     const navigate = useNavigate();
-    const { isAuthenticated } = useContext( AuthContext );
+    const [ searchParams ] = useSearchParams();
 
-    // usamos el hook useEffect para cargar las búsquedas recientes de ejemplo
     useEffect( () => {
         setPopularDestinations( [
             { origen: 'Madrid', destino: 'Nueva York' },
             { origen: 'Londres', destino: 'Tokio' },
             { origen: 'Paris', destino: 'Londres' },
-        ]);
-        // setTopComments([
-        //     { user: 'Usuario1', comment: 'Excelente servicio!', rating: 5 },
-        //     { user: 'Usuario2', comment: 'Muy buena experiencia.', rating: 4 },
-        //     { user: 'Usuario3', comment: 'Recomendado!', rating: 4 },
-        // ]);
-    }, []);
-
-    // useEffect para tomar los parametros de la pagina de favoritos con la busqueda que el usuario quiere repetir
-    const [searchParams] = useSearchParams();
-    useEffect(() => {
-        const returnDate = searchParams.get("returnDate");
-        if (returnDate) {
-            setTipoViaje('ida-vuelta');
-        }
-    }, [searchParams]);
-    
-    useEffect(() => {
-        const origin = searchParams.get("origin");
-        const destination = searchParams.get("destination");
-        const departureDate = searchParams.get("departureDate");
-        const adults = searchParams.get("adults");
-    
-        if (origin && destination && departureDate && adults) {
-            setOrigen(origin);
-            setDestino(destination);
-            setFechaSalida(departureDate.split('T')[0]);
-            setPasajeros(Number(adults));
-        }
-    }, [searchParams]);
-    
-    // Nuevo useEffect SOLO para fecha de retorno, ejecutado después de actualizar `tipoViaje`
-    useEffect(() => {
-        const returnDate = searchParams.get("returnDate");
-        if (tipoViaje === 'ida-vuelta' && returnDate) {
-            setFechaRetorno(returnDate.split('T')[0]);
-        }
-    }, [tipoViaje, searchParams]);
-
-    const handleSubmit = async (e) => {
         ] );
+    }, [] );
 
-        // si el usuario está autenticado, cargamos las búsquedas recientes
+    useEffect( () => {
+        const returnDate = searchParams.get( "returnDate" );
+        if ( returnDate )
+        {
+            setTipoViaje( 'ida-vuelta' );
+        }
+    }, [ searchParams ] );
+
+    useEffect( () => {
+        const origin = searchParams.get( "origin" );
+        const destination = searchParams.get( "destination" );
+        const departureDate = searchParams.get( "departureDate" );
+        const adults = searchParams.get( "adults" );
+
+        if ( origin && destination && departureDate && adults )
+        {
+            setOrigen( origin );
+            setDestino( destination );
+            setFechaSalida( departureDate.split( 'T' )[ 0 ] );
+            setPasajeros( Number( adults ) );
+        }
+    }, [ searchParams ] );
+
+    useEffect( () => {
+        const returnDate = searchParams.get( "returnDate" );
+        if ( tipoViaje === 'ida-vuelta' && returnDate )
+        {
+            setFechaRetorno( returnDate.split( 'T' )[ 0 ] );
+        }
+    }, [ tipoViaje, searchParams ] );
+
+    useEffect( () => {
         if ( isAuthenticated )
         {
             loadRecentSearches();
         }
     }, [ isAuthenticated ] );
 
-    // definimos las funciones para cargar y guardar las búsquedas recientes
     const loadRecentSearches = () => {
         const storedSearches = localStorage.getItem( 'recentSearches' );
         if ( storedSearches )
@@ -96,7 +84,6 @@ const HomePage = () => {
         }
     };
 
-    // definimos la función para guardar las búsquedas recientes
     const saveRecentSearch = ( search ) => {
         let searches = localStorage.getItem( 'recentSearches' );
         searches = searches ? JSON.parse( searches ) : [];
@@ -109,7 +96,6 @@ const HomePage = () => {
         setRecentSearches( searches );
     };
 
-    // definimos la función para buscar vuelos
     const handleSubmit = async ( e ) => {
         e.preventDefault();
         setLoading( true );
@@ -118,12 +104,11 @@ const HomePage = () => {
             origin: origen,
             destination: destino,
             departureDate: fechaSalida,
-            adults: pasajeros,
+            adults: pasajeros.toString(),
         } );
 
         try
         {
-            // realizamos la petición a la API para vuelos de ida
             const resIda = await fetch(
                 `${ VITE_API_URL }/api/flights/search?${ searchParams.toString() }`,
                 {
@@ -138,7 +123,6 @@ const HomePage = () => {
 
             let flights = bodyIda || [];
 
-            // si el tipo de viaje es de ida y vuelta, buscamos también los vuelos de vuelta
             if ( tipoViaje === 'ida-vuelta' && fechaRetorno )
             {
                 const searchParamsVuelta = new URLSearchParams( {
@@ -146,7 +130,7 @@ const HomePage = () => {
                     destination: destino,
                     departureDate: fechaSalida,
                     returnDate: fechaRetorno,
-                    adults: pasajeros,
+                    adults: pasajeros.toString(),
                 } );
 
                 const resVuelta = await fetch(
@@ -161,13 +145,11 @@ const HomePage = () => {
                 const bodyVuelta = await resVuelta.json();
                 if ( bodyVuelta.status === 'error' ) throw new Error( bodyVuelta.message );
 
-                flights = [ ...flights || [] ];
+                flights = [ ...flights, ...bodyVuelta || [] ];
             }
 
-            // navegamos a la página de resultados de búsqueda con los vuelos unificados
             navigate( '/search-results', { state: { flights } } );
 
-            // guardamos la búsqueda reciente
             saveRecentSearch( {
                 origen,
                 destino,
@@ -178,25 +160,23 @@ const HomePage = () => {
             } );
         } catch ( err )
         {
-            console.log( 'Error al buscar vuelos:', err );
+            console.error( 'Error al buscar vuelos:', err );
         } finally
         {
             setLoading( false );
         }
     };
 
-    // definimos las funciones para repetir y guardar búsquedas
     const handleRepeatSearch = ( search ) => {
         setOrigen( search.origen );
         setDestino( search.destino );
         setFechaSalida( search.fechaSalida );
-        setFechaRetorno( search.fechaRetorno );
+        setFechaRetorno( search.fechaRetorno || '' );
         setPasajeros( search.pasajeros );
         setTipoViaje( search.tipoViaje );
-        handleSubmit();
+        handleSubmit( { preventDefault: () => { } } ); // Simula un evento para evitar errores
     };
 
-    // definimos la función para guardar en favoritos
     const handleSaveFavorite = ( search ) => {
         const favorites = localStorage.getItem( 'favorites' );
         const newFavorites = favorites ? JSON.parse( favorites ) : [];
@@ -207,12 +187,14 @@ const HomePage = () => {
 
     return (
         <>
-            <LogoAnimation />
-            <PaperPlaneAnimation />
+            <section>
+                <LogoAnimation />
+                <PaperPlaneAnimation />
+            </section>
             <Header />
             <section className="relative w-full h-screen">
                 <CarouselImages />
-                <div className="absolute inset-0 flex items-center justify-center z-10">
+                <section className="absolute inset-0 flex items-center justify-center z-10">
                     <SearchForm
                         tipoViaje={tipoViaje}
                         fechaSalida={fechaSalida}
@@ -228,11 +210,10 @@ const HomePage = () => {
                         setPasajeros={setPasajeros}
                         handleSubmit={handleSubmit}
                     />
-                </div>
+                </section>
             </section>
-            <div className="relative w-full h-full">
-                <div className="relative z-10"></div>
-                {loading ? (
+            <section className="relative w-full h-full">
+                {loading && (
                     <div className="text-center">
                         <div className="w-16 h-16 border-4 border-dashed rounded-full animate-spin border-dark-blue mx-auto"></div>
                         <h2 className="text-zinc-900 dark:text-zinc-400 mt-4">Loading...</h2>
@@ -240,17 +221,21 @@ const HomePage = () => {
                             Your adventure is about to begin
                         </p>
                     </div>
-                ) : null}
-            </div>
-            {isAuthenticated && (
-                <RecentSearches
-                    recentSearches={recentSearches}
-                    onRepeatSearch={handleRepeatSearch}
-                    onSaveFavorite={handleSaveFavorite}
-                />
-            )}
-            <PopularDestinations popularDestinations={popularDestinations} />
-            <RatingSumary ratings={ratings} />
+                )}
+            </section>
+            <section>
+                {isAuthenticated && (
+                    <RecentSearches
+                        recentSearches={recentSearches}
+                        onRepeatSearch={handleRepeatSearch}
+                        onSaveFavorite={handleSaveFavorite}
+                    />
+                )}
+            </section>
+            <section>
+                <PopularDestinations popularDestinations={popularDestinations} />
+                <RatingSummary ratings={ratings} />
+            </section>
             <Footer />
         </>
     );

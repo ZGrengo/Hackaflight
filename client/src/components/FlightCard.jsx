@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 
 const FlightCard = ( { flight } ) => {
-    const { itineraries, price, travelerPricings } = flight;
+    const { itineraries, price, travelerPricings, oneWay } = flight;
 
     const getTicketClass = ( ticketClass ) => {
         if ( [ 'a', 'f', 'p', 'r' ].includes( ticketClass.toLowerCase() ) )
@@ -24,19 +24,37 @@ const FlightCard = ( { flight } ) => {
                     const { segments } = itinerary;
                     const departure = segments[ 0 ].departure;
                     const arrival = segments[ segments.length - 1 ].arrival;
-                    const ticketClass = travelerPricings[ 0 ].fareDetailsBySegment[ index ].class;
-                    const validatingAirlineCodes = segments.map( ( segment ) => segment.carrierCode ).join( ', ' );
+                    const ticketClass = travelerPricings[ 0 ].fareDetailsBySegment[ 0 ].class;
+                    const validatingAirlineCodes = segments.map( ( seg ) => seg.carrierCode ).join( ', ' );
 
                     return (
                         <div key={index}>
-                            <p className="text-gray-300 font-medium">Origen: {departure.iataCode}</p>
-                            <p className="text-gray-300 font-medium">Destino: {arrival.iataCode}</p>
-                            <p className="text-gray-300 font-medium">Aerolinea: {validatingAirlineCodes}</p>
-                            <p className="text-gray-300 font-medium">Fecha de Salida: {departure.at}</p>
-                            <p className="text-gray-300 font-medium">Fecha de Llegada: {arrival.at}</p>
-                            <p className="text-gray-300 font-medium">Duración: {itinerary.duration}</p>
-                            <p className="text-gray-300 font-medium">Escalas: {segments.length - 1}</p>
-                            <p className="text-gray-300 font-medium">Tipo de billete: {getTicketClass( ticketClass )}</p>
+                            <div>
+                                <p className="text-gray-300 font-medium">Origen: {departure.iataCode}</p>
+                                <p className="text-gray-300 font-medium">Destino: {arrival.iataCode}</p>
+                                <p className="text-gray-300 font-medium">Aerolinea: {validatingAirlineCodes}</p>
+                                <p className="text-gray-300 font-medium">Fecha de Salida: {departure.at}</p>
+                                <p className="text-gray-300 font-medium">Fecha de Llegada: {arrival.at}</p>
+                                <p className="text-gray-300 font-medium">Duración: {itinerary.duration}</p>
+                                <p className="text-gray-300 font-medium">Escalas: {segments.length - 1}</p>
+                                <p className="text-gray-300 font-medium">Tipo de billete: {getTicketClass( ticketClass )}</p>
+                            </div>
+                            {segments.length > 1 && (
+                                <div>
+                                    <hr className="my-4 border-gray-500" />
+                                    {segments.map( ( segment, segmentIndex ) => (
+                                        <div key={segmentIndex}>
+                                            <p className="text-gray-300 font-medium">Origen: {segment.departure.iataCode}</p>
+                                            <p className="text-gray-300 font-medium">Destino: {segment.arrival.iataCode}</p>
+                                            <p className="text-gray-300 font-medium">Aerolinea: {segment.carrierCode}</p>
+                                            <p className="text-gray-300 font-medium">Fecha de Salida: {segment.departure.at}</p>
+                                            <p className="text-gray-300 font-medium">Fecha de Llegada: {segment.arrival.at}</p>
+                                            <p className="text-gray-300 font-medium">Duración: {segment.duration}</p>
+                                            <p className="text-gray-300 font-medium">Tipo de billete: {getTicketClass( travelerPricings[ 0 ].fareDetailsBySegment[ segmentIndex ].class )}</p>
+                                        </div>
+                                    ) )}
+                                </div>
+                            )}
                         </div>
                     );
                 } )}
@@ -71,7 +89,8 @@ FlightCard.propTypes = {
             fareDetailsBySegment: PropTypes.arrayOf( PropTypes.shape( {
                 class: PropTypes.string.isRequired
             } ) ).isRequired
-        } ) ).isRequired
+        } ) ).isRequired,
+        oneWay: PropTypes.bool.isRequired
     } ).isRequired
 };
 
