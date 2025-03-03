@@ -21,7 +21,7 @@ const Header = () => {
 
             {authUser ? (
                 <>
-                    <div className='flex items-center gap-2'>
+                    <section className='flex items-center gap-2'>
                         <Link to='/users/profile' className='mx-1'>
                             <img
                                 src='/public/profile.svg'
@@ -44,11 +44,11 @@ const Header = () => {
                                 className='w-16 fill-current text-dark-blue hover:text-medium-blue hover:scale-150 transition-transform duration-200'
                             />
                         </button>
-                    </div>
+                    </section>
                 </>
             ) : (
                 <>
-                    <div className='flex items-center gap-2'>
+                    <section className='flex items-center gap-2'>
                         <Link to='/login' className='mx-1'>
                             <img
                                 src='/public/login.svg'
@@ -74,7 +74,7 @@ const Header = () => {
                                 className='w-16 fill-current text-dark-blue hover:text-medium-blue hover:scale-150 transition-transform duration-200'
                             />
                         </Link>
-                    </div>
+                    </section>
                 </>
             )}
         </header >

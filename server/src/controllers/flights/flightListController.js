@@ -21,8 +21,8 @@ const filterFlightListController = ( req, res, next ) => {
             airline,
             minPrice,
             maxPrice,
-            departureTime,
-            arrivalTime,
+            departureDate,
+            arrivalDate,
             class: travelClass,
             stops,
             sortByPrice,
@@ -31,7 +31,7 @@ const filterFlightListController = ( req, res, next ) => {
         } = req.query;
 
         // Validar que no se filtren ambas horas al mismo tiempo
-        if ( departureTime && arrivalTime )
+        if ( departureDate && arrivalDate )
         {
             throw generateErrorUtil(
                 'No se puede filtrar por "departureTime" y "arrivalTime" al mismo tiempo.',
@@ -94,9 +94,9 @@ const filterFlightListController = ( req, res, next ) => {
         }
 
         // Filtro por horario de salida
-        if ( departureTime )
+        if ( departureDate )
         {
-            const departureHour = parseInt( departureTime.split( ':' )[ 0 ], 10 );
+            const departureHour = parseInt( departureDate.split( ':' )[ 0 ], 10 );
             if ( isNaN( departureHour ) )
             {
                 throw generateErrorUtil(
@@ -112,9 +112,9 @@ const filterFlightListController = ( req, res, next ) => {
         }
 
         // Filtro por horario de llegada
-        if ( arrivalTime )
+        if ( arrivalDate )
         {
-            const arrivalHour = parseInt( arrivalTime.split( ':' )[ 0 ], 10 );
+            const arrivalHour = parseInt( arrivalDate.split( ':' )[ 0 ], 10 );
             if ( isNaN( arrivalHour ) )
             {
                 throw generateErrorUtil(
@@ -176,17 +176,6 @@ const filterFlightListController = ( req, res, next ) => {
             );
         }
 
-        // Filtro por destino
-        if ( destination )
-        {
-            filteredFlights = filteredFlights.filter( ( flight ) =>
-                flight.itineraries.some( ( itinerary ) =>
-                    itinerary.segments.some( ( segment ) =>
-                        segment.arrival.iataCode === destination.toUpperCase()
-                    )
-                )
-            );
-        }
 
         // Filtro por fecha de salida
         if ( departureDate )
@@ -279,6 +268,7 @@ const filterFlightListController = ( req, res, next ) => {
 };
 
 export { filterFlightListController };
+
 //Filtro por Destino
 // GET /flights?destination=JFK
 

@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import useRatingList from '../hooks/useRatingList';
 import SearchForm from '../components/SearchForm';
 import CarouselImages from '../components/CarouselImages';
@@ -38,63 +38,42 @@ const HomePage = () => {
             { origen: 'Madrid', destino: 'Nueva York' },
             { origen: 'Londres', destino: 'Tokio' },
             { origen: 'Paris', destino: 'Londres' },
-        ]);
-        // setTopComments([
-        //     { user: 'Usuario1', comment: 'Excelente servicio!', rating: 5 },
-        //     { user: 'Usuario2', comment: 'Muy buena experiencia.', rating: 4 },
-        //     { user: 'Usuario3', comment: 'Recomendado!', rating: 4 },
-        // ]);
-    }, []);
+        ] );
+    }, [] );
 
     // useEffect para tomar los parametros de la pagina de favoritos con la busqueda que el usuario quiere repetir
-    const [searchParams] = useSearchParams();
-    useEffect(() => {
-        const returnDate = searchParams.get("returnDate");
-        if (returnDate) {
-            setTipoViaje('ida-vuelta');
+    const [ searchParams ] = useSearchParams();
+    useEffect( () => {
+        const returnDate = searchParams.get( "returnDate" );
+        if ( returnDate )
+        {
+            setTipoViaje( 'ida-vuelta' );
         }
-    }, [searchParams]);
-    
-    useEffect(() => {
-        const origin = searchParams.get("origin");
-        const destination = searchParams.get("destination");
-        const departureDate = searchParams.get("departureDate");
-        const adults = searchParams.get("adults");
-    
-        if (origin && destination && departureDate && adults) {
-            setOrigen(origin);
-            setDestino(destination);
-            setFechaSalida(departureDate.split('T')[0]);
-            setPasajeros(Number(adults));
+    }, [ searchParams ] );
+
+    useEffect( () => {
+        const origin = searchParams.get( "origin" );
+        const destination = searchParams.get( "destination" );
+        const departureDate = searchParams.get( "departureDate" );
+        const adults = searchParams.get( "adults" );
+
+        if ( origin && destination && departureDate && adults )
+        {
+            setOrigen( origin );
+            setDestino( destination );
+            setFechaSalida( departureDate.split( 'T' )[ 0 ] );
+            setPasajeros( Number( adults ) );
         }
-    }, [searchParams]);
-    
+    }, [ searchParams ] );
+
     // Nuevo useEffect SOLO para fecha de retorno, ejecutado después de actualizar `tipoViaje`
-    useEffect(() => {
-        const returnDate = searchParams.get("returnDate");
-        if (tipoViaje === 'ida-vuelta' && returnDate) {
-            setFechaRetorno(returnDate.split('T')[0]);
-        }
-    }, [tipoViaje, searchParams]);
-
-    const handleSubmit = async (e) => {
-        ] );
-
-        // si el usuario está autenticado, cargamos las búsquedas recientes
-        if ( isAuthenticated )
+    useEffect( () => {
+        const returnDate = searchParams.get( "returnDate" );
+        if ( tipoViaje === 'ida-vuelta' && returnDate )
         {
-            loadRecentSearches();
+            setFechaRetorno( returnDate.split( 'T' )[ 0 ] );
         }
-    }, [ isAuthenticated ] );
-
-    // definimos las funciones para cargar y guardar las búsquedas recientes
-    const loadRecentSearches = () => {
-        const storedSearches = localStorage.getItem( 'recentSearches' );
-        if ( storedSearches )
-        {
-            setRecentSearches( JSON.parse( storedSearches ) );
-        }
-    };
+    }, [ tipoViaje, searchParams ] );
 
     // definimos la función para guardar las búsquedas recientes
     const saveRecentSearch = ( search ) => {
@@ -124,7 +103,7 @@ const HomePage = () => {
         try
         {
             // realizamos la petición a la API para vuelos de ida
-            const resIda = await fetch(
+            const res = await fetch(
                 `${ VITE_API_URL }/api/flights/search?${ searchParams.toString() }`,
                 {
                     method: 'GET',
@@ -132,11 +111,11 @@ const HomePage = () => {
                 }
             );
 
-            if ( !resIda.ok ) throw new Error( 'Network response was not ok' );
-            const bodyIda = await resIda.json();
-            if ( bodyIda.status === 'error' ) throw new Error( bodyIda.message );
+            if ( !res.ok ) throw new Error( 'Network response was not ok' );
+            const body = await res.json();
+            if ( body.status === 'error' ) throw new Error( body.message );
 
-            let flights = bodyIda || [];
+            let flights = body || [];
 
             // si el tipo de viaje es de ida y vuelta, buscamos también los vuelos de vuelta
             if ( tipoViaje === 'ida-vuelta' && fechaRetorno )
@@ -149,7 +128,8 @@ const HomePage = () => {
                     adults: pasajeros,
                 } );
 
-                const resVuelta = await fetch(
+                // realizamos la petición a la API para vuelos de vuelta
+                const res = await fetch(
                     `${ VITE_API_URL }/api/flights/search?${ searchParamsVuelta.toString() }`,
                     {
                         method: 'GET',
@@ -157,10 +137,10 @@ const HomePage = () => {
                     }
                 );
 
-                if ( !resVuelta.ok ) throw new Error( 'Network response was not ok' );
-                const bodyVuelta = await resVuelta.json();
-                if ( bodyVuelta.status === 'error' ) throw new Error( bodyVuelta.message );
-
+                // si la respuesta no es correcta, lanzamos un error
+                if ( !res.ok ) throw new Error( 'Network response was not ok' );
+                const body = await res.json();
+                if ( body.status === 'error' ) throw new Error( body.message );
                 flights = [ ...flights || [] ];
             }
 
@@ -207,12 +187,14 @@ const HomePage = () => {
 
     return (
         <>
-            <LogoAnimation />
-            <PaperPlaneAnimation />
+            <section>
+                <LogoAnimation />
+                <PaperPlaneAnimation />
+            </section>
             <Header />
             <section className="relative w-full h-screen">
                 <CarouselImages />
-                <div className="absolute inset-0 flex items-center justify-center z-10">
+                <section className="absolute inset-0 flex items-center justify-center z-10">
                     <SearchForm
                         tipoViaje={tipoViaje}
                         fechaSalida={fechaSalida}
@@ -228,20 +210,20 @@ const HomePage = () => {
                         setPasajeros={setPasajeros}
                         handleSubmit={handleSubmit}
                     />
-                </div>
+                </section>
             </section>
-            <div className="relative w-full h-full">
-                <div className="relative z-10"></div>
+            <section className="relative w-full h-full">
+                <section className="relative z-10"></section>
                 {loading ? (
-                    <div className="text-center">
-                        <div className="w-16 h-16 border-4 border-dashed rounded-full animate-spin border-dark-blue mx-auto"></div>
+                    <section className="text-center">
+                        <section className="w-16 h-16 border-4 border-dashed rounded-full animate-spin border-dark-blue mx-auto"></section>
                         <h2 className="text-zinc-900 dark:text-zinc-400 mt-4">Loading...</h2>
                         <p className="text-zinc-600 dark:text-zinc-400">
                             Your adventure is about to begin
                         </p>
-                    </div>
+                    </section>
                 ) : null}
-            </div>
+            </section>
             {isAuthenticated && (
                 <RecentSearches
                     recentSearches={recentSearches}
