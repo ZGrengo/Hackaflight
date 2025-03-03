@@ -100,6 +100,8 @@ const HomePage = () => {
             adults: pasajeros,
         } );
 
+        console.log( 'Search parameters:', searchParams.toString() );
+
         try
         {
             // realizamos la petición a la API para vuelos de ida
@@ -111,25 +113,31 @@ const HomePage = () => {
                 }
             );
 
+            console.log( 'Response status:', res.status );
+
             if ( !res.ok ) throw new Error( 'Network response was not ok' );
             const body = await res.json();
+            console.log( 'Response body:', body );
+
             if ( body.status === 'error' ) throw new Error( body.message );
 
-            let flights = body || [];
+            const idaFlights = Array.isArray( body ) ? body : [];
+            const vueltaFlights = [];
 
             // si el tipo de viaje es de ida y vuelta, buscamos también los vuelos de vuelta
             if ( tipoViaje === 'ida-vuelta' && fechaRetorno )
             {
                 const searchParamsVuelta = new URLSearchParams( {
-                    origin: origen,
-                    destination: destino,
-                    departureDate: fechaSalida,
-                    returnDate: fechaRetorno,
+                    origin: destino,
+                    destination: origen,
+                    departureDate: fechaRetorno,
                     adults: pasajeros,
                 } );
 
+                console.log( 'Return search parameters:', searchParamsVuelta.toString() );
+
                 // realizamos la petición a la API para vuelos de vuelta
-                const res = await fetch(
+                const resVuelta = await fetch(
                     `${ VITE_API_URL }/api/flights/search?${ searchParamsVuelta.toString() }`,
                     {
                         method: 'GET',
@@ -137,12 +145,23 @@ const HomePage = () => {
                     }
                 );
 
+                console.log( 'Return response status:', resVuelta.status );
+
                 // si la respuesta no es correcta, lanzamos un error
-                if ( !res.ok ) throw new Error( 'Network response was not ok' );
-                const body = await res.json();
-                if ( body.status === 'error' ) throw new Error( body.message );
-                flights = [ ...flights || [] ];
+                if ( !resVuelta.ok ) throw new Error( 'Network response was not ok' );
+                const bodyVuelta = await resVuelta.json();
+                console.log( 'Return response body:', bodyVuelta );
+
+                if ( bodyVuelta.status === 'error' ) throw new Error( bodyVuelta.message );
+                vueltaFlights.push( ...( Array.isArray( bodyVuelta ) ? bodyVuelta : [] ) );
             }
+
+            // add isReturn property to distinguish
+            const flights = [];
+            idaFlights.forEach( flight => flights.push( { ...flight, isReturn: false } ) );
+            vueltaFlights.forEach( flight => flights.push( { ...flight, isReturn: true } ) );
+
+            console.log( 'Fetched flights:', flights );
 
             // navegamos a la página de resultados de búsqueda con los vuelos unificados
             navigate( '/search-results', { state: { flights } } );

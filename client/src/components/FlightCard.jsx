@@ -9,6 +9,8 @@ const FlightCard = ( { flight } ) => {
     console.log( "Traveler Pricings:", travelerPricings );
 
     const getTicketClass = ( ticketClass ) => {
+        if ( !ticketClass ) return 'Clase Desconocida';
+
         if ( [ 'a', 'f', 'p', 'r' ].includes( ticketClass.toLowerCase() ) )
         {
             return 'Primera Clase';
@@ -57,33 +59,40 @@ const FlightCard = ( { flight } ) => {
     );
 };
 
-// Definimos las propiedades que recibe el componente.
 FlightCard.propTypes = {
     flight: PropTypes.shape( {
         id: PropTypes.string.isRequired,
-        itineraries: PropTypes.arrayOf( PropTypes.shape( {
-            duration: PropTypes.string.isRequired,
-            segments: PropTypes.arrayOf( PropTypes.shape( {
-                departure: PropTypes.shape( {
-                    iataCode: PropTypes.string.isRequired,
-                    at: PropTypes.string.isRequired
-                } ).isRequired,
-                arrival: PropTypes.shape( {
-                    iataCode: PropTypes.string.isRequired,
-                    at: PropTypes.string.isRequired
-                } ).isRequired
-            } ) ).isRequired
-        } ) ).isRequired,
+        itineraries: PropTypes.arrayOf(
+            PropTypes.shape( {
+                duration: PropTypes.string.isRequired,
+                segments: PropTypes.arrayOf(
+                    PropTypes.shape( {
+                        departure: PropTypes.shape( {
+                            iataCode: PropTypes.string.isRequired,
+                            at: PropTypes.string.isRequired,
+                        } ).isRequired,
+                        arrival: PropTypes.shape( {
+                            iataCode: PropTypes.string.isRequired,
+                            at: PropTypes.string.isRequired,
+                        } ).isRequired,
+                    } )
+                ).isRequired,
+            } )
+        ).isRequired,
         price: PropTypes.shape( {
             currency: PropTypes.string.isRequired,
-            total: PropTypes.string.isRequired
+            total: PropTypes.string.isRequired,
         } ).isRequired,
-        travelerPricings: PropTypes.arrayOf( PropTypes.shape( {
-            fareDetailsBySegment: PropTypes.arrayOf( PropTypes.shape( {
-                class: PropTypes.string.isRequired
-            } ) ).isRequired
-        } ) ).isRequired
-    } ).isRequired
+        travelerPricings: PropTypes.arrayOf(
+            PropTypes.shape( {
+                fareDetailsBySegment: PropTypes.arrayOf(
+                    PropTypes.shape( {
+                        class: PropTypes.string.isRequired,
+                    } )
+                ).isRequired,
+            } )
+        ).isRequired,
+    } ).isRequired,
 };
 
 export default FlightCard;
