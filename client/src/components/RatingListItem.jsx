@@ -20,15 +20,15 @@ const RatingListItem = ({
         <li>
             <Link to={`/ratings/${ratingId}`}>
                 <header>
-                    <h3>{title}</h3>
+                    <h3 className='font-bold'>{title}</h3>
                 </header>
-                <div>
+                <div className='p-2'>
                     <p>Valoración: {rate}</p>
                     <p>Descripción: {comment}</p>
                 </div>
                 <footer>
                     <p>Autor/a:{username}</p>
-                    <p>
+                    <p className='font-light'>
                         Creada el {''}
                         {moment(createdAt).format('DD/MM/YYYY [a las] HH:mm')}
                     </p>

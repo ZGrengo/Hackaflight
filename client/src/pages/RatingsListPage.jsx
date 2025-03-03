@@ -7,6 +7,7 @@ import useRatingList from '../hooks/useRatingList';
 //importamos componentes
 import RatingListItem from '../components/RatingListItem';
 import toast from 'react-hot-toast';
+import Header from '../components/Header';
 
 //importamos variables de entorno
 const { VITE_API_URL } = import.meta.env;
@@ -75,55 +76,64 @@ const RatingsListPage = () => {
 
     //Mostramos las valoraciones
     return (
-        <main>
-            <section>
-                <h2>Todas las valoraciones</h2>
-                {/* formulario de búsqueda */}
-                <form onSubmit={handleSearchRatings}>
-                    <select
-                        value={rate}
-                        onChange={(e) => setRate(e.target.value)}
-                    >
-                        <option value=''>Valoración</option>
-                        <option value='1'>⭐</option>
-                        <option value='2'>⭐⭐</option>
-                        <option value='3'>⭐⭐⭐</option>
-                        <option value='4'>⭐⭐⭐⭐</option>
-                        <option value='5'>⭐⭐⭐⭐⭐</option>
-                    </select>
-                    <button disabled={loading}>
-                        {loading ? 'Buscando...' : 'Buscar'}
-                    </button>
-                </form>
-                {/* Listado de valoraciones */}
-                <ul>
-                    {currentRatings.map((rating) => (
-                        <RatingListItem
-                            key={rating.id}
-                            ratingId={rating.id}
-                            title={rating.title}
-                            rate={rating.rate}
-                            comment={rating.comment}
-                            username={rating.username}
-                            createdAt={rating.createdAt}
-                        />
-                    ))}
-                </ul>
-                {/*Botones de la paginación */}
-                <div>
-                    {Array.from({
-                        length: Math.ceil(ratings.length / ratingsPerPage),
-                    }).map((_, index) => (
-                        <button
-                            key={index}
-                            onClick={() => setCurrentPage(index + 1)}
+        <>
+            <Header />
+            <main className='bg-[#E5F7FF] flex flex-col items-center justify-center min-h-screen p-6'>
+                <section className='bg-white p-8 rounded-lg shadow-md w-full max-w-fit mx-auto'>
+                    <h2 className='text-2xl font-bold text-[#083059] text-center mb-6'>
+                        Todas las valoraciones
+                    </h2>
+                    {/* formulario de búsqueda */}
+                    <form onSubmit={handleSearchRatings} className='space-y-6'>
+                        <select
+                            value={rate}
+                            onChange={(e) => setRate(e.target.value)}
+                            className='block text-[#083059] font-medium mb-2'
                         >
-                            {index + 1}
+                            <option value=''>Valoración</option>
+                            <option value='1'>⭐</option>
+                            <option value='2'>⭐⭐</option>
+                            <option value='3'>⭐⭐⭐</option>
+                            <option value='4'>⭐⭐⭐⭐</option>
+                            <option value='5'>⭐⭐⭐⭐⭐</option>
+                        </select>
+                        <button
+                            disabled={loading}
+                            className='w-full bg-[#179DD9] text-white py-3 px-4 rounded-md hover:bg-[#3951AA] transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed '
+                        >
+                            {loading ? 'Buscando...' : 'Buscar'}
                         </button>
-                    ))}
-                </div>
-            </section>
-        </main>
+                    </form>
+                    {/* Listado de valoraciones */}
+                    <ul className='list-none'>
+                        {currentRatings.map((rating) => (
+                            <RatingListItem
+                                key={rating.id}
+                                ratingId={rating.id}
+                                title={rating.title}
+                                rate={rating.rate}
+                                comment={rating.comment}
+                                username={rating.username}
+                                createdAt={rating.createdAt}
+                            />
+                        ))}
+                    </ul>
+                    {/*Botones de la paginación */}
+                    <div>
+                        {Array.from({
+                            length: Math.ceil(ratings.length / ratingsPerPage),
+                        }).map((_, index) => (
+                            <button
+                                key={index}
+                                onClick={() => setCurrentPage(index + 1)}
+                            >
+                                {index + 1}
+                            </button>
+                        ))}
+                    </div>
+                </section>
+            </main>
+        </>
     );
 };
 

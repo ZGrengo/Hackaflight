@@ -232,7 +232,6 @@ const HomePage = () => {
                 />
                 <RatingsSummary ratings={ratings} />
             </section>
-            <Footer />
         </>
     );
 };
