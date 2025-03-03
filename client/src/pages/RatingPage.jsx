@@ -27,6 +27,9 @@ const RatingPage = () => {
     //declaramos la variable para almacenar el fetch
     const [loading, setLoading] = useState(false);
 
+    //declaramos una variable en el State para almacenar el hover de las estrellas
+    const [hover, setHover] = useState(null);
+
     //función que maneja el envío del evento
     const handleRating = async (e) => {
         try {
@@ -107,7 +110,7 @@ const RatingPage = () => {
                             required
                         />
                     </div>
-                    <div>
+                    {/* <div>
                         <label
                             htmlFor='rate'
                             className='block text-[#083059] font-medium mb-2'
@@ -118,13 +121,42 @@ const RatingPage = () => {
                             value={rate}
                             onChange={(e) => setRate(e.target.value)}
                         >
-                            <option value=''>--Elige un valor--</option>
+                            <option value=''>Valoración</option>
                             <option value='1'>⭐</option>
                             <option value='2'>⭐⭐</option>
                             <option value='3'>⭐⭐⭐</option>
                             <option value='4'>⭐⭐⭐⭐</option>
                             <option value='5'>⭐⭐⭐⭐⭐</option>
                         </select>
+                    </div> */}
+                    {/* para mejor visualización de las estrellas y experiencia del usuario */}
+                    <div className='flex flex-col space-y-2'>
+                        <label className='block text-[#083059] font-medium'>
+                            Valoración:
+                        </label>
+                        <div className='flex space-x-2'>
+                            {[1, 2, 3, 4, 5].map((star) => (
+                                <button
+                                    key={star}
+                                    type='button'
+                                    onClick={() => setRate(star)}
+                                    onMouseEnter={() => setHover(star)}
+                                    onMouseLeave={() => setHover(null)}
+                                    className={`text-3xl transition ${
+                                        (hover || rate) >= star
+                                            ? 'text-[#f8f32b]' // Color cuando se selecciona o pasa el mouse
+                                            : 'text-gray-400'
+                                    }`}
+                                >
+                                    ★
+                                </button>
+                            ))}
+                        </div>
+                        <p className='text-[#083059] font-medium'>
+                            {rate
+                                ? `Has seleccionado ${rate} estrellas`
+                                : 'Selecciona una valoración'}
+                        </p>
                     </div>
                     <div>
                         <label
