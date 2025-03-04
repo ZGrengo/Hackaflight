@@ -141,106 +141,144 @@ const EditProfilePage = () => {
 
     // Mostramos mensajes de perfil cargando...
     if (profileLoading) {
-        return <p>Cargando datos...</p>;
+        return (
+            <p className='text-certer mt-8 text-gray-600'>Cargando datos...</p>
+        );
     }
     // Si el perfil no carga, mostramos un error.
     if (!userData) {
-        return <p>Error al cargar los datos del usuario.</p>;
+        return (
+            <p className='text-center mt-8 text-gray-600'>
+                Error al cargar los datos del usuario.
+            </p>
+        );
     }
     // formulario para editar el perfil
     return (
-        <div className='user-profile-page'>
-            <h2>Editar Perfil</h2>
-            <div>
-                <img
-                    src={
-                        userData.avatar !== null
-                            ? `${VITE_API_URL}/uploads/${userData.avatar}`
-                            : '/default-avatar.png'
-                    }
-                    alt='Avatar'
-                />
-                <br />
+        <main className='bg-[#E5F7FF] min-h-screen flex items-center justify-center p-4'>
+            <div className='bg-white p-6 rounded-lg shadow-md w-full max-w-sm'>
+                <h2 className='text-x1 font-bold text-[#083059] text-center mb-4'>
+                    Editar Perfil
+                </h2>
+
+                <div className='flex flex-col items-center apace-y-4 mb-4'>
+                    <img
+                        src={
+                            userData.avatar !== null
+                                ? `${VITE_API_URL}/uploads/${userData.avatar}`
+                                : '/default-avatar.png'
+                        }
+                        alt='Avatar'
+                        className='w-24 h-24 rounded-full object-cover shadow-lg transition transform hover:scale-105'
+                    />
+                    <br />
+                    <button
+                        type='button'
+                        onClick={() => inputFileRef.current.click()}
+                        className='w-full py-2 font-bold rounded-md transition bg-[#083059] text-white hover:bg-[#179DD9]'
+                    >
+                        Cambiar Avatar
+                    </button>
+                    <input
+                        type='file'
+                        ref={inputFileRef}
+                        onChange={handleAvatarChange}
+                        style={{ display: 'none' }}
+                        accept='image/*'
+                    />
+                </div>
+
+                {/* Formulario para actualizar información del usuario */}
+                <form onSubmit={handleProfileUpdate} className='space-y-4'>
+                    <div>
+                        <label className='block text-[#083059 font-medium text-sm mb-1'>
+                            Nombre:
+                        </label>
+                        <input
+                            type='text'
+                            value={firstName}
+                            onChange={(e) => SetFirstName(e.target.value)}
+                            required
+                            disabled={loading}
+                            className='w-full p-3 border-[#3951AA] rounded-md focus:outline-none focus:ring-2 focus:ring-[#179DD9]'
+                        />
+                    </div>
+                    <div>
+                        <label className='block text-[#083059 font-medium text-sm mb-1'>
+                            Apellido:
+                        </label>
+                        <input
+                            type='text'
+                            value={lastName}
+                            onChange={(e) => SetLastName(e.target.value)}
+                            required
+                            disabled={loading}
+                            className='w-full p-3 border-[#3951AA] rounded-md focus:outline-none focus:ring-2 focus:ring-[#179DD9]'
+                        />
+                    </div>
+                    <div>
+                        <label className='block text-[#083059 font-medium text-sm mb-1'>
+                            Usuario:
+                        </label>
+                        <input
+                            type='text'
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                            required
+                            disabled={loading}
+                            className='w-full p-3 border-[#3951AA] rounded-md focus:outline-none focus:ring-2 focus:ring-[#179DD9]'
+                        />
+                    </div>
+                    <div>
+                        <label className='block text-[#083059 font-medium text-sm mb-1'>
+                            Email:
+                        </label>
+                        <input
+                            type='email'
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                            disabled={loading}
+                            className='w-full p-3 border-[#3951AA] rounded-md focus:outline-none focus:ring-2 focus:ring-[#179DD9]'
+                        />
+                    </div>
+                    {/* la edad no sera modificable (campo deshabilitado)*/}
+                    <div>
+                        <label className='block text-[#083059 font-medium text-sm mb-1'>
+                            Edad:
+                        </label>
+                        <input
+                            type='text'
+                            value={`${moment().diff(moment(userData.birthdate), 'years')} años`}
+                            disabled
+                            className='w-full p-3 border border-gray-300 rounded-md bg-gray-100 text-gray-600'
+                        />
+                    </div>
+                    <button
+                        type='submit'
+                        disabled={loading}
+                        className='w-full py-2 font-bold rounded-md transition bg-[#083059] text-white hover:bg-[#179DD9]'
+                    >
+                        {loading ? 'Actualizando...' : 'Actualizar'}
+                    </button>
+                    <button
+                        type='button'
+                        onClick={() => navigate('/users/profile')}
+                        disabled={loading}
+                        className='w-full py-2 font-bold rounded-md transition bg-gray-200 text-[#083059] hover:bg-gray-300'
+                    >
+                        Cancelar
+                    </button>
+                </form>
+                <hr className='my-4' />
                 <button
-                    type='button'
-                    onClick={() => inputFileRef.current.click()}
+                    onClick={() => navigate('/users/profile/password')}
+                    className='w-full py-2 font-bold rounded-md transition bg-[#083059] text-white hover:bg-[#179DD9]'
                 >
-                    Cambiar Avatar
+                    Cambiar Contraseña
                 </button>
-                <input
-                    type='file'
-                    ref={inputFileRef}
-                    onChange={handleAvatarChange}
-                    style={{ display: 'none' }}
-                    accept='image/*'
-                />
             </div>
-            <form onSubmit={handleProfileUpdate}>
-                <div>
-                    <label>Nombre:</label>
-                    <input
-                        type='text'
-                        value={firstName}
-                        onChange={(e) => SetFirstName(e.target.value)}
-                        required
-                        disabled={loading}
-                    />
-                </div>
-                <div>
-                    <label>Apellido:</label>
-                    <input
-                        type='text'
-                        value={lastName}
-                        onChange={(e) => SetLastName(e.target.value)}
-                        required
-                        disabled={loading}
-                    />
-                </div>
-                <div>
-                    <label>Usuario:</label>
-                    <input
-                        type='text'
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        required
-                        disabled={loading}
-                    />
-                </div>
-                <div>
-                    <label>Email:</label>
-                    <input
-                        type='email'
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                        disabled={loading}
-                    />
-                </div>
-                {/* la edad no sera modificable (campo deshabilitado)*/}
-                <div>
-                    <label>Edad:</label>
-                    <input
-                        type='text'
-                        value={`${moment().diff(moment(userData.birthdate), 'years')} años`}
-                        disabled
-                    />
-                </div>
-                <button type='submit' disabled={loading}>
-                    {loading ? 'Actualizando...' : 'Actualizar'}
-                </button>
-                <button
-                    type='button'
-                    onClick={() => navigate('/users/profile')}
-                    disabled={loading}
-                >
-                    Cancelar
-                </button>
-            </form>
-            <hr />
-            <button onClick={() => navigate('/users/profile/password')}>
-                Cambiar Contraseña
-            </button>
-        </div>
+        </main>
     );
 };
 
