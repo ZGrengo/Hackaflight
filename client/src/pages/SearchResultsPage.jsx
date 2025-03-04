@@ -15,14 +15,19 @@ const SearchResultsPage = () => {
     const [ flights, setFlights ] = useState( [] );
     console.log( "Location state:", location.state );
 
-
     // actualiza los vuelos cuando cambia la ubicación
-    useEffect( () => {
-        setFlights( location.state?.flights || [] );
-        console.log( "Updated flights from location state:", location.state?.flights || [] );
-    }, [ location.state?.flights ] );
 
-    console.log( "Initial flights data:", flights );
+    useEffect( () => {
+        if ( location.state?.flights )
+        {
+            console.log( "Location state flights:", location.state.flights );
+            location.state.flights.forEach( ( flight, index ) => {
+                console.log( `Flight ${ index } itineraries:`, flight.itineraries );
+            } );
+            setFlights( location.state.flights );
+            console.log( "Initial flights data after setFlights:", location.state.flights );
+        }
+    }, [ location.state?.flights ] );
 
     // función para manejar el cambio de filtros
     const handleFilterChange = async ( filters ) => {
@@ -39,7 +44,6 @@ const SearchResultsPage = () => {
                 }
             } );
             console.log( "Filtered parameters:", searchParams.toString() );
-
 
             // Realizar la petición a la API para vuelos filtrados
             const res = await fetch(
@@ -63,11 +67,17 @@ const SearchResultsPage = () => {
             const filteredFlights = body.data || [];
             setFlights( filteredFlights );
 
+            filteredFlights.forEach( ( flight, index ) => {
+                console.log( `Filtered Flight ${ index } itineraries:`, flight.itineraries );
+            } );
+
             console.log( 'Filtered flights data:', filteredFlights );
             console.log( 'Updated flights state:', filteredFlights );
         } catch ( err )
         {
             console.log( 'Error al filtrar vuelos:', err );
+            console.log( 'Error message:', err.message );
+            console.log( 'Error stack:', err.stack );
         }
     };
 
@@ -95,9 +105,20 @@ const SearchResultsPage = () => {
     );
 };
 
+// Definir las propiedades requeridas para la página de resultados de búsqueda
 SearchResultsPage.propTypes = {
     flights: PropTypes.arrayOf(
         PropTypes.shape( {
+            type: PropTypes.string.isRequired,
+            id: PropTypes.string.isRequired,
+            source: PropTypes.string.isRequired,
+            instantTicketingRequired: PropTypes.bool.isRequired,
+            nonHomogeneous: PropTypes.bool.isRequired,
+            oneWay: PropTypes.bool.isRequired,
+            isUpsellOffer: PropTypes.bool.isRequired,
+            lastTicketingDate: PropTypes.string.isRequired,
+            lastTicketingDateTime: PropTypes.string.isRequired,
+            numberOfBookableSeats: PropTypes.number.isRequired,
             itineraries: PropTypes.arrayOf(
                 PropTypes.shape( {
                     duration: PropTypes.string.isRequired,
@@ -141,6 +162,10 @@ SearchResultsPage.propTypes = {
                 ),
                 grandTotal: PropTypes.string,
             } ).isRequired,
+            pricingOptions: PropTypes.shape( {
+                fareType: PropTypes.arrayOf( PropTypes.string ).isRequired,
+                includedCheckedBagsOnly: PropTypes.bool.isRequired,
+            } ).isRequired,
             validatingAirlineCodes: PropTypes.arrayOf( PropTypes.string ).isRequired,
             travelerPricings: PropTypes.arrayOf(
                 PropTypes.shape( {
@@ -164,6 +189,16 @@ SearchResultsPage.propTypes = {
                             includedCabinBags: PropTypes.shape( {
                                 quantity: PropTypes.number.isRequired,
                             } ).isRequired,
+                            amenities: PropTypes.arrayOf(
+                                PropTypes.shape( {
+                                    description: PropTypes.string.isRequired,
+                                    isChargeable: PropTypes.bool.isRequired,
+                                    amenityType: PropTypes.string.isRequired,
+                                    amenityProvider: PropTypes.shape( {
+                                        name: PropTypes.string.isRequired,
+                                    } ).isRequired,
+                                } ).isRequired
+                            ).isRequired,
                         } ).isRequired
                     ).isRequired,
                 } ).isRequired
