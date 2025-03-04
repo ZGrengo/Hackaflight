@@ -1,6 +1,6 @@
 //Importamos componentes
 import Header from '../components/Header';
-import { FaPlane, FaHandshake, FaLightbulb, FaHeart } from 'react-icons/fa';
+ // import { FaPlane, FaHandshake, FaLightbulb, FaHeart } from 'react-icons/fa';
 
 // Inicializamos el componente AboutUs que mostrará la información sobre nuestra empresa
 const AboutUs = () => {
