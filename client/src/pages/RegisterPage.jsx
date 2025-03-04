@@ -1,10 +1,11 @@
 //Importamos hooks
 import { useContext, useState } from 'react';
 import { AuthContext } from '../contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 //Importamos dependencias
 import toast from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
+import Header from '../components/Header';
 
 //importamos variables de entorno
 const { VITE_API_URL } = import.meta.env;
@@ -82,154 +83,159 @@ const RegisterPage = () => {
         navigate('/');
     }
     return (
-        <main className="bg-[#E5F7FF] flex items-center justify-center min-h-screen p-4">
-            <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-                <h2 className="text-2xl font-bold text-[#083059] text-center mb-6">
-                    Crea tu cuenta
-                </h2>
+        <>
+            <Header />
+            <main className='bg-[#E5F7FF] flex items-center justify-center min-h-screen p-4'>
+                <div className='bg-white p-8 rounded-lg shadow-md w-full max-w-md'>
+                    <h2 className='text-2xl font-bold text-[#083059] text-center mb-6'>
+                        Crea tu cuenta
+                    </h2>
 
-                <form onSubmit={handleRegister} className="space-y-4">
-                    <div>
-                        <label
-                            htmlFor="firstName"
-                            className="block text-[#083059] font-medium"
-                        >
-                            Nombre
-                        </label>
-                        <input
-                            type="text"
-                            id="firstName"
-                            value={firstName}
-                            onChange={(e) => setFirstName(e.target.value)}
-                            className="w-full p-3 border border-[#3951AA] rounded-md focus:outline-none focus:ring-2 focus:ring-[#179DD9]"
-                            required
-                        />
-                    </div>
-                    <div>
+                    <form onSubmit={handleRegister} className='space-y-4'>
                         <div>
                             <label
-                                htmlFor="lastName"
-                                className="block text-[#083059] font-medium"
+                                htmlFor='firstName'
+                                className='block text-[#083059] font-medium'
                             >
-                                Apellidos
+                                Nombre
                             </label>
                             <input
-                                type="text"
-                                id="lastName"
-                                value={lastName}
-                                onChange={(e) => setLastName(e.target.value)}
-                                className="w-full p-3 border border-[#3951AA] rounded-md focus:outline-none focus:ring-2 focus:ring-[#179DD9]"
+                                type='text'
+                                id='firstName'
+                                value={firstName}
+                                onChange={(e) => setFirstName(e.target.value)}
+                                className='w-full p-3 border border-[#3951AA] rounded-md focus:outline-none focus:ring-2 focus:ring-[#179DD9]'
                                 required
                             />
                         </div>
-                        <label
-                            htmlFor="username"
-                            className="block text-[#083059] font-medium"
-                        >
-                            Usuario
-                        </label>
-                        <input
-                            type="text"
-                            id="username"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                            className="w-full p-3 border border-[#3951AA] rounded-md focus:outline-none focus:ring-2 focus:ring-[#179DD9]"
-                            required
-                        />
-                    </div>
+                        <div>
+                            <div>
+                                <label
+                                    htmlFor='lastName'
+                                    className='block text-[#083059] font-medium'
+                                >
+                                    Apellidos
+                                </label>
+                                <input
+                                    type='text'
+                                    id='lastName'
+                                    value={lastName}
+                                    onChange={(e) =>
+                                        setLastName(e.target.value)
+                                    }
+                                    className='w-full p-3 border border-[#3951AA] rounded-md focus:outline-none focus:ring-2 focus:ring-[#179DD9]'
+                                    required
+                                />
+                            </div>
+                            <label
+                                htmlFor='username'
+                                className='block text-[#083059] font-medium'
+                            >
+                                Usuario
+                            </label>
+                            <input
+                                type='text'
+                                id='username'
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                                className='w-full p-3 border border-[#3951AA] rounded-md focus:outline-none focus:ring-2 focus:ring-[#179DD9]'
+                                required
+                            />
+                        </div>
 
-                    <div>
-                        <label
-                            htmlFor="email"
-                            className="block text-[#083059] font-medium"
-                        >
-                            Correo Electrónico
-                        </label>
-                        <input
-                            type="email"
-                            id="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            className="w-full p-3 border border-[#3951AA] rounded-md focus:outline-none focus:ring-2 focus:ring-[#179DD9]"
-                            required
-                        />
-                    </div>
+                        <div>
+                            <label
+                                htmlFor='email'
+                                className='block text-[#083059] font-medium'
+                            >
+                                Correo Electrónico
+                            </label>
+                            <input
+                                type='email'
+                                id='email'
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                className='w-full p-3 border border-[#3951AA] rounded-md focus:outline-none focus:ring-2 focus:ring-[#179DD9]'
+                                required
+                            />
+                        </div>
 
-                    <div>
-                        <label
-                            htmlFor="password"
-                            className="block text-[#083059] font-medium"
-                        >
-                            Contraseña
-                        </label>
-                        <input
-                            type="password"
-                            id="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            className="w-full p-3 border border-[#3951AA] rounded-md focus:outline-none focus:ring-2 focus:ring-[#179DD9]"
-                            required
-                        />
-                    </div>
+                        <div>
+                            <label
+                                htmlFor='password'
+                                className='block text-[#083059] font-medium'
+                            >
+                                Contraseña
+                            </label>
+                            <input
+                                type='password'
+                                id='password'
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                className='w-full p-3 border border-[#3951AA] rounded-md focus:outline-none focus:ring-2 focus:ring-[#179DD9]'
+                                required
+                            />
+                        </div>
 
-                    <div>
-                        <label
-                            htmlFor="passConfirm"
-                            className="block text-[#083059] font-medium"
-                        >
-                            Confirmar Contraseña
-                        </label>
-                        <input
-                            type="password"
-                            id="passConfirm"
-                            value={passConfirm}
-                            onChange={(e) => setPassConfirm(e.target.value)}
-                            className="w-full p-3 border border-[#3951AA] rounded-md focus:outline-none focus:ring-2 focus:ring-[#179DD9]"
-                            required
-                        />
-                    </div>
-                    <div>
-                        <label
-                            htmlFor="birthdate"
-                            className="block text-[#083059] font-medium"
-                        >
-                            Correo Electrónico
-                        </label>
-                        <input
-                            type="date"
-                            id="birthdate"
-                            value={birthdate}
-                            onChange={(e) => setBirthdate(e.target.value)}
-                            className="w-full p-3 border border-[#3951AA] rounded-md focus:outline-none focus:ring-2 focus:ring-[#179DD9]"
-                            required
-                        />
-                    </div>
+                        <div>
+                            <label
+                                htmlFor='passConfirm'
+                                className='block text-[#083059] font-medium'
+                            >
+                                Confirmar Contraseña
+                            </label>
+                            <input
+                                type='password'
+                                id='passConfirm'
+                                value={passConfirm}
+                                onChange={(e) => setPassConfirm(e.target.value)}
+                                className='w-full p-3 border border-[#3951AA] rounded-md focus:outline-none focus:ring-2 focus:ring-[#179DD9]'
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label
+                                htmlFor='birthdate'
+                                className='block text-[#083059] font-medium'
+                            >
+                                Correo Electrónico
+                            </label>
+                            <input
+                                type='date'
+                                id='birthdate'
+                                value={birthdate}
+                                onChange={(e) => setBirthdate(e.target.value)}
+                                className='w-full p-3 border border-[#3951AA] rounded-md focus:outline-none focus:ring-2 focus:ring-[#179DD9]'
+                                required
+                            />
+                        </div>
 
-                    <button
-                        type="submit"
-                        disabled={loading}
-                        className={`w-full py-3 font-bold rounded-md transition 
+                        <button
+                            type='submit'
+                            disabled={loading}
+                            className={`w-full py-3 font-bold rounded-md transition 
                             ${
                                 loading
                                     ? 'bg-gray-400 cursor-not-allowed'
                                     : 'bg-[#179DD9] text-white hover:bg-[#083059]'
                             }`}
-                    >
-                        {loading ? 'Registrando...' : 'Registrarse'}
-                    </button>
-                </form>
+                        >
+                            {loading ? 'Registrando...' : 'Registrarse'}
+                        </button>
+                    </form>
 
-                <p className="text-center text-[#083059] mt-4">
-                    ¿Ya tienes cuenta?{' '}
-                    <a
-                        href="/login"
-                        className="text-[#3951AA] font-bold hover:underline"
-                    >
-                        Inicia sesión
-                    </a>
-                </p>
-            </div>
-        </main>
+                    <p className='text-center text-[#083059] mt-4'>
+                        ¿Ya tienes cuenta?{' '}
+                        <a
+                            href='/login'
+                            className='text-[#3951AA] font-bold hover:underline'
+                        >
+                            Inicia sesión
+                        </a>
+                    </p>
+                </div>
+            </main>
+        </>
     );
 };
 
