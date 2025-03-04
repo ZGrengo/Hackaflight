@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 // Importamos el contexto de autorización.
 import useAuthContext from '../hooks/useAuthContext.js';
+import Header from '../components/Header.jsx';
 // Importamos la URL de nuestra API.
 const { VITE_API_URL } = import.meta.env;
 // Inicializamos el componente
@@ -57,53 +58,76 @@ const ChangePasswordPage = () => {
     };
 
     return (
-        <div className="change-password-page">
-            <h2>Cambiar Contraseña</h2>
-            <form onSubmit={handlePasswordChange}>
-                <div>
-                    <label>Contraseña Actual:</label>
-                    <input
-                        type="password"
-                        value={currentPassword}
-                        onChange={(e) => setCurrentPassword(e.target.value)}
-                        required
-                        autoComplete="current-password"
+        <>
+            <Header />
+            <main className='bg-[#E5f7ff] min-h-screen flex items-center justify-center p-4'>
+                <div className='bg-white p-6 rounded-lg shadow-md w-full max-w-sm'>
+                    <h2>Cambiar Contraseña</h2>
+                    <form onSubmit={handlePasswordChange} className='space-y-4'>
+                        <div>
+                            <label className='block text-[#083059] font-medium text-sm mb-1'>
+                                Contraseña Actual:
+                            </label>
+                            <input
+                                type='password'
+                                value={currentPassword}
+                                onChange={(e) =>
+                                    setCurrentPassword(e.target.value)
+                                }
+                                required
+                                autoComplete='current-password'
+                                disabled={loading}
+                                className='w-full p-3 border border-[#3951AA] rounded-md focus:outline-none focus:ring-2 focus:ring-[#179DD9]'
+                            />
+                        </div>
+                        <div>
+                            <label className='block text-[#083059] font-medium text-sm mb-1'>
+                                Nueva Contraseña:
+                            </label>
+                            <input
+                                type='password'
+                                value={newPassword}
+                                onChange={(e) => setNewPassword(e.target.value)}
+                                required
+                                autoComplete='new-password'
+                                disabled={loading}
+                                className='w-full p-3 border border-[#3951AA rounded-md focus:outline-none focus:ring-2 focus:ring-[#179DD9]'
+                            />
+                        </div>
+                        <div>
+                            <label className='block text-[#083059] font-medium text-sm mb-1'>
+                                Confirmar Contraseña:
+                            </label>
+                            <input
+                                type='password'
+                                value={confirmPassword}
+                                onChange={(e) =>
+                                    setConfirmPassword(e.target.value)
+                                }
+                                required
+                                autoComplete='new-password'
+                                disabled={loading}
+                                className='w-full p-3 border border-[#3951AA rounded-md focus:outline-none focus:ring-2 focus:ring-[#179DD9'
+                            />
+                        </div>
+                        <button
+                            type='submit'
+                            disabled={loading}
+                            className='w-full py-2 font-bold rounded-md transition bg-[#083059] text-white hover:bg-[#179DD9'
+                        >
+                            {loading ? 'Actualizando...' : 'Cambiar contraseña'}
+                        </button>
+                    </form>
+                    <button
+                        onClick={() => navigate('/users/profile')}
                         disabled={loading}
-                    />
+                        className='w-full py-2 mt-3 font-bold rounded-md transition bg-gray-200 text-[#083059] hover:bg-gray-300'
+                    >
+                        Cancelar
+                    </button>
                 </div>
-                <div>
-                    <label>Nueva Contraseña:</label>
-                    <input
-                        type="password"
-                        value={newPassword}
-                        onChange={(e) => setNewPassword(e.target.value)}
-                        required
-                        autoComplete="new-password"
-                        disabled={loading}
-                    />
-                </div>
-                <div>
-                    <label>Confirmar Contraseña:</label>
-                    <input
-                        type="password"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                        required
-                        autoComplete="new-password"
-                        disabled={loading}
-                    />
-                </div>
-                <button type="submit" disabled={loading}>
-                    {loading ? 'Actualizando...' : 'Cambiar contraseña'}
-                </button>
-            </form>
-            <button
-                onClick={() => navigate('/users/profile')}
-                disabled={loading}
-            >
-                Cancelar
-            </button>
-        </div>
+            </main>
+        </>
     );
 };
 

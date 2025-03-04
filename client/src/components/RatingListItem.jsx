@@ -1,39 +1,30 @@
 //importamos las dependencias que permiten validar las props
 import PropTypes from 'prop-types';
 
-//importamos los componentes
-import { Link } from 'react-router-dom';
-
 //importamos la dependencia que permite formatear fechas
 import moment from 'moment';
 
 //iniciamos el componente
-const RatingListItem = ({
-    ratingId,
-    title,
-    rate,
-    comment,
-    createdAt,
-    username,
-}) => {
+const RatingListItem = ({ title, rate, comment, createdAt, username }) => {
     return (
         <li>
-            <Link to={`/ratings/${ratingId}`}>
-                <header>
-                    <h3>{title}</h3>
-                </header>
-                <div>
-                    <p>Valoración: {rate}</p>
-                    <p>Descripción: {comment}</p>
-                </div>
-                <footer>
-                    <p>Autor/a:{username}</p>
-                    <p>
-                        Creada el {''}
-                        {moment(createdAt).format('DD/MM/YYYY [a las] HH:mm')}
-                    </p>
-                </footer>
-            </Link>
+            <header>
+                <h3 className='font-bold'>{title}</h3>
+            </header>
+            <div className='p-2'>
+                <p className='font-semibold'>Valoración: {'⭐'.repeat(rate)}</p>
+                <p>
+                    <span className='font-semibold'>Descripción:</span>{' '}
+                    {comment}
+                </p>
+            </div>
+            <footer className='ml-2'>
+                <p>Autor/a: {username}</p>
+                <p className='font-light'>
+                    Creada el {''}
+                    {moment(createdAt).format('DD/MM/YYYY [a las] HH:mm')}
+                </p>
+            </footer>
         </li>
     );
 };

@@ -10,6 +10,7 @@ import LogoAnimation from '../components/LogoAnimation';
 import PaperPlaneAnimation from '../components/PaperPlaneAnimation';
 import RatingSumary from '../components/RatingSumary';
 import { AuthContext } from '../contexts/AuthContext';
+import RatingsSummary from '../components/RatingsSummary';
 
 const { VITE_API_URL } = import.meta.env;
 
@@ -36,8 +37,8 @@ const HomePage = () => {
             { origen: 'Madrid', destino: 'Nueva York' },
             { origen: 'Londres', destino: 'Tokio' },
             { origen: 'Paris', destino: 'Londres' },
-        ] );
-    }, [] );
+        ]);
+    }, []);
 
     // Handle search params from URL
     useEffect( () => {
@@ -47,12 +48,9 @@ const HomePage = () => {
         const adults = searchParams.get( 'adults' );
         const returnDate = searchParams.get( 'returnDate' );
 
-        if ( origin && destination && departureDate && adults )
-        {
-            setOrigen( origin );
-            setDestino( destination );
-            setFechaSalida( departureDate.split( 'T' )[ 0 ] );
-            setPasajeros( Number( adults ) );
+    useEffect(() => {
+        if (isAuthenticated) {
+            loadRecentSearches();
         }
 
         if ( returnDate )
@@ -149,7 +147,7 @@ const HomePage = () => {
         favorites.unshift( search );
         localStorage.setItem( 'favorites', JSON.stringify( favorites ) );
     };
-
+    console.log('HomePage ratings:', ratings);
     return (
         <>
             <section>
@@ -157,9 +155,9 @@ const HomePage = () => {
                 <PaperPlaneAnimation />
             </section>
             <Header />
-            <section className="relative w-full h-screen">
+            <section className='relative w-full h-screen'>
                 <CarouselImages />
-                <section className="absolute inset-0 flex items-center justify-center z-10">
+                <section className='absolute inset-0 flex items-center justify-center z-10'>
                     <SearchForm
                         tipoViaje={tipoViaje}
                         fechaSalida={fechaSalida}
