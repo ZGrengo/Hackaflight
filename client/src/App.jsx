@@ -19,6 +19,7 @@ import RatingsListPage from './pages/RatingsListPage';
 import FavoritesPage from './pages/FavoritesPage';
 import FavoriteDetailsEditPage from './pages/FavoriteDetailsEditPage';
 import AboutUs from './pages/AboutUs';
+import SendRecoverPassPage from './pages/SendRecoveryPassPage';
 
 const App = () => {
     return (
@@ -41,10 +42,14 @@ const App = () => {
                     element={<EditProfilePage />}
                 />
                 <Route
-                    path='/Users/Profile/password'
+                    path='/users/Profile/password'
                     element={<ChangePasswordPage />}
                 />
                 <Route path='/favorites' element={<FavoritesPage />} />
+                <Route
+                    path='/users/recover/request'
+                    element={<SendRecoverPassPage />}
+                />
                 <Route
                     path='/favorites/:favoriteId'
                     element={<FavoriteDetailsEditPage />}
