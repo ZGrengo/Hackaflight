@@ -4,11 +4,10 @@ import { Navigate, useNavigate, useParams } from 'react-router-dom';
 // Importamos la función que muestra un mensaje al usuario.
 import toast from 'react-hot-toast';
 // Importamos el contexto de autorización.
-import { AuthContext } from '../hooks/useAuthContext.js';
+import { AuthContext } from '../contexts/AuthContext';
 import Header from '../components/Header.jsx';
 // Importamos la URL de nuestra API.
 const { VITE_API_URL } = import.meta.env;
-
 
 // Inicializamos el componente
 const ResetPassword = () => {
@@ -18,11 +17,9 @@ const ResetPassword = () => {
     // para el cambio de contraseña
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const {authUser} = useContext(AuthContext);
+    const { authUser } = useContext(AuthContext);
     // cargando
     const [loading, setLoading] = useState(false);
-
-
 
     const handlePasswordChange = async (e) => {
         try {
@@ -34,7 +31,7 @@ const ResetPassword = () => {
             }
             setLoading(true);
             // realizamos la petición a la API para la actualización de contraseña
-            const response= await fetch(
+            const response = await fetch(
                 `${VITE_API_URL}/api/users/password/reset/${recoverPassCode}`,
                 {
                     method: 'put',
@@ -45,7 +42,7 @@ const ResetPassword = () => {
                         newPassword,
                         confirmPassword,
                     }),
-                }
+                },
             );
 
             const body = await response.json();
@@ -67,9 +64,9 @@ const ResetPassword = () => {
             setLoading(false);
         }
     };
-         if (authUser) {
-            return <Navigate to =  '/'/> ;
-         }
+    if (authUser) {
+        return <Navigate to='/' />;
+    }
     return (
         <>
             <Header />
@@ -77,7 +74,7 @@ const ResetPassword = () => {
                 <div className='bg-white p-6 rounded-lg shadow-md w-full max-w-sm'>
                     <h2>Cambiar Contraseña</h2>
                     <form onSubmit={handlePasswordChange} className='space-y-4'>
-                                                <div>
+                        <div>
                             <label className='block text-[#083059] font-medium text-sm mb-1'>
                                 Nueva Contraseña:
                             </label>
