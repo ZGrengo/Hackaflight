@@ -96,7 +96,7 @@ const LoginPage = () => {
                     <div className='flex gap-[4]'>
                         <Link
                             className='no-underline'
-                            to='/users/recover/request'
+                            to='/users/password/recover/request'
                             style={{ paddingLeft: '20px', color: '#179dd9' }}
                         >
                             Recuperar Contraseña

@@ -14,6 +14,7 @@ const { VITE_API_URL } = import.meta.env;
 const ResetPassword = () => {
     // obtenemos el toquen de autenticación del contexto
     const navigate = useNavigate();
+    const { recoverPassCode } = useParams();
     // para el cambio de contraseña
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -24,14 +25,14 @@ const ResetPassword = () => {
 
 
     const handlePasswordChange = async (e) => {
-        // Doble validación de la nueva contraseña
-        e.preventDefault();
-        if (newPassword !== confirmPassword) {
-            toast.error('Las contraseñas no coinciden');
-            return;
-        }
-        setLoading(true);
-    try {
+        try {
+            // Doble validación de la nueva contraseña
+            e.preventDefault();
+            if (newPassword !== confirmPassword) {
+                toast.error('Las contraseñas no coinciden');
+                return;
+            }
+            setLoading(true);
             // realizamos la petición a la API para la actualización de contraseña
             const response= await fetch(
                 `${VITE_API_URL}/api/users/password/reset/${recoverPassCode}`,
@@ -47,19 +48,21 @@ const ResetPassword = () => {
                 }
             );
 
-            const result = await response.json();
+            const body = await response.json();
 
-            if (!response.ok) {
-                throw new Error(
-                    result.message || 'Error al actualizar la contraseña',
-                );
+            if (body.status === 'error') {
+                throw new Error(body.message);
             }
-            // si todo está bien, muestra un mensaje de éxito y se limpian los campos del formulario
-            toast.success('Contraseña actualizada correctamente');
-            // al hacer el cambio de contraseña, redirigimos al perfil
-            navigate('/users/profile');
-        } catch (error) {
-            toast.error(`Error: ${error.message}`);
+
+            toast.success(body.message, {
+                id: 'useRecoveryPass',
+            });
+
+            navigate('/login');
+        } catch (err) {
+            toast.error(err.message, {
+                id: 'useRecoveryPass',
+            });
         } finally {
             setLoading(false);
         }
