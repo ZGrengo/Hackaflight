@@ -7,6 +7,7 @@ import toast from 'react-hot-toast';
 import useAuthContext from '../hooks/useAuthContext.js';
 //importamos momento para configurar la fehca entregada por el servidor
 import moment from 'moment';
+import Header from '../components/Header.jsx';
 
 // Importamos la URL de nuestra API.
 const { VITE_API_URL } = import.meta.env;
@@ -76,61 +77,69 @@ const UserProfilePage = () => {
     }
 
     return (
-        <main className='bg-[#E5f7ff] min-h-screen flex itenms-center justify-center p-4'>
-            <div className='bg-white p-6 rounded-lg shadow-md w-full max-w-lg'>
-                <h2 className='text-2x1 font-bold text-[#083059] text-center mb-4'>
-                    Perfil de Usuario
-                </h2>
-                {/* Mostramos la información de usuario */}
-                <div className='flex flex-col items-center space-y-4'>
-                    <img
-                        src={
-                            userData.avatar !== null
-                                ? `${VITE_API_URL}/uploads/${userData.avatar}`
-                                : '/default-avatar.png'
-                        }
-                        alt='Avatar'
-                        className='w-24 h-24 rounded-full object-cover shadow-lg transition transform hover:scale-105'
-                    />
-                    <div className='w-full'>
-                        <p className='text-[#083059] text-sm'>
-                            <strong>Nombre:</strong> {userData.firstName}{' '}
-                            {userData.lastName}
-                        </p>
-                        <p className='text-[#083059] text-sm'>
-                            <strong>Usuario:</strong> {userData.username}
-                        </p>
-                        <p className='text-[#083059] text-sm'>
-                            <strong>Email:</strong> {userData.email}
-                        </p>
-                        <p className='text-[#083059] text-sm'>
-                            <strong>Edad:</strong>{' '}
-                            {moment().diff(moment(userData.birthdate), 'years')}{' '}
-                            años
-                        </p>
-                        <p className='text-[#083059] text-sm'>
-                            <strong>Miembro desde:</strong>{' '}
-                            {moment(userData.createdAt).format('DD/MM/YYYY')}
-                        </p>
+        <>
+            <Header />
+            <main className='bg-[#E5f7ff] min-h-screen flex itenms-center justify-center p-4'>
+                <div className='bg-white p-6 rounded-lg shadow-md w-full max-w-lg'>
+                    <h2 className='text-2x1 font-bold text-[#083059] text-center mb-4'>
+                        Perfil de Usuario
+                    </h2>
+                    {/* Mostramos la información de usuario */}
+                    <div className='flex flex-col items-center space-y-4'>
+                        <img
+                            src={
+                                userData.avatar !== null
+                                    ? `${VITE_API_URL}/uploads/${userData.avatar}`
+                                    : '/default-avatar.png'
+                            }
+                            alt='Avatar'
+                            className='w-24 h-24 rounded-full object-cover shadow-lg transition transform hover:scale-105'
+                        />
+                        <div className='w-full'>
+                            <p className='text-[#083059] text-sm'>
+                                <strong>Nombre:</strong> {userData.firstName}{' '}
+                                {userData.lastName}
+                            </p>
+                            <p className='text-[#083059] text-sm'>
+                                <strong>Usuario:</strong> {userData.username}
+                            </p>
+                            <p className='text-[#083059] text-sm'>
+                                <strong>Email:</strong> {userData.email}
+                            </p>
+                            <p className='text-[#083059] text-sm'>
+                                <strong>Edad:</strong>{' '}
+                                {moment().diff(
+                                    moment(userData.birthdate),
+                                    'years',
+                                )}{' '}
+                                años
+                            </p>
+                            <p className='text-[#083059] text-sm'>
+                                <strong>Miembro desde:</strong>{' '}
+                                {moment(userData.createdAt).format(
+                                    'DD/MM/YYYY',
+                                )}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div className='mt-4 space-y-3'>
+                        <button
+                            onClick={() => navigate('/users/profile/edit')}
+                            className='w-full py-2 font-bold rounded-md transition bg-[#083059] text-white hover:bg-[#179DD9]'
+                        >
+                            Editar perfil
+                        </button>
+                        <button
+                            onClick={() => navigate('/Users/Profile/password')}
+                            className='w-full py-2 font-bold rounded-md transition bg-[#083059] text-white hover:bg-[#179DD9]'
+                        >
+                            Cambiar contraseña
+                        </button>
                     </div>
                 </div>
-
-                <div className='mt-4 space-y-3'>
-                    <button
-                        onClick={() => navigate('/users/profile/edit')}
-                        className='w-full py-2 font-bold rounded-md transition bg-[#083059] text-white hover:bg-[#179DD9]'
-                    >
-                        Editar perfil
-                    </button>
-                    <button
-                        onClick={() => navigate('/Users/Profile/password')}
-                        className='w-full py-2 font-bold rounded-md transition bg-[#083059] text-white hover:bg-[#179DD9]'
-                    >
-                        Cambiar contraseña
-                    </button>
-                </div>
-            </div>
-        </main>
+            </main>
+        </>
     );
 };
 
