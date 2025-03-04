@@ -18,6 +18,7 @@ import RatingPage from './pages/RatingPage';
 import RatingsListPage from './pages/RatingsListPage';
 import FavoritesPage from './pages/FavoritesPage';
 import FavoriteDetailsEditPage from './pages/FavoriteDetailsEditPage';
+import AboutUs from './pages/AboutUs';
 
 const App = () => {
     return (
@@ -51,6 +52,7 @@ const App = () => {
                 <Route path='/users/ratings' element={<RatingPage />} />
                 <Route path='/ratings' element={<RatingsListPage />} />
                 <Route path='*' element={<NotFoundPage />} />
+                <Route path='/about' element={<AboutUs />} />
             </Routes>
             <Footer />
         </>
