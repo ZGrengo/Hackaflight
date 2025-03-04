@@ -62,9 +62,9 @@ const RegisterPage = () => {
             }
 
             //si sale el registro bien, lanzamos un mensaje
-            toast.success('Usuario/a registrado/a correctamente', {
+            toast.success(body.message, {
                 id: 'register',
-                duration: 5000,
+                duration: 10000,
             });
 
             //redirigimos a la página de login
@@ -198,7 +198,7 @@ const RegisterPage = () => {
                                 htmlFor='birthdate'
                                 className='block text-[#083059] font-medium'
                             >
-                                Correo Electrónico
+                                Fecha de Nacimiento
                             </label>
                             <input
                                 type='date'
