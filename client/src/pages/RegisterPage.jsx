@@ -198,7 +198,7 @@ const RegisterPage = () => {
                                 htmlFor='birthdate'
                                 className='block text-[#083059] font-medium'
                             >
-                                Correo Electrónico
+                                Fecha de Nacimiento
                             </label>
                             <input
                                 type='date'
