@@ -12,8 +12,10 @@ import Footer from '../components/Footer';
 import { AuthContext } from '../contexts/AuthContext';
 import RatingsSummary from '../components/RatingsSummary';
 
+// importamos la variable de entorno
 const { VITE_API_URL } = import.meta.env;
 
+// definimos los estados iniciales
 const HomePage = () => {
     const [tipoViaje, setTipoViaje] = useState('ida');
     const [fechaSalida, setFechaSalida] = useState('');
@@ -27,6 +29,7 @@ const HomePage = () => {
     const { isAuthenticated } = useContext(AuthContext);
     const [loading, setLoading] = useState(false);
 
+    // usamos el hook useNavigate para navegar entre rutas
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
 
@@ -214,8 +217,8 @@ const HomePage = () => {
                         <p className='text-zinc-600 dark:text-zinc-400'>
                             Your adventure is about to begin
                         </p>
-                    </div>
-                )}
+                    </section>
+                ) : null}
             </section>
             <section>
                 {isAuthenticated && (
@@ -237,3 +240,4 @@ const HomePage = () => {
 };
 
 export default HomePage;
+
