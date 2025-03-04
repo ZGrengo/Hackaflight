@@ -12,35 +12,46 @@ const RatingsSummary = ({ ratings }) => {
     // Calculamos la media de las valoraciones
 
     // Filtramos las valoraciones con puntuación de 5
-    const topRatings = ratings
-        .filter((rating) => rating.rate === 5)
-        .slice(0, 3);
+    const topRatings = [...ratings].slice(0, 3);
 
     return (
-        <div className='bg-medium-blue p-4 text-light-blue text-center'>
-            <h2>Lo que piensan nuestros usuarios...</h2>
-            <div>
+        <div className='bg-[#083059] p-8 text-white text-center max-h-fit mx-auto'>
+            <h2 className='text-2xl font-bold mb-6'>
+                Lo que piensan nuestros usuarios...
+            </h2>
+            <div className='mb-6'>
                 {/* Calculamos (hook) y Mostramos la valoración media y el total */}
-                <p>
+                <p className='text-xl mb-2'>
                     {avgRating}⭐ de {totalRatings} valoraciones
                 </p>
 
                 {/* Indicamos cuántas valoraciones se muestran del total */}
                 <p>Mostrando 3 de {ratings.length} valoraciones</p>
             </div>
-
-            <ul>
-                {/* Mostramos los 3 primeros comentarios de valoracion 5 */}
-                {topRatings.map((rating) => (
-                    <RatingListItem
-                        key={rating.id}
-                        title={rating.title}
-                        rate={rating.rate}
-                        comment={rating.comment}
-                        username={rating.username}
-                    />
-                ))}
-            </ul>
+            <div className='w-full px-4'>
+                <ul className='space-y-4 w-full max-w-2xl mx-auto'>
+                    {/* Mostramos los 3 más recientes */}
+                    {topRatings && topRatings.length > 0 ? (
+                        topRatings.slice(0, 3).map((rating) => (
+                            <div
+                                key={rating.id}
+                                className='bg-white p-4 rounded-lg shadow-sm text-[#083059]'
+                            >
+                                <RatingListItem
+                                    ratingId={rating.id}
+                                    title={rating.title}
+                                    rate={rating.rate}
+                                    comment={rating.comment}
+                                    username={rating.username}
+                                    createdAt={rating.createdAt}
+                                />
+                            </div>
+                        ))
+                    ) : (
+                        <p>No hay valoraciones disponibles</p>
+                    )}
+                </ul>
+            </div>
         </div>
     );
 };

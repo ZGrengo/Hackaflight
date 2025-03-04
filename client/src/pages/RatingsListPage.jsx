@@ -26,7 +26,7 @@ const RatingsListPage = () => {
     //Declaramos una variable en el State para actualizar el listado de valoraciones
     const [currentPage, setCurrentPage] = useState(1);
     //Definimos cuantas valoraciones queremos mostrar por página
-    const ratingsPerPage = 10;
+    const ratingsPerPage = 5;
 
     //Calculamos el índice de la última valoración que se mostrará en la página actual
     const indexOfLastRating = currentPage * ratingsPerPage;
@@ -78,19 +78,22 @@ const RatingsListPage = () => {
     return (
         <>
             <Header />
-            <main className='bg-[#E5F7FF] flex flex-col items-center justify-center min-h-screen p-6'>
+            <main className='bg-[#083059] flex flex-col items-center justify-center min-h-screen p-6 '>
                 <section className='bg-white p-8 rounded-lg shadow-md w-full max-w-fit mx-auto'>
                     <h2 className='text-2xl font-bold text-[#083059] text-center mb-6'>
                         Todas las valoraciones
                     </h2>
                     {/* formulario de búsqueda */}
-                    <form onSubmit={handleSearchRatings} className='space-y-6'>
+                    <form
+                        onSubmit={handleSearchRatings}
+                        className='flex gap-4 items-center mb-6 justify-end'
+                    >
                         <select
                             value={rate}
                             onChange={(e) => setRate(e.target.value)}
-                            className='block text-[#083059] font-medium mb-2'
+                            className='text-[#083059] font-medium p-1'
                         >
-                            <option value=''>Valoración</option>
+                            <option value=''>--Selecciona un valor--</option>
                             <option value='1'>⭐</option>
                             <option value='2'>⭐⭐</option>
                             <option value='3'>⭐⭐⭐</option>
@@ -99,33 +102,42 @@ const RatingsListPage = () => {
                         </select>
                         <button
                             disabled={loading}
-                            className='w-full bg-[#179DD9] text-white py-3 px-4 rounded-md hover:bg-[#3951AA] transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed '
+                            className='bg-[#083059] text-white py-1 px-4 rounded-md hover:bg-[#179DD9] transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed'
                         >
                             {loading ? 'Buscando...' : 'Buscar'}
                         </button>
                     </form>
                     {/* Listado de valoraciones */}
-                    <ul className='list-none'>
+                    <ul className='list-none '>
                         {currentRatings.map((rating) => (
-                            <RatingListItem
+                            <div
                                 key={rating.id}
-                                ratingId={rating.id}
-                                title={rating.title}
-                                rate={rating.rate}
-                                comment={rating.comment}
-                                username={rating.username}
-                                createdAt={rating.createdAt}
-                            />
+                                className='bg-[#E5F7FF] p-6 mb-4 mt-4 rounded-lg shadow-sm list-none'
+                            >
+                                <RatingListItem
+                                    ratingId={rating.id}
+                                    title={rating.title}
+                                    rate={rating.rate}
+                                    comment={rating.comment}
+                                    username={rating.username}
+                                    createdAt={rating.createdAt}
+                                />
+                            </div>
                         ))}
                     </ul>
                     {/*Botones de la paginación */}
-                    <div>
+                    <div className='flex justify-center gap-2 mt-6'>
                         {Array.from({
                             length: Math.ceil(ratings.length / ratingsPerPage),
                         }).map((_, index) => (
                             <button
                                 key={index}
                                 onClick={() => setCurrentPage(index + 1)}
+                                className={`px-4 py-2 rounded-md transition-colors ${
+                                    currentPage === index + 1
+                                        ? 'bg-[#179DD9] text-white'
+                                        : 'bg-[#E5F7FF] text-[#083059] hover:bg-[#3951AA] hover:text-white'
+                                }`}
                             >
                                 {index + 1}
                             </button>

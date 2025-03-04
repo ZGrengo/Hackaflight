@@ -3,7 +3,7 @@ import { AuthContext } from '../contexts/AuthContext';
 
 //importamos hooks
 import { useContext, useState } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import useRatingList from '../hooks/useRatingList';
 
 //importamos dependencias
@@ -91,7 +91,7 @@ const RatingPage = () => {
     return (
         <>
             <Header />
-            <main className='bg-[#E5F7FF] flex flex-col items-center justify-center min-h-screen p-6'>
+            <main className='bg-[#083059] flex flex-col items-center justify-center min-h-screen p-6'>
                 <section className='bg-white p-8 rounded-lg shadow-md w-full max-w-fit mx-auto'>
                     <h2 className='text-2xl font-bold text-[#083059] text-center mb-6'>
                         Déjanos un comentario!
@@ -184,7 +184,7 @@ const RatingPage = () => {
 
                             <button
                                 disabled={loading}
-                                className='w-full bg-[#179DD9] text-white py-3 px-4 rounded-md hover:bg-[#3951AA] transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed '
+                                className='w-full bg-[#083059] text-white py-3 px-4 rounded-md hover:bg-[#3951AA] transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed '
                             >
                                 {loading ? 'Enviando...' : 'Enviar valoración'}
                             </button>
@@ -194,9 +194,14 @@ const RatingPage = () => {
                 <section>
                     {/*Listado de valoraciones de más reciente a menos */}
                     <section className='bg-white p-8 rounded-lg shadow-md w-full max-w-fit mx-auto mt-6'>
-                        <h2 className='text-2xl font-bold text-[#083059] text-center mb-6'>
-                            Últimas valoraciones
-                        </h2>
+                        <Link
+                            to='/ratings'
+                            className='hover:text-[#179DD9] transition-colors'
+                        >
+                            <h2 className='text-2xl font-bold text-[#083059] text-center mb-6'>
+                                Últimas valoraciones
+                            </h2>
+                        </Link>
                         {/*Listado de valoraciones de más reciente a menos */}
                         <div className='space-y-4'>
                             {ratings &&
