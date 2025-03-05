@@ -2,7 +2,8 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import useAuthContext from '../hooks/useAuthContext.js';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+import toast from 'react-hot-toast';
 import Header from '../components/Header.jsx';
 
 const { VITE_API_URL } = import.meta.env;
@@ -11,7 +12,6 @@ const FavoriteDetailsEditPage = () => {
     const [favorites, setFavorite] = useState({});
     const [loading, setLoading] = useState(true);
     const [initialFavorites, setInitialFavorites] = useState({});
-    const [error, setError] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
     const { favoriteId } = useParams();
     const { authToken, authUser } = useAuthContext();
@@ -38,18 +38,62 @@ const FavoriteDetailsEditPage = () => {
                 }
                 setFavorite(body.data.favorites);
                 setInitialFavorites(body.data.favorites);
-            } catch (err) {
-                setError(err.message);
-            } finally {
-                setLoading(false);
-            }
-        };
+    
+    } catch (err) {
+      toast.error(err.message, {
+        id: 'favoriteId',
+    });
+    
+        
+    } finally {
+        setLoading(false);
+    }
+};
 
-        if (authToken && authUser) {
-            // Solo ejecuta si existen
-            fetchFavorites();
+if (authToken && authUser) { // Solo ejecuta si existen
+    fetchFavorites();
+}
+}, [favoriteId, authToken, authUser]);
+
+//Guardamos los cambios realizados en el favorito.
+const handleSave = async () => {
+    try {
+        if(!favorites.origin  || !favorites.destination || !favorites.departureDate || favorites.adults <= 0 || !Date.parse(favorites.departureDate) || (favorites.returnDate && isNaN(Date.parse(favorites.returnDate)))) {
+          throw new Error("Campos vacios");
         }
-    }, [favoriteId, authToken, authUser]);
+
+        const formattedFavorites = {
+            title: favorites.title,
+            origin: favorites.origin,
+            destination: favorites.destination,
+            departureDate: formatDate(favorites.departureDate),  
+            returnDate: favorites.returnDate ? formatDate(favorites.returnDate) : null,
+            adults: favorites.adults,
+        };
+         // Enviamos los cambios al endpoint de actualización de favoritos.
+        const res = await fetch(
+                        `${VITE_API_URL}/api/users/favorites/${favoriteId}`,
+                        {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                Authorization: authToken,
+                            },
+                            body: JSON.stringify(formattedFavorites),
+                        },
+                    );
+                    // Obtenemos el body.
+                    const body = await res.json();
+        setIsEditing(false);
+        toast.success(body.message);
+    } catch (err) {
+      toast.error(err.message, {
+        id: 'favoriteId',
+    });
+    
+        
+    }
+};
 
     //Toggle para permitir editar un favorito.
     const handleEditToggle = () => setIsEditing(!isEditing);
@@ -67,49 +111,6 @@ const FavoriteDetailsEditPage = () => {
         if (!date) return null; // Si la fecha es null, no la formateamos
         const newDate = new Date(date);
         return newDate.toISOString().split('T')[0]; // Devuelve solo la parte de la fecha (sin hora)
-    };
-
-    //Guardamos los cambios realizados en el favorito.
-    const handleSave = async () => {
-        try {
-            const formattedFavorites = {
-                title: favorites.title,
-                origin: favorites.origin,
-                destination: favorites.destination,
-                departureDate: formatDate(favorites.departureDate),
-                returnDate: favorites.returnDate
-                    ? formatDate(favorites.returnDate)
-                    : null,
-                adults: favorites.adults,
-            };
-
-            console.log(formattedFavorites);
-
-            // Enviamos los cambios al endpoint de actualización de favoritos.
-            const res = await fetch(
-                `${VITE_API_URL}/api/users/favorites/${favoriteId}`,
-                {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: authToken,
-                    },
-                    body: JSON.stringify(formattedFavorites),
-                },
-            );
-
-            // Obtenemos el body.
-            const body = await res.json();
-            console.log(body);
-            // Si hay algún error lo lanzamos.
-            if (body.status === 'error') {
-                throw new Error(body.message);
-            }
-            setIsEditing(false);
-            alert('Busqueda actualizada con exito');
-        } catch (err) {
-            console.error(err.message);
-        }
     };
 
     //Buscamos el vuelo favorito del usuario
@@ -135,13 +136,12 @@ const FavoriteDetailsEditPage = () => {
     };
 
     if (loading) return <p>Cargando favorito...</p>;
-    if (error) return <p>Error: {error}</p>;
 
     // Mostramos la lista de favoritos.
     return (
         <>
             <Header />
-            <main className='bg-light-blue p-8 rounded-lg shadow-md w-full max-w-lg mx-auto mt-10'>
+            <main className='bg-light-blue p-8 rounded-lg shadow-md w-full max-w-lg mx-auto mt-10 mb-10'>
                 <h2 className='text-center text-dark-blue text-3xl mb-6'>
                     Detalles del Favorito
                 </h2>
