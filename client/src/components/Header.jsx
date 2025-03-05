@@ -6,78 +6,73 @@ const Header = () => {
     const { authUser, authLogoutState } = useAuthContext();
 
     return (
-        <header className='flex sticky top-0 justify-around items-center bg-medium-blue w-full p-4 z-50 bg-opacity-80 backdrop-blur-md'>
-            {/* Logo */}
-            <nav className='flex gap-4 max-w-full'>
+        <header className='sticky top-0 z-50 bg-dark-blue backdrop-blur-md shadow-md'>
+            <div className='flex items-center justify-between px-4 py-3'>
+                {/* Logo */}
                 <Link to='/'>
                     <img
-                        src='/public/logo.svg'
+                        src='/public/logo.png'
                         alt='home'
-                        className='rounded-full w-1/2 hover:scale-110 transition-transform duration-200'
+                        className='w-auto h-9 object-contain transition-transform duration-200 hover:scale-105'
                     />
                 </Link>
-            </nav>
-            {/* Menú de navegación */}
 
-            {authUser ? (
-                <>
-                    <section className='flex items-center gap-2'>
-                        <Link to='/users/profile' className='mx-1'>
-                            <img
-                                src='/public/profile.svg'
-                                alt='profile'
-                                className='w-16 fill-current text-dark-blue hover:text-medium-blue hover:scale-150 transition-transform duration-200'
-                            />
-                        </Link>
+                {/* Menú de navegación */}
+                <nav className='flex items-center space-x-3'>
+                    {authUser ? (
+                        <>
+                            <Link to='/users/profile'>
+                                <img
+                                    src='/public/profile.svg'
+                                    alt='profile'
+                                    className='w-8 h-8 fill-current text-light-blue transition-tranform duration-200 hover:text-medium-blue hover:scale-110'
+                                />
+                            </Link>
 
-                        <Link to='/users/ratings' className='mx-1'>
-                            <img
-                                src='/public/rating.svg'
-                                alt='ratings'
-                                className='w-16 fill-current text-dark-blue hover:text-medium-blue hover:scale-150 transition-transform duration-200'
-                            />
-                        </Link>
-                        <button onClick={authLogoutState} className='mx-1'>
-                            <img
-                                src='/public/logout.svg'
-                                alt='logout'
-                                className='w-16 fill-current text-dark-blue hover:text-medium-blue hover:scale-150 transition-transform duration-200'
-                            />
-                        </button>
-                    </section>
-                </>
-            ) : (
-                <>
-                    <section className='flex items-center gap-2'>
-                        <Link to='/login' className='mx-1'>
-                            <img
-                                src='/public/login.svg'
-                                alt='login'
-                                className='w-16 fill-current text-dark-blue hover:text-medium-blue hover:scale-150 transition-transform duration-200'
-                            />
-                        </Link>
-                        <Link
-                            to='/register'
-                            className='mx-1'
-                        >
-                            <img
-                                src='/public/registerUser.svg'
-                                alt='register'
-                                className='w-16 fill-current text-dark-blue hover:text-medium-blue hover:scale-150 transition-transform duration-200'
-                            />
-                        </Link>
+                            <Link to='/users/ratings'>
+                                <img
+                                    src='/public/rating.svg'
+                                    alt='ratings'
+                                    className='w-8 h-8 fill-current text-light-blue transition-tranform duration-200 hover:text-medium-blue hover:scale-110'
+                                />
+                            </Link>
+                            <button onClick={authLogoutState}>
+                                <img
+                                    src='/public/logout.svg'
+                                    alt='logout'
+                                    className='w-8 h-8 fill-current text-light-blue transition-tranform duration-200 hover:text-medium-blue hover:scale-110'
+                                />
+                            </button>
+                        </>
+                    ) : (
+                        <>
+                            <Link to='/login'>
+                                <img
+                                    src='/public/login.svg'
+                                    alt='login'
+                                    className='w-8 h-8 fill-current text-light-blue transition-tranform duration-200 hover:text-medium-blue hover:scale-110'
+                                />
+                            </Link>
+                            <Link to='/register'>
+                                <img
+                                    src='/public/registerUser.svg'
+                                    alt='register'
+                                    className='w-8 h-8 fill-current text-light-blue transition-tranform duration-200 hover:text-medium-blue hover:scale-110'
+                                />
+                            </Link>
 
-                        <Link to='/ratings' className='mx-1'>
-                            <img
-                                src='/public/rating.svg'
-                                alt='ratings'
-                                className='w-16 fill-current text-dark-blue hover:text-medium-blue hover:scale-150 transition-transform duration-200'
-                            />
-                        </Link>
-                    </section>
-                </>
-            )}
-        </header >
+                            <Link to='/ratings'>
+                                <img
+                                    src='/public/rating.svg'
+                                    alt='ratings'
+                                    className='w-8 h-8 fill-current text-light-blue transition-tranform duration-200 hover:text-medium-blue hover:scale-110'
+                                />
+                            </Link>
+                        </>
+                    )}
+                </nav>
+            </div>
+        </header>
     );
 };
 

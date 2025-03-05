@@ -1,16 +1,10 @@
+import React from 'react';
 import PropTypes from 'prop-types';
 
 const FlightCard = ( { flight } ) => {
-    const { itineraries, price, travelerPricings } = flight;
-
-    console.log( "Flight data:", flight );
-    console.log( "Itineraries:", itineraries );
-    console.log( "Price:", price );
-    console.log( "Traveler Pricings:", travelerPricings );
+    const { itineraries, price, travelerPricings, oneWay } = flight;
 
     const getTicketClass = ( ticketClass ) => {
-        if ( !ticketClass ) return 'Clase Desconocida';
-
         if ( [ 'a', 'f', 'p', 'r' ].includes( ticketClass.toLowerCase() ) )
         {
             return 'Primera Clase';
@@ -23,76 +17,69 @@ const FlightCard = ( { flight } ) => {
         }
     };
 
+    const formatDate = ( date ) => {
+        return date.replace( 'T', ' ' );
+    };
+
+    const formatDuration = ( duration ) => {
+        return duration.replace( 'PT', '' ).replace( 'H', ' H ' ).replace( 'M', ' Min' );
+    };
+
     return (
-        <section className="flight-card max-w-xl w-full mx-auto bg-dark-blue border-solid border-accent-blue border-4 rounded-xl overflow-hidden pb-5">
-            <section className="max-w-md mx-auto pt-12 pb-14 px-5 text-center">
-                <h3 className="text-xl text-light-blue font-bold underline mb-5">Vuelo {flight.id}</h3>
-                {itineraries.map( ( itinerary, index ) => {
-                    const { segments } = itinerary;
-                    const departure = segments[ 0 ].departure;
-                    const arrival = segments[ segments.length - 1 ].arrival;
-                    const ticketClass = travelerPricings[ 0 ].fareDetailsBySegment[ index ].class;
-                    const validatingAirlineCodes = segments.map( ( segment ) => segment.carrierCode ).join( ', ' );
-
-                    console.log( `Itinerary ${ index }:`, itinerary );
-                    console.log( `Departure:`, departure );
-                    console.log( `Arrival:`, arrival );
-                    console.log( `Ticket Class:`, ticketClass );
-                    console.log( `Validating Airline Codes:`, validatingAirlineCodes );
-
-                    return (
-                        <section key={`${ flight.id }-${ index }`}>
-                            <p className="text-gray-300 font-medium">Origen: {departure.iataCode}</p>
-                            <p className="text-gray-300 font-medium">Destino: {arrival.iataCode}</p>
-                            <p className="text-gray-300 font-medium">Aerolinea: {validatingAirlineCodes}</p>
-                            <p className="text-gray-300 font-medium">Fecha de Salida: {departure.at}</p>
-                            <p className="text-gray-300 font-medium">Fecha de Llegada: {arrival.at}</p>
-                            <p className="text-gray-300 font-medium">Duración: {itinerary.duration}</p>
-                            <p className="text-gray-300 font-medium">Escalas: {segments.length - 1}</p>
-                            <p className="text-gray-300 font-medium">Tipo de billete: {getTicketClass( ticketClass )}</p>
-                        </section>
-                    );
-                } )}
-                <p className="text-gray-300 font-medium">Precio: {price.currency} {price.total}</p>
-            </section>
-        </section>
+        <div className="flight-card bg-dark-blue text-white text-center p-3 mb-3">
+            <h2>Vuelo {flight.id}</h2>
+            <p>Precio: {price.total} {price.currency}</p>
+            <p>Tipo de vuelo: {oneWay ? 'Solo ida' : 'Ida y vuelta'}</p>
+            {itineraries.map( ( itinerary, index ) => (
+                <div key={index} className="itinerary">
+                    <h3>Itinerario {index + 1}</h3>
+                    <p>Duración: {formatDuration( itinerary.duration )}</p>
+                    {itinerary.segments.map( ( segment, idx ) => (
+                        <div key={idx} className="segment">
+                            <p>Salida: {segment.departure.iataCode} a las {formatDate( segment.departure.at )}</p>
+                            <p>Llegada: {segment.arrival.iataCode} a las {formatDate( segment.arrival.at )}</p>
+                        </div>
+                    ) )}
+                </div>
+            ) )}
+            <div className="traveler-pricings">
+                {travelerPricings.map( ( pricing, index ) => (
+                    <div key={index} className="pricing">
+                        <p>Clase: {getTicketClass( pricing.fareDetailsBySegment[ 0 ].class )}</p>
+                    </div>
+                ) )}
+            </div>
+        </div>
     );
 };
 
 FlightCard.propTypes = {
     flight: PropTypes.shape( {
         id: PropTypes.string.isRequired,
-        itineraries: PropTypes.arrayOf(
-            PropTypes.shape( {
-                duration: PropTypes.string.isRequired,
-                segments: PropTypes.arrayOf(
-                    PropTypes.shape( {
-                        departure: PropTypes.shape( {
-                            iataCode: PropTypes.string.isRequired,
-                            at: PropTypes.string.isRequired,
-                        } ).isRequired,
-                        arrival: PropTypes.shape( {
-                            iataCode: PropTypes.string.isRequired,
-                            at: PropTypes.string.isRequired,
-                        } ).isRequired,
-                    } )
-                ).isRequired,
-            } )
-        ).isRequired,
+        itineraries: PropTypes.arrayOf( PropTypes.shape( {
+            duration: PropTypes.string.isRequired,
+            segments: PropTypes.arrayOf( PropTypes.shape( {
+                departure: PropTypes.shape( {
+                    iataCode: PropTypes.string.isRequired,
+                    at: PropTypes.string.isRequired
+                } ).isRequired,
+                arrival: PropTypes.shape( {
+                    iataCode: PropTypes.string.isRequired,
+                    at: PropTypes.string.isRequired
+                } ).isRequired
+            } ) ).isRequired
+        } ) ).isRequired,
         price: PropTypes.shape( {
             currency: PropTypes.string.isRequired,
-            total: PropTypes.string.isRequired,
+            total: PropTypes.string.isRequired
         } ).isRequired,
-        travelerPricings: PropTypes.arrayOf(
-            PropTypes.shape( {
-                fareDetailsBySegment: PropTypes.arrayOf(
-                    PropTypes.shape( {
-                        class: PropTypes.string.isRequired,
-                    } )
-                ).isRequired,
-            } )
-        ).isRequired,
-    } ).isRequired,
+        travelerPricings: PropTypes.arrayOf( PropTypes.shape( {
+            fareDetailsBySegment: PropTypes.arrayOf( PropTypes.shape( {
+                class: PropTypes.string.isRequired
+            } ) ).isRequired
+        } ) ).isRequired,
+        oneWay: PropTypes.bool.isRequired
+    } ).isRequired
 };
 
 export default FlightCard;
