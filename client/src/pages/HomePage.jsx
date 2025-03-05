@@ -12,8 +12,7 @@ import PaperPlaneAnimation from '../components/PaperPlaneAnimation';
 import { AuthContext } from '../contexts/AuthContext';
 import RatingsSummary from '../components/RatingsSummary';
 
-
-//obtenemos las variables de entorno
+// Obtenemos las variables de entorno
 const { VITE_API_URL } = import.meta.env;
 
 // Página de inicio
@@ -68,8 +67,9 @@ const HomePage = () => {
     const loadRecentSearches = () => {
         const searches = JSON.parse( localStorage.getItem( 'recentSearches' ) || '[]' );
         setRecentSearches( searches );
-    }
-    // Hook para cargar las búsquedas recientes si se esta autenticado
+    };
+
+    // Hook para cargar las búsquedas recientes si se está autenticado
     useEffect( () => {
         if ( isAuthenticated )
         {
@@ -88,21 +88,23 @@ const HomePage = () => {
 
     // Función para buscar vuelos
     const fetchFlights = async ( params ) => {
-        const res = await fetch( `${ VITE_API_URL }/api/flights/search?${ params.toString() }`, {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
-        } );
+        try
+        {
+            const res = await fetch( `${ VITE_API_URL }/api/flights/search?${ params.toString() }`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' },
+            } );
 
-        if ( !res.ok ) throw new Error( 'Network response was not ok' );
-        const body = await res.json();
-        if ( body.status === 'error' ) throw new Error( body.message );
-        console.log( 'Flights:', body );
-        console.log( 'Flights:', body.status );
-        console.log( 'Flights:', body.message );
-        console.log( 'Flights:', body.data );
-        console.log( 'response', res );
+            if ( !res.ok ) throw new Error( 'Network response was not ok' );
+            const body = await res.json();
+            if ( body.status === 'error' ) throw new Error( body.message );
 
-        return Array.isArray( body ) ? body : [];
+            return Array.isArray( body ) ? body : [];
+        } catch ( error )
+        {
+            console.error( 'Error fetching flights:', error );
+            throw error;
+        }
     };
 
     // Función para manejar el envío del formulario
@@ -124,14 +126,13 @@ const HomePage = () => {
             // Si el tipo de viaje es ida y vuelta y hay fecha de retorno, añadimos el parámetro
             if ( tipoViaje === 'ida-vuelta' && fechaRetorno )
             {
-                searchParams.append( 'returnDate', fechaRetorno )
+                searchParams.append( 'returnDate', fechaRetorno );
             }
 
             // Buscamos los vuelos
             const flights = await fetchFlights( searchParams );
 
             // Si el tipo de viaje es ida y vuelta, buscamos los vuelos de retorno
-
             if ( tipoViaje === 'ida-vuelta' && fechaRetorno )
             {
                 // Creamos los parámetros de búsqueda para la ida-vuelta
@@ -168,7 +169,7 @@ const HomePage = () => {
             // Si hay un error, mostramos un mensaje de error
             console.error( 'Error al buscar vuelos:', err );
             setError( 'Failed to fetch flights. Please try again later.' );
-            toast.error( 'Error al buscar vuelos, inténtelo de nuevo mas tarde.' );
+            toast.error( 'Error al buscar vuelos, inténtelo de nuevo más tarde.' );
         } finally
         {
             // Finalizamos la carga
@@ -224,10 +225,10 @@ const HomePage = () => {
                     {loading && (
                         <section className='absolute text-center top-56 z-30'>
                             <section className='w-24 h-24 border-8 border-dashed rounded-full animate-spin border-accent-blue mx-auto my-10'></section>
-                            <h2 className='text-zinc-900 dark:text-zinc-400 text-2xl font-bold'>
+                            <h2 className='text-accent-blue dark:text-zinc-400 text-2xl font-bold'>
                                 Loading...
                             </h2>
-                            <p className='text-zinc-600 dark:text-zinc-400'>
+                            <p className='text-accent-blue dark:text-zinc-400'>
                                 Your adventure is about to begin
                             </p>
                         </section>
