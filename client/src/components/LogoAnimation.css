@@ -70,15 +70,20 @@
     }
 }
 
+.typing-cursor {
+    border-right: 0.15em solid white;
+    animation: blink-caret 0.7s step-end infinite;
+}
+
 @keyframes blink-caret {
 
     from,
     to {
-        border-color: transparent
+        border-color: transparent;
     }
 
     50% {
-        border-color: orange;
+        border-color: white;
     }
 }
 
@@ -112,18 +117,16 @@
     animation: blink-caret 0.75s step-end infinite;
 }
 
-.logo-animation-section {
-    background-color: lightblue;
-
-}
-
 @media (min-width: 400px) and (max-width: 1080px) {
     .responsive-h2 {
-        font-size: 2em; /* Double the size */
+        font-size: 2em;
+        /* Double the size */
     }
 
     .responsive-logo {
-        width: 120px; /* Double the size */
-        height: 120px; /* Double the size */
+        width: 120px;
+        /* Double the size */
+        height: 120px;
+        /* Double the size */
     }
 }

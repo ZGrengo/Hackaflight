@@ -13,7 +13,7 @@ const Footer = () => {
         <>
             <footer className='bg-[#083059] text-white py-8 px-4 mt-auto'>
                 <div className='container mx-auto'>
-                    <div className='grid grid-cols-1 md:grid-cols-3 gap-8'>
+                    <div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
                         {/* Sección de contacto */}
                         <div className='space-y-4'>
                             <h3 className='font-bold text-xl mb-3'>
@@ -24,12 +24,12 @@ const Footer = () => {
                             </p>
                             <p>Fax: +35 123 456 789</p>
                             <p>Teléfono: +35 123 456 789</p>
-                            <p>Dirección: Calle Falsa 123,Madrid</p>
+                            <p>Dirección: Calle Falsa 123, Madrid</p>
                             <p>País: España</p>
                             <p>CP: 12345</p>
                         </div>
 
-                        {/* Sección de ayuda al cliente*/}
+                        {/* Sección de ayuda al cliente */}
                         <div className='space-y-4'>
                             <h3 className='font-bold text-xl mb-3'>
                                 Sobre nosotros
@@ -61,15 +61,17 @@ const Footer = () => {
                                 </li>
                             </ul>
                         </div>
+                    </div>
 
-                        {/* Sección de información y redes sociales */}
-                        <div className='space-y-8'>
-                            <div>
+                    {/* Sección de información y redes sociales */}
+                    <div className='mt-8'>
+                        <div className='grid grid-cols-1 md:grid-cols-3 gap-8'>
+                            <div className='space-y-2'>
                                 <ul className='space-y-2'>
                                     <li>
                                         <Link
                                             to='/cookies'
-                                            className='hover:text-[#179DD9] transition-colors '
+                                            className='hover:text-[#179DD9] transition-colors'
                                         >
                                             Configuración de las cookies
                                         </Link>
@@ -93,7 +95,7 @@ const Footer = () => {
                                 </ul>
                             </div>
 
-                            <div>
+                            <div className='flex justify-center'>
                                 <ul className='flex space-x-4'>
                                     <li>
                                         <Link
@@ -103,7 +105,7 @@ const Footer = () => {
                                             <img
                                                 src='/public/facebook.png'
                                                 alt='Facebook'
-                                                className='w-10 h-10 hover:opacity-80 transition-opacity rounded '
+                                                className='w-10 h-10 hover:opacity-80 transition-opacity rounded'
                                             />
                                         </Link>
                                     </li>
@@ -129,7 +131,7 @@ const Footer = () => {
                                             <img
                                                 src='/public/xlogo.png'
                                                 alt='X'
-                                                className='w-10 h-10 hover:opacity-80 transition-opacity '
+                                                className='w-10 h-10 hover:opacity-80 transition-opacity'
                                             />
                                         </Link>
                                     </li>
@@ -137,7 +139,8 @@ const Footer = () => {
                             </div>
                         </div>
                     </div>
-                    {/* Copyright section*/}
+
+                    {/* Copyright section */}
                     <div className='border-t border-gray-600 pt-4 mt-4'>
                         <p className='text-sm text-gray-300 text-center'>
                             Copyright © 2025 HackaFligth Company S.L. Todos los

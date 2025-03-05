@@ -51,6 +51,7 @@ const SearchForm = ( {
                                 console.log( `Origen changed: ${ e.target.value }` );
                                 setOrigen( e.target.value );
                             }}
+                            placeholder='JFK'
                             className='text-slate-900  w-1/2 text-center border-2 border-medium-blue rounded-md' />
                     </section>
                     <section className='flex flex-col items-center'>
@@ -62,7 +63,8 @@ const SearchForm = ( {
                                 console.log( `Destino changed: ${ e.target.value }` );
                                 setDestino( e.target.value );
                             }}
-                            className='text-slate-900  w-1/2 text-center border-2 border-medium-blue rounded-md' />
+                            placeholder='MAD'
+                            d className='text-slate-900  w-1/2 text-center border-2 border-medium-blue rounded-md' />
                     </section>
                     <section className='flex flex-col items-center text-[12px]'>
                         <label>Fecha de Salida:</label>
