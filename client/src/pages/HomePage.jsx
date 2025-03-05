@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import useRatingList from '../hooks/useRatingList';
 import SearchForm from '../components/SearchForm';
 import CarouselImages from '../components/CarouselImages';
@@ -11,8 +12,11 @@ import PaperPlaneAnimation from '../components/PaperPlaneAnimation';
 import { AuthContext } from '../contexts/AuthContext';
 import RatingsSummary from '../components/RatingsSummary';
 
+
+//obtenemos las variables de entorno
 const { VITE_API_URL } = import.meta.env;
 
+// Página de inicio
 const HomePage = () => {
     const [ tipoViaje, setTipoViaje ] = useState( 'ida' );
     const [ fechaSalida, setFechaSalida ] = useState( '' );
@@ -25,12 +29,13 @@ const HomePage = () => {
     const [ loading, setLoading ] = useState( false );
     const [ error, setError ] = useState( null );
 
+    // Hook para navegar entre rutas
     const navigate = useNavigate();
     const { isAuthenticated } = useContext( AuthContext );
     const [ searchParams ] = useSearchParams();
     const { ratings } = useRatingList();
 
-    // Load popular destinations on mount
+    // Hook para cargar las búsqueda populares
     useEffect( () => {
         setPopularDestinations( [
             { origen: 'Madrid', destino: 'Nueva York' },
@@ -39,7 +44,7 @@ const HomePage = () => {
         ] );
     }, [] );
 
-    // Handle search params from URL
+    // Hook para cargar las búsquedas recientes
     useEffect( () => {
         const origin = searchParams.get( 'origin' );
         const destination = searchParams.get( 'destination' );
@@ -48,46 +53,59 @@ const HomePage = () => {
         const returnDate = searchParams.get( 'returnDate' );
         if ( returnDate )
         {
+            // Si hay fecha de retorno, establecemos el tipo de viaje a ida y vuelta
             setTipoViaje( 'ida-vuelta' );
             setFechaRetorno( returnDate.split( 'T' )[ 0 ] );
         }
-    } );
+        // Establecemos los valores de los campos del formulario
+        setOrigen( origin || '' );
+        setDestino( destination || '' );
+        setFechaSalida( departureDate || '' );
+        setPasajeros( adults ? parseInt( adults, 10 ) : 1 );
+    }, [ searchParams ] );
+
+    // Hook para cargar las búsquedas recientes
+    const loadRecentSearches = () => {
+        const searches = JSON.parse( localStorage.getItem( 'recentSearches' ) || '[]' );
+        setRecentSearches( searches );
+    }
+    // Hook para cargar las búsquedas recientes si se esta autenticado
     useEffect( () => {
         if ( isAuthenticated )
         {
             loadRecentSearches();
         }
-    }, [ searchParams ] );
+    }, [ isAuthenticated ] );
 
-    // Save recent searches to localStorage
+    // Función para guardar la búsqueda reciente
     const saveRecentSearch = ( search ) => {
-        const searches = JSON.parse(
-            localStorage.getItem( 'recentSearches' ) || '[]',
-        );
+        const searches = JSON.parse( localStorage.getItem( 'recentSearches' ) || '[]' );
         searches.unshift( search );
         if ( searches.length > 5 ) searches.pop();
         localStorage.setItem( 'recentSearches', JSON.stringify( searches ) );
         setRecentSearches( searches );
     };
 
-    // Fetch flights from the API
+    // Función para buscar vuelos
     const fetchFlights = async ( params ) => {
-        const res = await fetch(
-            `${ VITE_API_URL }/api/flights/search?${ params.toString() }`,
-            {
-                method: 'GET',
-                headers: { 'Content-Type': 'application/json' },
-            },
-        );
+        const res = await fetch( `${ VITE_API_URL }/api/flights/search?${ params.toString() }`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+        } );
 
         if ( !res.ok ) throw new Error( 'Network response was not ok' );
         const body = await res.json();
         if ( body.status === 'error' ) throw new Error( body.message );
+        console.log( 'Flights:', body );
+        console.log( 'Flights:', body.status );
+        console.log( 'Flights:', body.message );
+        console.log( 'Flights:', body.data );
+        console.log( 'response', res );
 
         return Array.isArray( body ) ? body : [];
     };
 
-    // Handle form submission
+    // Función para manejar el envío del formulario
     const handleSubmit = async ( e ) => {
         e.preventDefault();
         setLoading( true );
@@ -95,6 +113,7 @@ const HomePage = () => {
 
         try
         {
+            // Creamos los parámetros de búsqueda
             const searchParams = new URLSearchParams( {
                 origin: origen,
                 destination: destino,
@@ -102,31 +121,39 @@ const HomePage = () => {
                 adults: pasajeros,
             } );
 
+            // Si el tipo de viaje es ida y vuelta y hay fecha de retorno, añadimos el parámetro
             if ( tipoViaje === 'ida-vuelta' && fechaRetorno )
             {
-                searchParams.append( 'returnDate', fechaRetorno );
+                searchParams.append( 'returnDate', fechaRetorno )
             }
 
+            // Buscamos los vuelos
             const flights = await fetchFlights( searchParams );
+
+            // Si el tipo de viaje es ida y vuelta, buscamos los vuelos de retorno
 
             if ( tipoViaje === 'ida-vuelta' && fechaRetorno )
             {
+                // Creamos los parámetros de búsqueda para la ida-vuelta
                 const searchParamsVuelta = new URLSearchParams( {
                     origin: destino,
                     destination: origen,
                     departureDate: fechaRetorno,
+                    returnDate: fechaSalida,
                     adults: pasajeros,
                 } );
 
+                // Buscamos los vuelos de ida-vuelta
                 const returnFlights = await fetchFlights( searchParamsVuelta );
                 flights.push(
                     ...returnFlights.map( ( flight ) => ( {
                         ...flight,
                         isReturn: true,
-                    } ) ),
+                    } ) )
                 );
             }
 
+            // Navegamos a la página de resultados de búsqueda
             navigate( '/search-results', { state: { flights } } );
             saveRecentSearch( {
                 origen,
@@ -138,15 +165,18 @@ const HomePage = () => {
             } );
         } catch ( err )
         {
+            // Si hay un error, mostramos un mensaje de error
             console.error( 'Error al buscar vuelos:', err );
             setError( 'Failed to fetch flights. Please try again later.' );
+            toast.error( 'Error al buscar vuelos, inténtelo de nuevo mas tarde.' );
         } finally
         {
+            // Finalizamos la carga
             setLoading( false );
         }
     };
 
-    // Repeat a recent search
+    // Función para repetir una búsqueda reciente
     const handleRepeatSearch = ( search ) => {
         setOrigen( search.origen );
         setDestino( search.destino );
@@ -154,16 +184,17 @@ const HomePage = () => {
         setFechaRetorno( search.fechaRetorno );
         setPasajeros( search.pasajeros );
         setTipoViaje( search.tipoViaje );
-        handleSubmit();
+        handleSubmit( new Event( 'submit', { bubbles: true, cancelable: true } ) );
     };
 
-    // Save a search to favorites
+    // Función para guardar una búsqueda como favorita
     const handleSaveFavorite = ( search ) => {
         const favorites = JSON.parse( localStorage.getItem( 'favorites' ) || '[]' );
         favorites.unshift( search );
         localStorage.setItem( 'favorites', JSON.stringify( favorites ) );
     };
-    console.log( 'HomePage ratings:', ratings );
+
+    // Renderizamos el componente
     return (
         <>
             <section>
@@ -173,7 +204,7 @@ const HomePage = () => {
             <Header />
             <section className='relative w-full h-[45vh] inset-0 items-center justify-center'>
                 <CarouselImages />
-                <section className='absolute flex items-center justify-center bottom-60  z-20'>
+                <section className='absolute flex items-center justify-center bottom-60 z-20'>
                     <SearchForm
                         tipoViaje={tipoViaje}
                         fechaSalida={fechaSalida}
@@ -189,9 +220,10 @@ const HomePage = () => {
                         setPasajeros={setPasajeros}
                         handleSubmit={handleSubmit}
                     />
+                    {/* Mostramos un mensaje de carga si está cargando */}
                     {loading && (
-                        <section className=' absolute text-center top-56 z-30'>
-                            <section className='w-24 h-24 border-solid border-8 border-dashed rounded-full animate-spin border-accent-blue mx-auto my-10'></section>
+                        <section className='absolute text-center top-56 z-30'>
+                            <section className='w-24 h-24 border-8 border-dashed rounded-full animate-spin border-accent-blue mx-auto my-10'></section>
                             <h2 className='text-zinc-900 dark:text-zinc-400 text-2xl font-bold'>
                                 Loading...
                             </h2>
@@ -201,8 +233,10 @@ const HomePage = () => {
                         </section>
                     )}
                 </section>
+                {/* Mostramos un mensaje de error si hay uno */}
+                {error && <p className='text-red-500 text-center'>{error}</p>}
             </section>
-            {error && <p className='text-red-500 text-center'>{error}</p>}
+            {/* Mostramos las búsquedas recientes si está autenticado */}
             {isAuthenticated && (
                 <RecentSearches
                     recentSearches={recentSearches}
@@ -210,6 +244,7 @@ const HomePage = () => {
                     onSaveFavorite={handleSaveFavorite}
                 />
             )}
+            {/* Mostramos los destinos populares y el resumen de calificaciones */}
             <section className='mb-5'>
                 <PopularDestinations popularDestinations={popularDestinations} />
                 <RatingsSummary ratings={ratings} />

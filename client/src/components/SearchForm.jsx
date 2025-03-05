@@ -64,7 +64,7 @@ const SearchForm = ( {
                                 setDestino( e.target.value );
                             }}
                             placeholder='MAD'
-                            d className='text-slate-900  w-1/2 text-center border-2 border-medium-blue rounded-md' />
+                            className='text-slate-900  w-1/2 text-center border-2 border-medium-blue rounded-md' />
                     </section>
                     <section className='flex flex-col items-center text-[12px]'>
                         <label>Fecha de Salida:</label>

@@ -1,6 +1,6 @@
-import PropTypes from 'prop-types';
 import { useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import toast from 'react-hot-toast';
 import FlightCard from '../components/FlightCard';
 import FlightFilters from '../components/FlightFilters';
 
@@ -8,8 +8,7 @@ const { VITE_API_URL } = import.meta.env;
 
 const SearchResultsPage = () => {
     const location = useLocation();
-    const [ initialFlights, setInitialFlights ] = useState( [] ); // Almacena los vuelos originales
-    const [ flights, setFlights ] = useState( [] ); // Almacena los vuelos filtrados
+    const [ flights, setFlights ] = useState( [] );
     const [ loading, setLoading ] = useState( false );
     const [ error, setError ] = useState( null );
 
@@ -17,41 +16,14 @@ const SearchResultsPage = () => {
     useEffect( () => {
         if ( location.state?.flights )
         {
-            setInitialFlights( location.state.flights );
             setFlights( location.state.flights );
         }
     }, [ location.state?.flights ] );
 
-    // Función para aplicar filtros localmente
-    const applyFiltersLocally = ( filters ) => {
-        let filteredFlights = [ ...initialFlights ];
-
-        // Aplicar filtros
-        if ( filters.airline )
-        {
-            filteredFlights = filteredFlights.filter( ( flight ) =>
-                flight.validatingAirlineCodes.includes( filters.airline )
-            );
-        }
-        if ( filters.maxPrice )
-        {
-            filteredFlights = filteredFlights.filter(
-                ( flight ) => parseFloat( flight.price.total ) <= parseFloat( filters.maxPrice )
-            );
-        }
-        if ( filters.duration )
-        {
-            filteredFlights = filteredFlights.filter( ( flight ) =>
-                flight.itineraries.some( ( itinerary ) => itinerary.duration <= filters.duration )
-            );
-        }
-
-        // Actualizar el estado con los vuelos filtrados
-        setFlights( filteredFlights );
-    };
-
     // Manejar cambios en los filtros
     const handleFilterChange = async ( filters ) => {
+        setLoading( true );
+        setError( null );
         try
         {
             console.log( "Filters applied:", filters );
@@ -78,6 +50,7 @@ const SearchResultsPage = () => {
             console.log( 'Response:', res );
 
             // Manejar la respuesta de la API
+            if ( res.status === 400 ) throw new Error( 'El filtro no es aplicable' );
             if ( !res.ok ) throw new Error( 'Network response was not ok' );
             const body = await res.json();
 
@@ -99,14 +72,199 @@ const SearchResultsPage = () => {
             console.log( 'Error al filtrar vuelos:', err );
             console.log( 'Error message:', err.message );
             console.log( 'Error stack:', err.stack );
+            setError( err.message );
+            toast.error( err.message );
+        } finally
+        {
+            setLoading( false );
         }
     };
 
     // Renderizar resultados
+    if ( flights.length === 0 )
+    {
+        return (
+            <section>
+                <FlightFilters onFilterChange={handleFilterChange} />
+                <h2>Resultados de la Búsqueda</h2>
+                {loading && <p>Cargando...</p>}
+                {error && <p>Error: {error}</p>}
+                <section className="flight-cards-container">
+                    <FlightCard
+                        flight={{
+                            id: '1',
+                            price: 100,
+                            currency: 'USD',
+                            itineraries: [
+                                {
+                                    id: '1',
+                                    segments: [
+                                        {
+                                            id: '1',
+                                            origin: 'MEX',
+                                            destination: 'CUN',
+                                            departureTime: '2022-12-01T08:00:00',
+                                            arrivalTime: '2022-12-01T09:00:00',
+                                            duration: 60,
+                                        },
+                                    ],
+                                },
+                            ],
+                        }}
+                    />
+                    <FlightCard
+                        flight={{
+                            id: '2',
+                            price: 200,
+                            currency: 'USD',
+                            itineraries: [
+                                {
+                                    id: '2',
+                                    segments: [
+                                        {
+                                            id: '2',
+                                            origin: 'CUN',
+                                            destination: 'MEX',
+                                            departureTime: '2022-12-01T10:00:00',
+                                            arrivalTime: '2022-12-01T11:00:00',
+                                            duration: 60,
+                                        },
+                                    ],
+                                },
+                            ],
+                        }}
+                    />
+                    <FlightCard
+                        flight={{
+                            id: '3',
+                            price: 300,
+                            currency: 'USD',
+                            itineraries: [
+                                {
+                                    id: '3',
+                                    segments: [
+                                        {
+                                            id: '3',
+                                            origin: 'MEX',
+                                            destination: 'LAX',
+                                            departureTime: '2022-12-01T12:00:00',
+                                            arrivalTime: '2022-12-01T15:00:00',
+                                            duration: 180,
+                                        },
+                                        {
+                                            id: '4',
+                                            origin: 'LAX',
+                                            destination: 'SFO',
+                                            departureTime: '2022-12-01T17:00:00',
+                                            arrivalTime: '2022-12-01T18:30:00',
+                                            duration: 90,
+                                        },
+                                    ],
+                                },
+                            ],
+                        }}
+                    />
+                    <FlightCard
+                        flight={{
+                            id: '4',
+                            price: 400,
+                            currency: 'USD',
+                            itineraries: [
+                                {
+                                    id: '4',
+                                    segments: [
+                                        {
+                                            id: '5',
+                                            origin: 'CUN',
+                                            destination: 'JFK',
+                                            departureTime: '2022-12-01T09:00:00',
+                                            arrivalTime: '2022-12-01T13:00:00',
+                                            duration: 240,
+                                        },
+                                        {
+                                            id: '6',
+                                            origin: 'JFK',
+                                            destination: 'LHR',
+                                            departureTime: '2022-12-01T15:00:00',
+                                            arrivalTime: '2022-12-02T05:00:00',
+                                            duration: 420,
+                                        },
+                                    ],
+                                },
+                            ],
+                        }}
+                    />
+                    <FlightCard
+                        flight={{
+                            id: '5',
+                            price: 500,
+                            currency: 'USD',
+                            itineraries: [
+                                {
+                                    id: '5',
+                                    segments: [
+                                        {
+                                            id: '7',
+                                            origin: 'LAX',
+                                            destination: 'NRT',
+                                            departureTime: '2022-12-01T08:00:00',
+                                            arrivalTime: '2022-12-02T12:00:00',
+                                            duration: 720,
+                                        },
+                                        {
+                                            id: '8',
+                                            origin: 'NRT',
+                                            destination: 'SIN',
+                                            departureTime: '2022-12-02T14:00:00',
+                                            arrivalTime: '2022-12-02T20:00:00',
+                                            duration: 360,
+                                        },
+                                    ],
+                                },
+                            ],
+                        }}
+                    />
+                    <FlightCard
+                        flight={{
+                            id: '6',
+                            price: 600,
+                            currency: 'USD',
+                            itineraries: [
+                                {
+                                    id: '6',
+                                    segments: [
+                                        {
+                                            id: '9',
+                                            origin: 'SFO',
+                                            destination: 'ICN',
+                                            departureTime: '2022-12-01T10:00:00',
+                                            arrivalTime: '2022-12-02T15:00:00',
+                                            duration: 780,
+                                        },
+                                        {
+                                            id: '10',
+                                            origin: 'ICN',
+                                            destination: 'HND',
+                                            departureTime: '2022-12-02T17:00:00',
+                                            arrivalTime: '2022-12-02T19:30:00',
+                                            duration: 150,
+                                        },
+                                    ],
+                                },
+                            ],
+                        }}
+                    />
+                </section>
+            </section>
+        );
+    }
+
     return (
         <section>
             <FlightFilters onFilterChange={handleFilterChange} />
             <h2>Resultados de la Búsqueda</h2>
+            {loading && <p>Cargando...</p>}
+            {error && <p>Error: {error}</p>}
             <section className="flight-cards-container">
                 {flights.map( ( flight, index ) => (
                     <FlightCard key={`${ flight.id }-${ index }`} flight={flight} />
