@@ -6,14 +6,16 @@ import { FaPlane, FaHandshake, FaLightbulb, FaHeart } from 'react-icons/fa';
 const AboutUs = () => {
     return (
         <>
-            {/* Incluimos el encabezado común de la aplicación */}
             <Header />
-            {/* Contenedor principal con fondo azul claro y centrado vertical/horizontal */}
+            {/* Contenedor principal */}
             <main className='bg-[#E5F7FF] flex flex-col items-center justify-center min-h-screen p-6'>
                 <div className='w-full max-w-4xl mx-auto'>
                     <section className='bg-[#083059] text-white p-12 rounded-lg shadow-lg mb-8 transform hover:scale-[1.02] transition-transform'>
                         <h1 className='text-4xl font-bold text-center mb-6'>
-                            Sobre Nosotros
+                            <img
+                                src='/public/logo.png'
+                                alt='logo-hackaflight'
+                            />
                         </h1>
                         <p className='text-xl text-center max-w-2xl mx-auto opacity-90'>
                             Tu compañero de confianza para encontrar los mejores
