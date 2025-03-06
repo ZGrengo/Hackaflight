@@ -212,11 +212,11 @@ const HomePage = () => {
         <>
             <section>
                 <LogoAnimation />
-                <PaperPlaneAnimation />
+                
             </section>
             <Header />
             <section className='relative w-full h-[45vh] inset-0 items-center justify-center'>
-                <CarouselImages />
+               
                 <section className='absolute flex items-center justify-center bottom-60 z-20'>
                     <SearchForm
                         tipoViaje={tipoViaje}
