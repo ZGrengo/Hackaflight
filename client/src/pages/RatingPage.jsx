@@ -91,7 +91,7 @@ const RatingPage = () => {
     return (
         <>
             <Header />
-            <main className='bg-[#083059] flex flex-col items-center justify-center min-h-screen p-6'>
+            <main className='bg-[#E5F7FF] flex flex-col items-center justify-center min-h-screen p-6'>
                 <section className='bg-white p-8 rounded-lg shadow-md w-full max-w-fit mx-auto'>
                     <h2 className='text-2xl font-bold text-[#083059] text-center mb-6'>
                         Déjanos un comentario!

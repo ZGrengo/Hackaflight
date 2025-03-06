@@ -40,7 +40,7 @@ const Footer = () => {
                                         to='/about'
                                         className='hover:text-[#179DD9] transition-colors'
                                     >
-                                        HackaFlight
+                                        Acerca de HackaFlight
                                     </Link>
                                 </li>
                                 <li>
