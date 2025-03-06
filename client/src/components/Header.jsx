@@ -36,6 +36,15 @@ const Header = () => {
                                     className='w-8 h-8 fill-current text-light-blue transition-tranform duration-200 hover:text-medium-blue hover:scale-110'
                                 />
                             </Link>
+
+                            <Link to='/admin/users'>
+                                <img
+                                    src='/public/admin.png'
+                                    alt='AdminUtils'
+                                    className='w-8 h-8 fill-current text-light-blue transition-tranform duration-200 hover:text-medium-blue hover:scale-110'
+                                />
+                            </Link>
+                            
                             <button onClick={authLogoutState}>
                                 <img
                                     src='/public/logout.svg'
@@ -68,6 +77,9 @@ const Header = () => {
                                     className='w-8 h-8 fill-current text-light-blue transition-tranform duration-200 hover:text-medium-blue hover:scale-110'
                                 />
                             </Link>
+
+                         
+                            
                         </>
                     )}
                 </nav>
