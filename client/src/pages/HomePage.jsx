@@ -3,12 +3,12 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import useRatingList from '../hooks/useRatingList';
 import SearchForm from '../components/SearchForm';
-import CarouselImages from '../components/CarouselImages';
+//import CarouselImages from '../components/CarouselImages';
 import RecentSearches from '../components/RecentSearches';
 import PopularDestinations from '../components/PopularDestinations';
 import Header from '../components/Header';
 import LogoAnimation from '../components/LogoAnimation';
-import PaperPlaneAnimation from '../components/PaperPlaneAnimation';
+//import PaperPlaneAnimation from '../components/PaperPlaneAnimation';
 import { AuthContext } from '../contexts/AuthContext';
 import RatingsSummary from '../components/RatingsSummary';
 
@@ -27,6 +27,7 @@ const HomePage = () => {
     const [ recentSearches, setRecentSearches ] = useState( [] );
     const [ loading, setLoading ] = useState( false );
     const [ error, setError ] = useState( null );
+    const [ isAnimationComplete, setIsAnimationComplete ] = useState(false);
 
     // Hook para navegar entre rutas
     const navigate = useNavigate();
@@ -207,15 +208,24 @@ const HomePage = () => {
         localStorage.setItem( 'favorites', JSON.stringify( favorites ) );
     };
 
+     // Usamos useEffect para controlar cuando se completa la animación
+     useEffect(() => {
+        const timer = setTimeout(() => {
+            setIsAnimationComplete(true); // Cuando la animación termine, mostramos el Header
+        }, 8200); // Ajusta el tiempo según la duración de tu animación
+
+        return () => clearTimeout(timer); // Limpiar el temporizador cuando el componente se desmonte
+    }, []);
+
     // Renderizamos el componente
     return (
         <>
-            <section>
-                <LogoAnimation />
-                
+             <section>
+                {!isAnimationComplete && <LogoAnimation />} {/* Mostrar LogoAnimation solo mientras no esté completo */}
             </section>
-            <Header />
-            <section className='relative w-full h-[45vh] inset-0 items-center justify-center'>
+
+            {isAnimationComplete && <Header />}
+            <section className='relative w-full h-[45vh] inset-0 items-center justify-center flex flex-col'>
                
                 <section className='absolute flex items-center justify-center bottom-60 z-20'>
                     <SearchForm
