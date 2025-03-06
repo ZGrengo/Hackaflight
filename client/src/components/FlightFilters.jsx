@@ -28,43 +28,69 @@ const FlightFilters = ( { onFilterChange } ) => {
     }, [ filters ] );
 
     return (
-        <section>
-            <section>
-                <label>Paradas:</label>
-                <select name="stops" value={filters.stops} onChange={handleInputChange}>
-                    <option value="">Cualquiera</option>
-                    <option value="0">Directo</option>
-                    <option value="1">1 Parada</option>
-                    <option value="2">2 Paradas</option>
-                </select>
-            </section>
-            <section>
-                <label>Precio Mínimo:</label>
-                <input
-                    type="number"
-                    name="minPrice"
-                    value={filters.minPrice}
-                    onChange={handleInputChange}
-                />
-            </section>
-            <section>
-                <label>Precio Máximo:</label>
-                <input
-                    type="number"
-                    name="maxPrice"
-                    value={filters.maxPrice}
-                    onChange={handleInputChange}
-                />
-            </section>
-            <section>
-                <label>Ordenar por:</label>
-                <select name="sortByPrice" value={filters.sortByPrice} onChange={handleInputChange}>
-                    <option value="">Seleccionar</option>
-                    <option value="true">Precio Ascendente</option>
-                    <option value="false">Precio Descendente</option>
-                </select>
-            </section>
-            <button onClick={applyFilters}>Aplicar Filtros</button>
+        <section className="flex justify-center w-full py-6">
+            <div className="w-full max-w-lg mx-auto p-4 bg-white rounded-lg shadow-md space-y-4">
+                <h2 className="text-xl sm:text-2xl font-semibold text-center text-dark-blue mb-4">
+                    Filtros de Búsqueda
+                </h2>
+                <div className="space-y-3">
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">Paradas:</label>
+                        <select
+                            name="stops"
+                            value={filters.stops}
+                            onChange={handleInputChange}
+                            className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-medium-blue focus:border-medium-blue text-sm"
+                        >
+                            <option value="">Cualquiera</option>
+                            <option value="0">Directo</option>
+                            <option value="1">1 Parada</option>
+                            <option value="2">2 Paradas</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">Precio Mínimo:</label>
+                        <input
+                            type="number"
+                            name="minPrice"
+                            value={filters.minPrice}
+                            onChange={handleInputChange}
+                            className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-medium-blue focus:border-medium-blue text-sm"
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">Precio Máximo:</label>
+                        <input
+                            type="number"
+                            name="maxPrice"
+                            value={filters.maxPrice}
+                            onChange={handleInputChange}
+                            className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-medium-blue focus:border-medium-blue text-sm"
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">Ordenar por:</label>
+                        <select
+                            name="sortByPrice"
+                            value={filters.sortByPrice}
+                            onChange={handleInputChange}
+                            className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-medium-blue focus:border-medium-blue text-sm"
+                        >
+                            <option value="">Seleccionar</option>
+                            <option value="true">Precio Ascendente</option>
+                            <option value="false">Precio Descendente</option>
+                        </select>
+                    </div>
+                    <div className="text-center">
+                        <button
+                            onClick={applyFilters}
+                            className="bg-medium-blue text-white px-6 py-2 rounded-md hover:bg-dark-blue transition-all text-sm sm:text-base mt-4"
+                        >
+                            Aplicar Filtros
+                        </button>
+                    </div>
+                </div>
+            </div>
         </section>
     );
 };
