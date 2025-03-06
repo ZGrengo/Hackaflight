@@ -220,6 +220,7 @@ const HomePage = () => {
     // Renderizamos el componente
     return (
         <>
+        <main className='bg-light-blue'>
              <section>
                 {!isAnimationComplete && <LogoAnimation />} {/* Mostrar LogoAnimation solo mientras no esté completo */}
             </section>
@@ -273,6 +274,7 @@ const HomePage = () => {
                 <PopularDestinations popularDestinations={popularDestinations} />
                 <RatingsSummary ratings={ratings} />
             </section>
+            </main>
         </>
     );
 };
