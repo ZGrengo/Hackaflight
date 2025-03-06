@@ -21,6 +21,16 @@ const Header = () => {
                 <nav className='flex items-center space-x-3'>
                     {authUser ? (
                         <>
+
+
+                            <Link to='/favorites'>
+                                <img
+                                    src='/public/corazon.png '
+                                    alt='favorites'
+                                    className='w-8 h-8 fill-current text-light-blue transition-tranform duration-200 hover:text-medium-blue hover:scale-110'
+                                />
+                            </Link>
+
                             <Link to='/users/profile'>
                                 <img
                                     src='/public/profile.svg'
@@ -44,7 +54,7 @@ const Header = () => {
                                     className='w-8 h-8 fill-current text-light-blue transition-tranform duration-200 hover:text-medium-blue hover:scale-110'
                                 />
                             </Link>
-                            
+
                             <button onClick={authLogoutState}>
                                 <img
                                     src='/public/logout.svg'
