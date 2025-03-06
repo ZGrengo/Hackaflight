@@ -21,6 +21,7 @@ import FavoriteDetailsEditPage from './pages/FavoriteDetailsEditPage';
 import AboutUs from './pages/AboutUs';
 import SendRecoverPassPage from './pages/SendRecoveryPassPage';
 import ResetPassword from './pages/ResetPassword';
+import TeamPage from './pages/TeamPage';
 
 const App = () => {
     return (
