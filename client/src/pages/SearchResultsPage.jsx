@@ -13,7 +13,7 @@ const SearchResultsPage = () => {
     const [isSaved, setIsSaved] = useState(false);
     const [title, setTitle] = useState('');
     const { searchParams = {} } = location.state || {};
-    const [flights, setFlights] = useState(location.state?.flights || []);
+    const [flights, setFlights] = useState(location.state?.flights ?? []);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const { authToken } = useAuthContext();
@@ -85,206 +85,56 @@ const SearchResultsPage = () => {
         }
     };
 
-    // Renderizar resultados
-    if (flights.length === 0) {
-        return (
-            <>
-                <Header />
-                <section>
-                    <FlightFilters onFilterChange={handleFilterChange} />
-                    <h2>Resultados de la Búsqueda</h2>
-                    {loading && <p>Cargando...</p>}
-                    {error && <p>Error: {error}</p>}
-                    <section className='flight-cards-container'>
-                        <FlightCard
-                            flight={{
-                                id: '1',
-                                price: 100,
-                                currency: 'USD',
-                                itineraries: [
-                                    {
-                                        id: '1',
-                                        segments: [
-                                            {
-                                                id: '1',
-                                                origin: 'MEX',
-                                                destination: 'CUN',
-                                                departureTime:
-                                                    '2022-12-01T08:00:00',
-                                                arrivalTime:
-                                                    '2022-12-01T09:00:00',
-                                                duration: 60,
-                                            },
-                                        ],
-                                    },
-                                ],
-                            }}
-                        />
-                        <FlightCard
-                            flight={{
-                                id: '2',
-                                price: 200,
-                                currency: 'USD',
-                                itineraries: [
-                                    {
-                                        id: '2',
-                                        segments: [
-                                            {
-                                                id: '2',
-                                                origin: 'CUN',
-                                                destination: 'MEX',
-                                                departureTime:
-                                                    '2022-12-01T10:00:00',
-                                                arrivalTime:
-                                                    '2022-12-01T11:00:00',
-                                                duration: 60,
-                                            },
-                                        ],
-                                    },
-                                ],
-                            }}
-                        />
-                        <FlightCard
-                            flight={{
-                                id: '3',
-                                price: 300,
-                                currency: 'USD',
-                                itineraries: [
-                                    {
-                                        id: '3',
-                                        segments: [
-                                            {
-                                                id: '3',
-                                                origin: 'MEX',
-                                                destination: 'LAX',
-                                                departureTime:
-                                                    '2022-12-01T12:00:00',
-                                                arrivalTime:
-                                                    '2022-12-01T15:00:00',
-                                                duration: 180,
-                                            },
-                                            {
-                                                id: '4',
-                                                origin: 'LAX',
-                                                destination: 'SFO',
-                                                departureTime:
-                                                    '2022-12-01T17:00:00',
-                                                arrivalTime:
-                                                    '2022-12-01T18:30:00',
-                                                duration: 90,
-                                            },
-                                        ],
-                                    },
-                                ],
-                            }}
-                        />
-                        <FlightCard
-                            flight={{
-                                id: '4',
-                                price: 400,
-                                currency: 'USD',
-                                itineraries: [
-                                    {
-                                        id: '4',
-                                        segments: [
-                                            {
-                                                id: '5',
-                                                origin: 'CUN',
-                                                destination: 'JFK',
-                                                departureTime:
-                                                    '2022-12-01T09:00:00',
-                                                arrivalTime:
-                                                    '2022-12-01T13:00:00',
-                                                duration: 240,
-                                            },
-                                            {
-                                                id: '6',
-                                                origin: 'JFK',
-                                                destination: 'LHR',
-                                                departureTime:
-                                                    '2022-12-01T15:00:00',
-                                                arrivalTime:
-                                                    '2022-12-02T05:00:00',
-                                                duration: 420,
-                                            },
-                                        ],
-                                    },
-                                ],
-                            }}
-                        />
-                        <FlightCard
-                            flight={{
-                                id: '5',
-                                price: 500,
-                                currency: 'USD',
-                                itineraries: [
-                                    {
-                                        id: '5',
-                                        segments: [
-                                            {
-                                                id: '7',
-                                                origin: 'LAX',
-                                                destination: 'NRT',
-                                                departureTime:
-                                                    '2022-12-01T08:00:00',
-                                                arrivalTime:
-                                                    '2022-12-02T12:00:00',
-                                                duration: 720,
-                                            },
-                                            {
-                                                id: '8',
-                                                origin: 'NRT',
-                                                destination: 'SIN',
-                                                departureTime:
-                                                    '2022-12-02T14:00:00',
-                                                arrivalTime:
-                                                    '2022-12-02T20:00:00',
-                                                duration: 360,
-                                            },
-                                        ],
-                                    },
-                                ],
-                            }}
-                        />
-                        <FlightCard
-                            flight={{
-                                id: '6',
-                                price: 600,
-                                currency: 'USD',
-                                itineraries: [
-                                    {
-                                        id: '6',
-                                        segments: [
-                                            {
-                                                id: '9',
-                                                origin: 'SFO',
-                                                destination: 'ICN',
-                                                departureTime:
-                                                    '2022-12-01T10:00:00',
-                                                arrivalTime:
-                                                    '2022-12-02T15:00:00',
-                                                duration: 780,
-                                            },
-                                            {
-                                                id: '10',
-                                                origin: 'ICN',
-                                                destination: 'HND',
-                                                departureTime:
-                                                    '2022-12-02T17:00:00',
-                                                arrivalTime:
-                                                    '2022-12-02T19:30:00',
-                                                duration: 150,
-                                            },
-                                        ],
-                                    },
-                                ],
-                            }}
-                        />
-                    </section>
-                </section>
-            </>
-        );
-    }
+    // Renderizar resultados por defecto en caso de caida de AMADEUS
+    useEffect(() => {
+        if (!location.state?.flights || location.state.flights.length === 0) {
+            console.warn("No flights received from API. Using default flights.");
+            setFlights([
+                {
+                    id: '1',
+                    price: 100,
+                    currency: 'USD',
+                    itineraries: [
+                        {
+                            id: '1',
+                            segments: [
+                                {
+                                    id: '1',
+                                    origin: 'MEX',
+                                    destination: 'CUN',
+                                    departureTime: '2022-12-01T08:00:00',
+                                    arrivalTime: '2022-12-01T09:00:00',
+                                    duration: 60,
+                                },
+                            ],
+                        },
+                    ],
+                },
+                {
+                    id: '2',
+                    price: 200,
+                    currency: 'USD',
+                    itineraries: [
+                        {
+                            id: '2',
+                            segments: [
+                                {
+                                    id: '2',
+                                    origin: 'CUN',
+                                    destination: 'MEX',
+                                    departureTime: '2022-12-01T10:00:00',
+                                    arrivalTime: '2022-12-01T11:00:00',
+                                    duration: 60,
+                                },
+                            ],
+                        },
+                    ],
+                },
+            ]);
+        } else {
+            setFlights(location.state.flights);
+        }
+    }, [location.state?.flights]);
 
     const handleSave = async () => {
         try {
@@ -323,22 +173,33 @@ const SearchResultsPage = () => {
             <Header />
             <section>
                 <FlightFilters onFilterChange={handleFilterChange} />
-                {authToken && (
-                    <>
-                        <input
-                            type='text'
-                            placeholder='Titulo de la búsqueda'
-                            value={title}
-                            onChange={(e) => setTitle(e.target.value)}
-                            name='title'
-                        />
-                        <button onClick={handleSave} disabled={isSaved}>
-                            {isSaved ? 'Guardado' : 'Guardar Búsqueda'}
-                        </button>
-                    </>
-                )}
-                <section>
-                    <h2>Resultados de la Búsqueda</h2>
+            {authToken && (
+                <div className="w-full max-w-lg mx-auto mt-4 p-4 sm:p-6">
+    {/* Titulo de la búsqueda */}
+    <input
+        type='text'
+        placeholder='Titulo de la búsqueda'
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        name='title'
+        className="w-full p-3 border border-gray-300 rounded-md text-gray-700 focus:ring-2 focus:ring-medium-blue focus:border-medium-blue mb-4"
+    />
+    {/* Botón de guardar */}
+    <div className="text-center">
+        <button
+            onClick={handleSave}
+            disabled={isSaved}
+            className={`${
+                isSaved ? 'bg-gray-400' : 'bg-medium-blue'
+            } text-white px-6 py-2 rounded-md hover:bg-dark-blue transition-all text-sm sm:text-base`}
+        >
+            {isSaved ? 'Guardado' : 'Guardar Búsqueda'}
+        </button>
+    </div>
+</div>
+            )}
+                <section className="w-full max-w-4xl mx-auto mt-6 p-4 sm:p-6 bg-white rounded-lg shadow-md mb-10">
+                    <h2 className="text-2xl sm:text-3xl font-semibold text-center text-dark-blue mb-4 sm:mb-6">Resultados de la Búsqueda</h2>
                     {loading && <p>Cargando...</p>}
                     {error && <p>Error: {error}</p>}
                     <section className='flight-cards-container'>
