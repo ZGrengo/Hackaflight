@@ -113,9 +113,17 @@ const HomePage = () => {
         setLoading( true );
         setError( null );
 
+        // Validate dates
+        if ( tipoViaje === 'ida-vuelta' && new Date( fechaRetorno ) < new Date( fechaSalida ) )
+        {
+            setError( 'Return date cannot be before departure date.' );
+            setLoading( false );
+            return;
+        }
+
         try
         {
-            // Creamos los parámetros de búsqueda
+            // Create search parameters
             const searchParams = new URLSearchParams( {
                 origin: origen,
                 destination: destino,
@@ -123,28 +131,26 @@ const HomePage = () => {
                 adults: pasajeros,
             } );
 
-            // Si el tipo de viaje es ida y vuelta y hay fecha de retorno, añadimos el parámetro
+            // Add return date if round trip
             if ( tipoViaje === 'ida-vuelta' && fechaRetorno )
             {
                 searchParams.append( 'returnDate', fechaRetorno );
             }
 
-            // Buscamos los vuelos
+            // Fetch flights
             const flights = await fetchFlights( searchParams );
 
-            // Si el tipo de viaje es ida y vuelta, buscamos los vuelos de retorno
+            // Fetch return flights if round trip
             if ( tipoViaje === 'ida-vuelta' && fechaRetorno )
             {
-                // Creamos los parámetros de búsqueda para la ida-vuelta
                 const searchParamsVuelta = new URLSearchParams( {
-                    origin: destino,
-                    destination: origen,
-                    departureDate: fechaRetorno,
-                    returnDate: fechaSalida,
+                    origin: origen,
+                    destination: destino,
+                    departureDate: fechaSalida,
+                    returnDate: fechaRetorno,
                     adults: pasajeros,
                 } );
 
-                // Buscamos los vuelos de ida-vuelta
                 const returnFlights = await fetchFlights( searchParamsVuelta );
                 flights.push(
                     ...returnFlights.map( ( flight ) => ( {
@@ -154,7 +160,7 @@ const HomePage = () => {
                 );
             }
 
-            // Navegamos a la página de resultados de búsqueda
+            // Navigate to search results
             navigate( '/search-results', { state: { flights } } );
             saveRecentSearch( {
                 origen,
@@ -166,16 +172,15 @@ const HomePage = () => {
             } );
         } catch ( err )
         {
-            // Si hay un error, mostramos un mensaje de error
             console.error( 'Error al buscar vuelos:', err );
             setError( 'Failed to fetch flights. Please try again later.' );
             toast.error( 'Error al buscar vuelos, inténtelo de nuevo más tarde.' );
         } finally
         {
-            // Finalizamos la carga
             setLoading( false );
         }
     };
+
 
     // Función para repetir una búsqueda reciente
     const handleRepeatSearch = ( search ) => {
@@ -225,10 +230,11 @@ const HomePage = () => {
                     {loading && (
                         <section className='absolute text-center top-56 z-30'>
                             <section className='w-24 h-24 border-8 border-dashed rounded-full animate-spin border-accent-blue mx-auto my-10'></section>
-                            <h2 className='text-accent-blue dark:text-zinc-400 text-2xl font-bold'>
+                            <h2 className='text-slate-50 text-3xl font-bold'>
                                 Loading...
                             </h2>
-                            <p className='text-accent-blue dark:text-zinc-400'>
+                            <br></br>
+                            <p className='text-slate-50 text-2xl font-medium'>
                                 Your adventure is about to begin
                             </p>
                         </section>
