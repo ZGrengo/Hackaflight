@@ -130,7 +130,7 @@ const AdminListUsers = () => {
                 */}
 
 {loading ? (
-    <p>Cargando usuarios...</p>
+    <p className='text-center'>Cargando usuarios...</p>
 ) : (
     <table className="min-w-full border border-blue-300 table-fixed">
         <thead>
