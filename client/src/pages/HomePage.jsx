@@ -161,7 +161,14 @@ const HomePage = () => {
             }
 
             // Navigate to search results
-            navigate( '/search-results', { state: { flights } } );
+            navigate( '/search-results', { state: { flights, searchParams:{
+                origin: origen,
+                destination: destino,
+                departureDate: fechaSalida,
+                returnDate: fechaRetorno || null,
+                adults: pasajeros,
+                tipoViaje 
+            } } } );
             saveRecentSearch( {
                 origen,
                 destino,
