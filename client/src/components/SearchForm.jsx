@@ -65,6 +65,7 @@ const SearchForm = ({
                                 );
                                 setOrigen(e.target.value);
                             }}
+                            placeholder='JFK'
                             className='text-slate-900  w-1/2 text-center border-2 border-medium-blue rounded-md'
                         />
                     </section>
@@ -80,6 +81,7 @@ const SearchForm = ({
                                 );
                                 setDestino(e.target.value);
                             }}
+                            placeholder='MAD'
                             className='text-slate-900  w-1/2 text-center border-2 border-medium-blue rounded-md'
                         />
                     </section>

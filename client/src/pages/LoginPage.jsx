@@ -54,7 +54,9 @@ const LoginPage = () => {
         <>
             <Header />
             <main className='flex flex-col items-center pt-[50px] bg-[#e5f7ff]'>
-                <h2>Log in</h2>
+                <h2 className='font-bold text-[25px] text-[#083059]'>
+                    Iniciar sesión
+                </h2>
                 <form
                     onSubmit={handleLogin}
                     className='flex flex-col gap-[30px] p-[30px] font-bold'
@@ -112,9 +114,9 @@ const LoginPage = () => {
                     <button
                         disabled={loading}
                         className='w-full py-[8px] px-[30px] pr-[40px] text-[20px] rounded-[30px] border-none bg-[#083059]
-                    text-[white] transition-all duration-[300ms] ease-in-out ml-[25px] mt-[20px]  focus:border-blue-500 focus:outline-[#179dd9] hover:bg-[#179dd9]'
+                    text-[white] transition-all duration-[300ms] ease-in-out ml-[5px] mt-[20px]  focus:border-blue-500 focus:outline-[#179dd9] hover:bg-[#179dd9]'
                     >
-                        Log in
+                        Iniciar sesión
                     </button>
                 </form>
             </main>

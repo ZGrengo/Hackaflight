@@ -13,7 +13,7 @@ const { VITE_API_URL } = import.meta.env;
 
 // Iniciamos el componente
 const AdminListUsers = () => {
-    const [searchValues, setSearchValues] = useState({
+    const [searchValues] = useState({
         username: '',
         email: '',
         firstName: '',
@@ -25,31 +25,27 @@ const AdminListUsers = () => {
     const { users, loading } = useUsersList(searchValues);
     const { authToken } = useContext(AuthContext);
     const navigate = useNavigate();
-    const token = authToken || localStorage.getItem('token');
+    const token = authToken;
 
     // Manejar cambios en los inputs de búsqueda
-    const handleChange = (e) => {
+    /*const handleChange = (e) => {
         setSearchValues({
             ...searchValues,
             [e.target.name]: e.target.value,
         });
-    };
+    };*/
 
     // Habilitar/Deshabilitar usuario
     const handleToggleUserStatus = async (userId, isActive) => {
         try {
-            const res = await fetch(
-                `${VITE_API_URL}/api/users/${userId}/activate`,
-                {
-                    method: 'PATCH',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: `Bearer ${token}`,
-                    },
-                    body: JSON.stringify({ isActive: !isActive }),
+            const res = await fetch(`${VITE_API_URL}/api/admin/users/${userId}/true`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json', // Necesario para enviar JSON
+                    Authorization: `${authToken}`,
                 },
-            );
-
+                body: JSON.stringify({ isActive: !isActive }) // Debe ir dentro del objeto
+            });
             const data = await res.json();
             if (!res.ok) throw new Error(data.message);
 
@@ -71,10 +67,9 @@ const AdminListUsers = () => {
         if (!window.confirm('¿Estás seguro de eliminar este usuario?')) return;
 
         try {
-            const res = await fetch(`${VITE_API_URL}/api/users/${userId}`, {
-                method: 'DELETE',
-                headers: { Authorization: `Bearer ${token}` },
-            });
+            const res = await fetch(`${VITE_API_URL}/api/admin/users/${userId}`,
+                 {  method: 'DELETE',
+                     headers: { Authorization: `${authToken}` } },);
 
             const data = await res.json();
             if (!res.ok) throw new Error(data.message);
@@ -100,7 +95,7 @@ const AdminListUsers = () => {
             <Header />
             <main>
                 <h1>Lista de Usuarios</h1>
-
+{/*
                 <div>
                     <input
                         type='text'
@@ -132,6 +127,8 @@ const AdminListUsers = () => {
                     />
                 </div>
 
+                */}
+
                 {loading ? (
                     <p>Cargando usuarios...</p>
                 ) : (
@@ -148,7 +145,7 @@ const AdminListUsers = () => {
                         </thead>
                         <tbody>
                             {users.map((user) => (
-                                <tr key={user.id}>
+                                <tr key={user.userId}>
                                     <td>{user.username}</td>
                                     <td>{user.email}</td>
                                     <td>{user.firstName}</td>
@@ -160,7 +157,7 @@ const AdminListUsers = () => {
                                         <button
                                             onClick={() =>
                                                 handleToggleUserStatus(
-                                                    user.id,
+                                                    user.userId,
                                                     user.isActive,
                                                 )
                                             }
@@ -171,7 +168,7 @@ const AdminListUsers = () => {
                                         </button>
                                         <button
                                             onClick={() =>
-                                                handleDeleteUser(user.id)
+                                                handleDeleteUser(user.userId)
                                             }
                                             style={{ marginLeft: '10px' }}
                                         >

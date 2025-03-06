@@ -13,7 +13,7 @@ const Footer = () => {
         <>
             <footer className='bg-[#083059] text-xs text-white py-8 px-4 mt-auto'>
                 <div className='container mx-auto'>
-                    <div className='grid grid-cols-1 md:grid-cols-3 gap-8'>
+                    <div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
                         {/* Sección de contacto */}
                         <div className='space-y-4'>
                             <h3 className='font-bold text-sm mb-3'>
@@ -25,7 +25,7 @@ const Footer = () => {
                             <p>Teléfono: +35 123 456 789</p>
                         </div>
 
-                        {/* Sección de ayuda al cliente*/}
+                        {/* Sección de ayuda al cliente */}
                         <div className='space-y-4'>
                             <h3 className='font-bold text-sm mb-3'>
                                 Sobre nosotros
@@ -57,15 +57,17 @@ const Footer = () => {
                                 </li>
                             </ul>
                         </div>
+                    </div>
 
-                        {/* Sección de información y redes sociales */}
-                        <div className='space-y-8'>
-                            <div>
+                    {/* Sección de información y redes sociales */}
+                    <div className='mt-8'>
+                        <div className='grid grid-cols-1 md:grid-cols-3 gap-8'>
+                            <div className='space-y-2'>
                                 <ul className='space-y-2'>
                                     <li>
                                         <Link
                                             to='/cookies'
-                                            className='hover:text-[#179DD9] transition-colors '
+                                            className='hover:text-[#179DD9] transition-colors'
                                         >
                                             Configuración de las cookies
                                         </Link>
@@ -89,7 +91,7 @@ const Footer = () => {
                                 </ul>
                             </div>
 
-                            <div>
+                            <div className='flex justify-center'>
                                 <ul className='flex space-x-4'>
                                     <li>
                                         <Link
@@ -133,7 +135,8 @@ const Footer = () => {
                             </div>
                         </div>
                     </div>
-                    {/* Copyright section*/}
+
+                    {/* Copyright section */}
                     <div className='border-t border-gray-600 pt-4 mt-4'>
                         <p className='text-sm text-gray-300 text-center'>
                             Copyright © 2025 HackaFligth Company S.L. Todos los

@@ -19,7 +19,8 @@ import RatingsListPage from './pages/RatingsListPage';
 import FavoritesPage from './pages/FavoritesPage';
 import FavoriteDetailsEditPage from './pages/FavoriteDetailsEditPage';
 import AboutUs from './pages/AboutUs';
-import TeamPage from './pages/TeamPage';
+import SendRecoverPassPage from './pages/SendRecoveryPassPage';
+import ResetPassword from './pages/ResetPassword';
 
 const App = () => {
     return (
@@ -42,10 +43,18 @@ const App = () => {
                     element={<EditProfilePage />}
                 />
                 <Route
-                    path='/Users/Profile/password'
+                    path='/users/Profile/password'
                     element={<ChangePasswordPage />}
                 />
                 <Route path='/favorites' element={<FavoritesPage />} />
+                <Route
+                    path='/users/password/recover/request'
+                    element={<SendRecoverPassPage />}
+                />
+                <Route
+                    path='/users/password/:recoverPassCode'
+                    element={<ResetPassword />}
+                />
                 <Route
                     path='/favorites/:favoriteId'
                     element={<FavoriteDetailsEditPage />}

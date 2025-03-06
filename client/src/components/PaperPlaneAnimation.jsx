@@ -16,7 +16,7 @@ const PaperPlaneAnimation = () => {
             { x: 375, y: -50 },
             { x: 175, y: -25 },
             { x: 300, y: 25 },
-            { x: window.innerWidth - 100, y: -250 },
+            { x: window.innerWidth, y: -100 },
         ];
 
         gsap.to( ".paper-plane", {
@@ -41,23 +41,18 @@ const PaperPlaneAnimation = () => {
         } );
 
         gsap.set( ".paper-plane", {
-            scale: 10,
+            scale: 4,
         } );
     }, [] );
 
     return (
-        <div className="w-screen h-[20vh] relative animation">
+        <div className="w-screen h-[40vh] relative animation">
             <section
-                className="w-full h-full"
-                style={{
-                    backgroundImage: "url('/public/blue-sky.jpg')",
-                    backgroundSize: "cover",
-                    backgroundRepeat: "no-repeat",
-                }}
+                className="w-full h-full bg-[url('/public/blue-sky.jpg')] bg-cover bg-center bg-no-repeat md:bg-contain"
             >
                 <img
                     ref={planeRef}
-                    className="paper-plane h-[5px] w-[5px] absolute top-1/2 left-0 transform -translate-y-1/2 rotate-30"
+                    className="paper-plane h-[40px] w-[40px] absolute top-2/3 left-0 transform -translate-y-1/2 rotate-30"
                     src="/public/plane-r.png"
                     alt="paper-plane"
                 />
