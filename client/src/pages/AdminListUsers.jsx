@@ -158,13 +158,13 @@ const AdminListUsers = () => {
                             onClick={() =>
                                 handleToggleUserStatus(user.userId, user.isActive)
                             }
-                            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 flex-1"
+                            className="bg-medium-blue text-white px-4 py-2 rounded hover:bg-medium-blue flex-1"
                         >
                             {user.isActive ? 'Deshabilitar' : 'Habilitar'}
                         </button>
                         <button
                             onClick={() => handleDeleteUser(user.userId)}
-                            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 ml-2 flex-1"
+                            className="bg-dark-blue text-white px-4 py-2 rounded hover:bg-dark-blue ml-2 flex-1"
                         >
                             Eliminar
                         </button>
