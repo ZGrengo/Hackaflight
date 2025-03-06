@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 import FlightCard from '../components/FlightCard';
 import FlightFilters from '../components/FlightFilters';
 import useAuthContext from '../hooks/useAuthContext.js';
+import Header from '../components/Header.jsx';
 
 const { VITE_API_URL } = import.meta.env;
 

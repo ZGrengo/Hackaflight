@@ -58,13 +58,17 @@ const SendRecoverPassPage = () => {
         <>
             <Header />
             <main className='flex flex-col items-center pt-[50px] bg-[#e5f7ff]'>
-                <h2>Recuperacion de contraseña</h2>
-                <p>Por favor introduce el correo electronico registrado.</p>
+                <h2 className='font-bold text-[25px] text-[#083059]'>
+                    Recuperacion de contraseña
+                </h2>
+                <p className='font-bold text-[20px] text-[#083059]'>
+                    Por favor introduce el correo electronico registrado.
+                </p>
                 <form
                     onSubmit={handleSendRecoveryPassCode}
                     className='flex flex-col gap-[30px] p-[30px] font-bold'
                 >
-                    <label htmlFor='email'>Email:</label>
+                    <label htmlFor='email'>Correo electronico:</label>
                     <input
                         className='w-full py-[8px] px-[20px] pr-[40px] text-[20px] rounded-[30px] border-none bg-[#083059]
                      text-[white] transition-all duration-[300ms] ease-in-out focus:border-blue-500 focus:outline-[#3951aa]'
@@ -79,10 +83,10 @@ const SendRecoverPassPage = () => {
 
                     <button
                         className='w-full py-[8px] px-[30px] pr-[40px] text-[20px] rounded-[30px] border-none bg-[#083059]
-                    text-[white] transition-all duration-[300ms] ease-in-out ml-[25px] mt-[20px]  focus:border-blue-500 focus:outline-[#179dd9] hover:bg-[#179dd9]'
+                    text-[white] transition-all duration-[300ms] ease-in-out mt-[20px]  focus:border-blue-500 focus:outline-[#179dd9] hover:bg-[#179dd9]'
                         disabled={loading}
                     >
-                        Send
+                        Enviar
                     </button>
                 </form>
             </main>
