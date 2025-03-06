@@ -3,8 +3,7 @@ import { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import FlightCard from '../components/FlightCard';
 import FlightFilters from '../components/FlightFilters';
-import useAuthContext from "../hooks/useAuthContext.js";
-
+import useAuthContext from '../hooks/useAuthContext.js';
 
 const { VITE_API_URL } = import.meta.env;
 
@@ -12,10 +11,10 @@ const SearchResultsPage = () => {
     const location = useLocation();
     const [isSaved, setIsSaved] = useState(false);
     const [title, setTitle] = useState('');
-    const { searchParams = {} } = location.state || {};  
+    const { searchParams = {} } = location.state || {};
     const [flights, setFlights] = useState(location.state?.flights || []);
-    const [ loading, setLoading ] = useState( false );
-    const [ error, setError ] = useState( null );
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
     const { authToken } = useAuthContext();
 
     // Cargar vuelos iniciales desde el estado de la ubicación
@@ -289,62 +288,67 @@ const SearchResultsPage = () => {
     const handleSave = async () => {
         try {
             const formattedFavorites = {
-                title: title.trim() || `${searchParams.origin} - ${searchParams.destination}`,
+                title:
+                    title.trim() ||
+                    `${searchParams.origin} - ${searchParams.destination}`,
                 origin: searchParams.origin,
                 destination: searchParams.destination,
                 departureDate: searchParams.departureDate,
                 returnDate: searchParams.returnDate || null,
                 adults: searchParams.adults,
             };
-             // Enviamos los cambios al endpoint de actualización de favoritos.
-            const res = await fetch(
-                            `${VITE_API_URL}/api/users/favorites`,
-                            {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    Authorization: authToken,
-                                },
-                                body: JSON.stringify(formattedFavorites),
-                            },
-                        );
-                        // Obtenemos el body.
+            // Enviamos los cambios al endpoint de actualización de favoritos.
+            const res = await fetch(`${VITE_API_URL}/api/users/favorites`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: authToken,
+                },
+                body: JSON.stringify(formattedFavorites),
+            });
+            // Obtenemos el body.
             const body = await res.json();
             if (!res.ok) throw new Error(body.message);
             setIsSaved(true);
             toast.success(body.message);
         } catch (err) {
-          toast.error(err.message, {
-            id: 'favoriteId',
-        });
-        
-            
+            toast.error(err.message, {
+                id: 'favoriteId',
+            });
         }
     };
     return (
-        <section>
-            <FlightFilters onFilterChange={handleFilterChange} />
-            {authToken && (
-                <>
-                    <input
-                        type="text"
-                        placeholder="Titulo de la búsqueda"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        name="title"
-                    />
-                    <button onClick={handleSave} disabled={isSaved}>
-    {isSaved ? "Guardado" : "Guardar Búsqueda"}
-</button>
-                </>
-            )}
-            <h2>Resultados de la Búsqueda</h2>
-            {loading && <p>Cargando...</p>}
-            {error && <p>Error: {error}</p>}
-            <section className="flight-cards-container">
-                {flights.map( ( flight, index ) => (
-                    <FlightCard key={`${ flight.id }-${ index }`} flight={flight} />
-                ) )}
+        <>
+            <Header />
+            <section>
+                <FlightFilters onFilterChange={handleFilterChange} />
+                {authToken && (
+                    <>
+                        <input
+                            type='text'
+                            placeholder='Titulo de la búsqueda'
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
+                            name='title'
+                        />
+                        <button onClick={handleSave} disabled={isSaved}>
+                            {isSaved ? 'Guardado' : 'Guardar Búsqueda'}
+                        </button>
+                    </>
+                )}
+                <section>
+                    <h2>Resultados de la Búsqueda</h2>
+                    {loading && <p>Cargando...</p>}
+                    {error && <p>Error: {error}</p>}
+                    <section className='flight-cards-container'>
+                        {flights.map((flight, index) => (
+                            <FlightCard
+                                key={`${flight.id}-${index}`}
+                                flight={flight}
+                            />
+                        ))}
+                    </section>
+                </section>
             </section>
         </>
     );
