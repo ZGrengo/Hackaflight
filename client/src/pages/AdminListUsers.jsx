@@ -94,7 +94,7 @@ const AdminListUsers = () => {
         <>
             <Header />
             <main>
-                <h1>Lista de Usuarios</h1>
+             
 {/*
                 <div>
                     <input
@@ -129,56 +129,50 @@ const AdminListUsers = () => {
 
                 */}
 
-                {loading ? (
-                    <p>Cargando usuarios...</p>
-                ) : (
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Usuario</th>
-                                <th>Email</th>
-                                <th>Nombre</th>
-                                <th>Apellido</th>
-                                <th>Estado</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {users.map((user) => (
-                                <tr key={user.userId}>
-                                    <td>{user.username}</td>
-                                    <td>{user.email}</td>
-                                    <td>{user.firstName}</td>
-                                    <td>{user.lastName}</td>
-                                    <td>
-                                        {user.isActive ? 'Activo' : 'Inactivo'}
-                                    </td>
-                                    <td>
-                                        <button
-                                            onClick={() =>
-                                                handleToggleUserStatus(
-                                                    user.userId,
-                                                    user.isActive,
-                                                )
-                                            }
-                                        >
-                                            {user.isActive
-                                                ? 'Deshabilitar'
-                                                : 'Habilitar'}
-                                        </button>
-                                        <button
-                                            onClick={() =>
-                                                handleDeleteUser(user.userId)
-                                            }
-                                            style={{ marginLeft: '10px' }}
-                                        >
-                                            Eliminar
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+{loading ? (
+    <p>Cargando usuarios...</p>
+) : (
+    <table className="min-w-full border border-blue-300 table-fixed">
+        <thead>
+            <tr className="bg-blue-100 flex">
+                <th className="px-4 py-2 border-b flex-1 text-center">Usuario</th>
+                <th className="px-4 py-2 border-b flex-1 text-center">Email</th>
+                <th className="px-4 py-2 border-b flex-1 text-center">Nombre</th>
+                <th className="px-4 py-2 border-b flex-1 text-center">Apellido</th>
+                <th className="px-4 py-2 border-b flex-1 text-center">Estado</th>
+                <th className="px-4 py-2 border-b flex-1 text-center">Acciones</th>
+            </tr>
+        </thead>
+        <tbody className="flex flex-col">
+            {users.map((user) => (
+                <tr key={user.userId} className="odd:bg-white even:bg-blue-50 flex">
+                    <td className="px-4 py-2 border-b flex-1 text-center">{user.username}</td>
+                    <td className="px-4 py-2 border-b flex-1 text-center">{user.email}</td>
+                    <td className="px-4 py-2 border-b flex-1 text-center">{user.firstName}</td>
+                    <td className="px-4 py-2 border-b flex-1 text-center">{user.lastName}</td>
+                    <td className="px-4 py-2 border-b flex-1 text-center">
+                        {user.isActive ? 'Activo' : 'Inactivo'}
+                    </td>
+                    <td className="px-4 py-2 border-b flex-1 flex justify-center">
+                        <button
+                            onClick={() =>
+                                handleToggleUserStatus(user.userId, user.isActive)
+                            }
+                            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 flex-1"
+                        >
+                            {user.isActive ? 'Deshabilitar' : 'Habilitar'}
+                        </button>
+                        <button
+                            onClick={() => handleDeleteUser(user.userId)}
+                            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 ml-2 flex-1"
+                        >
+                            Eliminar
+                        </button>
+                    </td>
+                </tr>
+            ))}
+        </tbody>
+    </table>
                 )}
             </main>
         </>
