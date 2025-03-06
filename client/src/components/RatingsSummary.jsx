@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 // Importamos componente
 import RatingListItem from './RatingListItem';
 import useAvgRating from '../hooks/useAvgRating';
+import { Link } from 'react-router-dom';
 
 // Este componente recibe un array de comentarios y muestra los 3 primeros
 const RatingsSummary = ({ ratings }) => {
@@ -17,7 +18,7 @@ const RatingsSummary = ({ ratings }) => {
     return (
         <div className='bg-[#083059] p-8 text-white text-center max-h-fit mx-auto'>
             <h2 className='text-2xl font-bold mb-6'>
-                Lo que piensan nuestros usuarios...
+                <Link to='/ratings'>Lo que piensan nuestros usuarios...</Link>
             </h2>
             <div className='mb-6'>
                 {/* Calculamos (hook) y Mostramos la valoración media y el total */}

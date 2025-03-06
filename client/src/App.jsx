@@ -21,6 +21,7 @@ import FavoriteDetailsEditPage from './pages/FavoriteDetailsEditPage';
 import AboutUs from './pages/AboutUs';
 import SendRecoverPassPage from './pages/SendRecoveryPassPage';
 import ResetPassword from './pages/ResetPassword';
+import TeamPage from './pages/TeamPage';
 
 const App = () => {
     return (
@@ -50,9 +51,11 @@ const App = () => {
                 <Route
                     path='/users/password/recover/request'
                     element={<SendRecoverPassPage />}
-
                 />
-                <Route path='/users/password/:recoverPassCode' element={<ResetPassword />} />
+                <Route
+                    path='/users/password/:recoverPassCode'
+                    element={<ResetPassword />}
+                />
                 <Route
                     path='/favorites/:favoriteId'
                     element={<FavoriteDetailsEditPage />}
@@ -61,6 +64,7 @@ const App = () => {
                 <Route path='/ratings' element={<RatingsListPage />} />
                 <Route path='*' element={<NotFoundPage />} />
                 <Route path='/about' element={<AboutUs />} />
+                <Route path='/team' element={<TeamPage />} />
             </Routes>
             <Footer />
         </>
