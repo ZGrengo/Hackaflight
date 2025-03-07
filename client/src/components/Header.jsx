@@ -21,7 +21,6 @@ const Header = () => {
                 <nav className='flex items-center space-x-3'>
                     {authUser ? (
                         <>
-
                             {authUser.role === 'admin' && (
                                 <Link to='/admin/users'>
                                     <img
@@ -34,7 +33,7 @@ const Header = () => {
 
                             <Link to='/favorites'>
                                 <img
-                                    src='/public/corazon.png '
+                                    src='/public/corazon.svg'
                                     alt='favorites'
                                     className='w-8 h-8 fill-current text-light-blue transition-tranform duration-200 hover:text-medium-blue hover:scale-110'
                                 />
@@ -55,7 +54,6 @@ const Header = () => {
                                     className='w-8 h-8 fill-current text-light-blue transition-tranform duration-200 hover:text-medium-blue hover:scale-110'
                                 />
                             </Link>
-
 
                             <button onClick={authLogoutState}>
                                 <img
@@ -89,9 +87,6 @@ const Header = () => {
                                     className='w-8 h-8 fill-current text-light-blue transition-tranform duration-200 hover:text-medium-blue hover:scale-110'
                                 />
                             </Link>
-
-                         
-                            
                         </>
                     )}
                 </nav>

@@ -61,7 +61,7 @@ const UserProfilePage = () => {
     // Mostramos mensajes de perfil cargando...
     if (profileLoading) {
         return (
-            <p className='text-center mt-8 text-gray-600'>
+            <p className='text-center mt-4 text-dark-blue font-body'>
                 {' '}
                 Cargando perfil...
             </p>
@@ -70,7 +70,7 @@ const UserProfilePage = () => {
     // Si el perfil no carga, mostramos un error.
     if (!userData) {
         return (
-            <p className='text-center mt-8 text-gray-600'>
+            <p className='text-center mt-4 text-dark-blue font-body'>
                 No se pudo cargar la información del usuario.
             </p>
         );
@@ -79,63 +79,72 @@ const UserProfilePage = () => {
     return (
         <>
             <Header />
-            <main className='bg-[#E5f7ff] min-h-screen flex itenms-center justify-center p-4'>
-                <div className='bg-white p-6 rounded-lg shadow-md w-full max-w-lg'>
-                    <h2 className='text-2x1 font-bold text-[#083059] text-center mb-4'>
-                        Perfil de Usuario
-                    </h2>
-                    {/* Mostramos la información de usuario */}
-                    <div className='flex flex-col items-center space-y-4'>
-                        <img
-                            src={
-                                userData.avatar !== null
-                                    ? `${VITE_API_URL}/uploads/${userData.avatar}`
-                                    : '/default-avatar.png'
-                            }
-                            alt='Avatar'
-                            className='w-24 h-24 rounded-full object-cover shadow-lg transition transform hover:scale-105'
-                        />
-                        <div className='w-full'>
-                            <p className='text-[#083059] text-sm'>
-                                <strong>Nombre:</strong> {userData.firstName}{' '}
-                                {userData.lastName}
-                            </p>
-                            <p className='text-[#083059] text-sm'>
-                                <strong>Usuario:</strong> {userData.username}
-                            </p>
-                            <p className='text-[#083059] text-sm'>
-                                <strong>Email:</strong> {userData.email}
-                            </p>
-                            <p className='text-[#083059] text-sm'>
-                                <strong>Edad:</strong>{' '}
-                                {moment().diff(
-                                    moment(userData.birthdate),
-                                    'years',
-                                )}{' '}
-                                años
-                            </p>
-                            <p className='text-[#083059] text-sm'>
-                                <strong>Miembro desde:</strong>{' '}
-                                {moment(userData.createdAt).format(
-                                    'DD/MM/YYYY',
-                                )}
-                            </p>
+            <main className='bg-gradient-to-b from-dark-blue to-thite min-h-screen flex flex-col justify-between'>
+                <div className='flex flex-col items-center justify-center flex-1 p-4'>
+                    <div className='bg-white p-6 sm:p-8 rounded-lg shadow-md w-full max-w-lg lg:max-w-4xl transition transform hover:scale-[1.008]'>
+                        <h2 className='text-3xl sm:text-4xl font-heading text-dark-blue text-center mb-6'>
+                            Perfil de Usuario
+                        </h2>
+                        {/* Mostramos la información de usuario */}
+                        <div className='flex flex-col lg:flex-row lg:items-center lg:justify-center lg:gap-16'>
+                            <div className='flex flex-col items-center'>
+                                <img
+                                    src={
+                                        userData.avatar !== null
+                                            ? `${VITE_API_URL}/uploads/${userData.avatar}`
+                                            : '/default-avatar.png'
+                                    }
+                                    alt='Avatar'
+                                    className='w-32 h-32 lg:w-40 lg:h-40 rounded-full object-cover shadow-lg transition transform hover:scale-105'
+                                />
+                            </div>
+                            <div className='mt-6 lg:mt-7 lg:w-3/3'>
+                                <div className='space-y-3'>
+                                    <p className='text-dark-blue text-base sm:text-lg font-body'>
+                                        <strong>Nombre:</strong>{' '}
+                                        {userData.firstName} {userData.lastName}
+                                    </p>
+                                    <p className='text-dark-blue text-base sm:text-lg font-body'>
+                                        <strong>Usuario:</strong>{' '}
+                                        {userData.username}
+                                    </p>
+                                    <p className='text-dark-blue text-base sm:text-lg font-body'>
+                                        <strong>Email:</strong> {userData.email}
+                                    </p>
+                                    <p className='text-dark-blue text-base sm:text-lg font-body'>
+                                        <strong>Edad:</strong>{' '}
+                                        {moment().diff(
+                                            moment(userData.birthdate),
+                                            'years',
+                                        )}{' '}
+                                        años
+                                    </p>
+                                    <p className='text-dark-blue text-base sm:text-lg font-body'>
+                                        <strong>Miembro desde:</strong>{' '}
+                                        {moment(userData.createdAt).format(
+                                            'DD/MM/YYYY',
+                                        )}
+                                    </p>
+                                </div>
+                            </div>
                         </div>
-                    </div>
 
-                    <div className='mt-4 space-y-3'>
-                        <button
-                            onClick={() => navigate('/users/profile/edit')}
-                            className='w-full py-2 font-bold rounded-md transition bg-[#083059] text-white hover:bg-[#179DD9]'
-                        >
-                            Editar perfil
-                        </button>
-                        <button
-                            onClick={() => navigate('/Users/Profile/password')}
-                            className='w-full py-2 font-bold rounded-md transition bg-[#083059] text-white hover:bg-[#179DD9]'
-                        >
-                            Cambiar contraseña
-                        </button>
+                        <div className='mt-8 space-y-4 lg:flex lg:space-y-0 lg:space-x-4 lg:mt-10'>
+                            <button
+                                onClick={() => navigate('/users/profile/edit')}
+                                className='w-full py-3 font-button font-bold rounded-md transition-colors duration-300 bg-dark-blue text-white hover:bg-medium-blue'
+                            >
+                                Editar perfil
+                            </button>
+                            <button
+                                onClick={() =>
+                                    navigate('/Users/Profile/password')
+                                }
+                                className='w-full py-3 font-button font-bold rounded-md transition-colors duration-300 bg-dark-blue text-white hover:bg-medium-blue'
+                            >
+                                Cambiar contraseña
+                            </button>
+                        </div>
                     </div>
                 </div>
             </main>
