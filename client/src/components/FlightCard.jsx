@@ -36,27 +36,27 @@ const FlightCard = ( { flight } ) => {
     return (
         <div className="flight-card bg-dark-blue text-white text-center p-3 mb-3 rounded-xl shadow-lg">
             <h2 className="font-semibold underline text-xl">Vuelo {flight.id}</h2>
-            <p>Precio: {price.total} {price.currency}</p>
+            <p>Precio {price.total} {price.currency}</p>
             <div className="traveler-pricings">
                 {travelerPricings && travelerPricings.map( ( pricing, index ) => (
                     <div key={index} className="pricing">
-                        <p>Clase: {getTicketClass( pricing.fareDetailsBySegment[ 0 ].class )}</p>
+                        <p>Clase {getTicketClass( pricing.fareDetailsBySegment[ 0 ].class )}</p>
                     </div>
                 ) )}
             </div>
-            <p className="mb-2">Tipo de vuelo: {oneWay ? 'Solo ida' : 'Ida y vuelta'}</p>
+            <p className="mb-2">Vuelo de {oneWay ? 'Solo ida' : 'Ida y vuelta'}</p>
             <hr />
             {itineraries && itineraries.map( ( itinerary, index ) => (
                 <div key={index} className="itinerary">
                     <h3 className="font-medium text-lg">Itinerario {index + 1}</h3>
                     <hr />
-                    <p>Duración: {formatDuration( itinerary.duration )}</p>
+                    <p>Duración {formatDuration( itinerary.duration )}</p>
                     {itinerary.segments.map( ( segment, idx ) => (
                         <div key={idx} className="segment">
                             {segment && segment.departure && segment.arrival ? (
                                 <section className="my-2">
-                                    <p>Salida: {segment.departure.iataCode} a las {formatDate( segment.departure.at )}</p>
-                                    <p>Llegada: {segment.arrival.iataCode} a las {formatDate( segment.arrival.at )}</p>
+                                    <p>Salida {segment.departure.iataCode} a las {formatDate( segment.departure.at )}</p>
+                                    <p>Llegada {segment.arrival.iataCode} a las {formatDate( segment.arrival.at )}</p>
                                     <hr />
                                 </section>
                             ) : (

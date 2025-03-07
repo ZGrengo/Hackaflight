@@ -6,9 +6,13 @@ const LogoAnimation = () => {
         const paths = document.querySelectorAll( '.path' );
         const firstH2 = document.getElementById( 'first-h2' );
         const secondH2 = document.getElementById( 'second-h2' );
+        const logoContainer = document.querySelector( '.logo-container' );
+        const logoAnimationSection = document.querySelector( '.logo-animation-section' );
 
-        const typingDuration = 2000;
-        const cursorBlinkDelay = 500;
+        // Duración de la animación de escritura
+        const typingDuration = 1000;
+        // Duración del parpadeo del cursor de escritura
+        const cursorBlinkDelay = 200;
 
         // Función para simular el efecto de escritura
         const typeText = ( element, text, duration, callback ) => {
@@ -36,26 +40,40 @@ const LogoAnimation = () => {
             }, interval );
         };
 
+        // Animar logo
         const animateLogo = ( paths ) => {
             paths.forEach( ( path, index ) => {
                 setTimeout( () => {
+                    // Agregar animación de desplazamiento
                     path.style.animationPlayState = 'running';
                     path.style.opacity = 1;
-                }, index * 500 );
+                    // Agregar efecto de desvanecimiento
+                }, index );
             } );
         };
 
+        // Iniciar animación
         typeText( firstH2, 'HACK', typingDuration, () => {
             setTimeout( () => {
                 firstH2.style.borderRight = 'none';
-                secondH2.style.borderRight = '0.15em solid white';
+                secondH2.style.borderRight = '0.10em solid white';
 
+                // Agregar cursor de escritura
                 typeText( secondH2, 'FLIGHT', typingDuration, () => {
                     setTimeout( () => {
                         animateLogo( paths );
                         secondH2.classList.add( 'animate-blink-caret' );
+
+                        // Eliminar cursor de escritura después de un tiempo específico
+                        setTimeout( () => {
+                            secondH2.classList.remove( 'animate-blink-caret' );
+                            // Ocultar la animación después de que termine
+                            logoAnimationSection.classList.add( 'hidden' );
+                        }, 2000 ); // Cambia 2000 por el tiempo deseado en milisegundos
+
                     }, 500 );
                 } );
+                // Parpadear cursor de escritura
             }, cursorBlinkDelay );
         } );
     }, [] );
@@ -100,7 +118,7 @@ const LogoAnimation = () => {
                             fill='#083059'
                             stroke='white'
                             strokeWidth='2'
-                            className='path path5'
+                            className='path path4'
                         />
                         {/* Ala izquierda */}
                         <path
@@ -108,7 +126,7 @@ const LogoAnimation = () => {
                             fill='#083059'
                             stroke='white'
                             strokeWidth='2'
-                            className='path path6'
+                            className='path path5'
                         />
                     </g>
                 </svg>

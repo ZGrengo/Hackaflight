@@ -71,7 +71,7 @@
 }
 
 .typing-cursor {
-    border-right: 0.15em solid white;
+    border-right: 0.10em solid white;
     animation: blink-caret 0.7s step-end infinite;
 }
 
@@ -90,27 +90,27 @@
 
 
 .path1 {
-    animation: move1 5s ease-in-out forwards;
+    animation: move1 2.5s ease-in-out forwards;
 }
 
 .path2 {
-    animation: move2 5.5s ease-in-out forwards;
+    animation: move2 3s ease-in-out forwards;
 }
 
 .path3 {
-    animation: move3 6s ease-in-out forwards;
+    animation: move3 3.5s ease-in-out forwards;
 }
 
 .path4 {
-    animation: move4 6.5s ease-in-out forwards;
+    animation: move4 4s ease-in-out forwards;
 }
 
 .path5 {
-    animation: move5 7s ease-in-out forwards;
+    animation: move5 4s ease-in-out forwards;
 }
 
-.path6 {
-    animation: move6 7.5s ease-in-out forwards;
+.hidden {
+    display: none;
 }
 
 .animate-blink-caret {
@@ -120,13 +120,10 @@
 @media (min-width: 400px) and (max-width: 1080px) {
     .responsive-h2 {
         font-size: 2em;
-        /* Double the size */
     }
 
     .responsive-logo {
         width: 120px;
-        /* Double the size */
         height: 120px;
-        /* Double the size */
     }
 }

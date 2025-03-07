@@ -27,7 +27,7 @@ const HomePage = () => {
     const [ recentSearches, setRecentSearches ] = useState( [] );
     const [ loading, setLoading ] = useState( false );
     const [ error, setError ] = useState( null );
-    const [ isAnimationComplete, setIsAnimationComplete ] = useState(false);
+    const [ isAnimationComplete, setIsAnimationComplete ] = useState( false );
 
     // Hook para navegar entre rutas
     const navigate = useNavigate();
@@ -96,13 +96,16 @@ const HomePage = () => {
                 headers: { 'Content-Type': 'application/json' },
             } );
 
+            // Si la respuesta no es correcta, lanzamos un error
             if ( !res.ok ) throw new Error( 'Network response was not ok' );
             const body = await res.json();
             if ( body.status === 'error' ) throw new Error( body.message );
 
+            // Devolvemos los vuelos
             return Array.isArray( body ) ? body : [];
         } catch ( error )
         {
+            // Si hay un error, lo lanzamos
             console.error( 'Error fetching flights:', error );
             throw error;
         }
@@ -114,7 +117,7 @@ const HomePage = () => {
         setLoading( true );
         setError( null );
 
-        // Validate dates
+        // si el tipo de viaje es de ida y vuelta, comprobamos que la fecha de retorno sea posterior a la de salida
         if ( tipoViaje === 'ida-vuelta' && new Date( fechaRetorno ) < new Date( fechaSalida ) )
         {
             setError( 'Return date cannot be before departure date.' );
@@ -124,7 +127,7 @@ const HomePage = () => {
 
         try
         {
-            // Create search parameters
+            // Creamos los parámetros de búsqueda
             const searchParams = new URLSearchParams( {
                 origin: origen,
                 destination: destino,
@@ -132,16 +135,16 @@ const HomePage = () => {
                 adults: pasajeros,
             } );
 
-            // Add return date if round trip
+            //si el tipo de viaje es de ida y vuelta, añadimos la fecha de retorno
             if ( tipoViaje === 'ida-vuelta' && fechaRetorno )
             {
                 searchParams.append( 'returnDate', fechaRetorno );
             }
 
-            // Fetch flights
+            // obtenemos los vuelos
             const flights = await fetchFlights( searchParams );
 
-            // Fetch return flights if round trip
+            // si el tipo de viaje es de ida y vuelta, buscamos los vuelos de vuelta
             if ( tipoViaje === 'ida-vuelta' && fechaRetorno )
             {
                 const searchParamsVuelta = new URLSearchParams( {
@@ -161,15 +164,19 @@ const HomePage = () => {
                 );
             }
 
-            // Navigate to search results
-            navigate( '/search-results', { state: { flights, searchParams:{
-                origin: origen,
-                destination: destino,
-                departureDate: fechaSalida,
-                returnDate: fechaRetorno || null,
-                adults: pasajeros,
-                tipoViaje 
-            } } } );
+            // Navegamos a la página de resultados de búsqueda
+            navigate( '/search-results', {
+                state: {
+                    flights, searchParams: {
+                        origin: origen,
+                        destination: destino,
+                        departureDate: fechaSalida,
+                        returnDate: fechaRetorno,
+                        adults: pasajeros,
+                        tipoViaje
+                    }
+                }
+            } );
             saveRecentSearch( {
                 origen,
                 destino,
@@ -181,7 +188,6 @@ const HomePage = () => {
         } catch ( err )
         {
             console.error( 'Error al buscar vuelos:', err );
-            setError( 'Failed to fetch flights. Please try again later.' );
             toast.error( 'Error al buscar vuelos, inténtelo de nuevo más tarde.' );
         } finally
         {
@@ -208,72 +214,62 @@ const HomePage = () => {
         localStorage.setItem( 'favorites', JSON.stringify( favorites ) );
     };
 
-     // Usamos useEffect para controlar cuando se completa la animación
-     useEffect(() => {
-        const timer = setTimeout(() => {
-            setIsAnimationComplete(true); // Cuando la animación termine, mostramos el Header
-        }, 8200); // Ajusta el tiempo según la duración de tu animación
 
-        return () => clearTimeout(timer); // Limpiar el temporizador cuando el componente se desmonte
-    }, []);
 
     // Renderizamos el componente
     return (
         <>
-        <main className='bg-light-blue'>
-             <section>
-                {!isAnimationComplete && <LogoAnimation />} {/* Mostrar LogoAnimation solo mientras no esté completo */}
-            </section>
+            <main className='bg-light-blue'>
+                <LogoAnimation />
+                <Header />
+                <section className='relative w-full h-[45vh] inset-0 items-center justify-center flex flex-col'>
 
-            {isAnimationComplete && <Header />}
-            <section className='relative w-full h-[45vh] inset-0 items-center justify-center flex flex-col'>
-               
-                <section className='absolute flex items-center justify-center bottom-60 z-20'>
-                    <SearchForm
-                        tipoViaje={tipoViaje}
-                        fechaSalida={fechaSalida}
-                        fechaRetorno={fechaRetorno}
-                        origen={origen}
-                        destino={destino}
-                        pasajeros={pasajeros}
-                        setTipoViaje={setTipoViaje}
-                        setFechaSalida={setFechaSalida}
-                        setFechaRetorno={setFechaRetorno}
-                        setOrigen={setOrigen}
-                        setDestino={setDestino}
-                        setPasajeros={setPasajeros}
-                        handleSubmit={handleSubmit}
-                    />
-                    {/* Mostramos un mensaje de carga si está cargando */}
-                    {loading && (
-                        <section className='absolute text-center top-56 z-30'>
-                            <section className='w-24 h-24 border-8 border-dashed rounded-full animate-spin border-accent-blue mx-auto my-10'></section>
-                            <h2 className='text-slate-50 text-3xl font-bold'>
-                                Loading...
-                            </h2>
-                            <br></br>
-                            <p className='text-slate-50 text-2xl font-medium'>
-                                Your adventure is about to begin
-                            </p>
-                        </section>
-                    )}
+                    <section className='absolute flex items-center justify-center bottom-60 z-20'>
+                        <SearchForm
+                            tipoViaje={tipoViaje}
+                            fechaSalida={fechaSalida}
+                            fechaRetorno={fechaRetorno}
+                            origen={origen}
+                            destino={destino}
+                            pasajeros={pasajeros}
+                            setTipoViaje={setTipoViaje}
+                            setFechaSalida={setFechaSalida}
+                            setFechaRetorno={setFechaRetorno}
+                            setOrigen={setOrigen}
+                            setDestino={setDestino}
+                            setPasajeros={setPasajeros}
+                            handleSubmit={handleSubmit}
+                        />
+                        {/* Mostramos un mensaje de carga si está cargando */}
+                        {loading && (
+                            <section className='absolute text-center top-56 z-30'>
+                                <section className='w-24 h-24 border-8 border-dashed rounded-full animate-spin border-medium-blue mx-auto my-10'></section>
+                                <h2 className='text-medium-blue text-3xl font-bold'>
+                                    Loading...
+                                </h2>
+                                <br></br>
+                                <p className='text-medium-blue text-2xl font-medium'>
+                                    Your adventure is about to begin
+                                </p>
+                            </section>
+                        )}
+                    </section>
+                    {/* Mostramos un mensaje de error si hay uno */}
+                    {error && <p className='text-red-500 text-center'>{error}</p>}
                 </section>
-                {/* Mostramos un mensaje de error si hay uno */}
-                {error && <p className='text-red-500 text-center'>{error}</p>}
-            </section>
-            {/* Mostramos las búsquedas recientes si está autenticado */}
-            {isAuthenticated && (
-                <RecentSearches
-                    recentSearches={recentSearches}
-                    onRepeatSearch={handleRepeatSearch}
-                    onSaveFavorite={handleSaveFavorite}
-                />
-            )}
-            {/* Mostramos los destinos populares y el resumen de calificaciones */}
-            <section className='mb-5'>
-                <PopularDestinations popularDestinations={popularDestinations} />
-                <RatingsSummary ratings={ratings} />
-            </section>
+                {/* Mostramos las búsquedas recientes si está autenticado */}
+                {isAuthenticated && (
+                    <RecentSearches
+                        recentSearches={recentSearches}
+                        onRepeatSearch={handleRepeatSearch}
+                        onSaveFavorite={handleSaveFavorite}
+                    />
+                )}
+                {/* Mostramos los destinos populares y el resumen de calificaciones */}
+                <section className='mb-5'>
+                    <PopularDestinations popularDestinations={popularDestinations} />
+                    <RatingsSummary ratings={ratings} />
+                </section>
             </main>
         </>
     );

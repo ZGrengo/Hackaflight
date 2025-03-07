@@ -35,7 +35,7 @@ const FlightFilters = ( { onFilterChange } ) => {
                 </h2>
                 <div className="space-y-3">
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">Paradas:</label>
+                        <label className="block text-base font-medium text-gray-700">Paradas</label>
                         <select
                             name="stops"
                             value={filters.stops}
@@ -49,7 +49,7 @@ const FlightFilters = ( { onFilterChange } ) => {
                         </select>
                     </div>
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">Precio Mínimo:</label>
+                        <label className="block text-base font-medium text-gray-700">Precio Mínimo</label>
                         <input
                             type="number"
                             name="minPrice"
@@ -59,7 +59,7 @@ const FlightFilters = ( { onFilterChange } ) => {
                         />
                     </div>
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">Precio Máximo:</label>
+                        <label className="block text-base font-medium text-gray-700">Precio Máximo</label>
                         <input
                             type="number"
                             name="maxPrice"
@@ -69,7 +69,7 @@ const FlightFilters = ( { onFilterChange } ) => {
                         />
                     </div>
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">Ordenar por:</label>
+                        <label className="block text-base font-medium text-gray-700">Ordenar por</label>
                         <select
                             name="sortByPrice"
                             value={filters.sortByPrice}
@@ -84,14 +84,12 @@ const FlightFilters = ( { onFilterChange } ) => {
                     <div className="text-center">
                         <button
                             onClick={applyFilters}
-                            className="bg-medium-blue text-white px-6 py-2 rounded-md hover:bg-dark-blue transition-all text-sm sm:text-base mt-4"
-                        >
-                            Aplicar Filtros
-                        </button>
+                            className='top-3 relative py-2 px-4 text-slate-900 text-base font-bold overflow-hidden bg-medium-blue rounded-full transition-all duration-400 ease-in-out shadow-md hover:scale-105 hover:text-white hover:shadow-lg active:scale-90 before:absolute before:top-0 before:-left-full before:w-full before:h-full before:bg-gradient-to-r before:from-accent-blue before:to-medium-blue before:transition-all before:duration-500 before:ease-in-out before:z-[-1] before:rounded-full hover:before:left-0'
+                        >Aplicar Filtros</button>
                     </div>
                 </div>
             </div>
-        </section>
+        </section >
     );
 };
 

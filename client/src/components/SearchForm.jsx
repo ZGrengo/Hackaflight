@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-const SearchForm = ({
+const SearchForm = ( {
     tipoViaje,
     fechaSalida,
     fechaRetorno,
@@ -14,7 +14,7 @@ const SearchForm = ({
     setDestino,
     setPasajeros,
     handleSubmit,
-}) => {
+} ) => {
     return (
         <section className='relative z-10 top-48 opacity-90 flex justify-center items-center text-sm'>
             <form
@@ -23,29 +23,29 @@ const SearchForm = ({
             >
                 <section className='grid grid-cols-2 gap-4 w-full'>
                     <section className='flex flex-col items-center'>
-                        <label>Pasajeros:</label>
+                        <label>Pasajeros</label>
                         <input
                             type='number'
                             value={pasajeros}
-                            onChange={(e) => {
+                            onChange={( e ) => {
                                 console.log(
-                                    `Pasajeros changed: ${e.target.value}`,
+                                    `Pasajeros changed: ${ e.target.value }`,
                                 );
-                                setPasajeros(e.target.value);
+                                setPasajeros( e.target.value );
                             }}
                             min='1'
                             className='text-slate-900  w-2/5 h-1/2 border-2 border-medium-blue rounded-md p-2 text-center'
                         />
                     </section>
                     <section className='flex flex-col items-center'>
-                        <label>Tipo de Viaje:</label>
+                        <label>Tipo de Viaje</label>
                         <select
                             value={tipoViaje}
-                            onChange={(e) => {
+                            onChange={( e ) => {
                                 console.log(
-                                    `Tipo de Viaje changed: ${e.target.value}`,
+                                    `Tipo de Viaje changed: ${ e.target.value }`,
                                 );
-                                setTipoViaje(e.target.value);
+                                setTipoViaje( e.target.value );
                             }}
                             className='text-slate-900  w-4/5 h-1/2 border-2 border-medium-blue rounded-md'
                         >
@@ -54,62 +54,60 @@ const SearchForm = ({
                         </select>
                     </section>
                     <section className='flex flex-col items-center'>
-                        <label>Origen:</label>
+                        <label>Origen</label>
                         <input
                             type='text'
-                            placeholder='BCN'
-                            value={origen}
-                            onChange={(e) => {
-                                console.log(
-                                    `Origen changed: ${e.target.value}`,
-                                );
-                                setOrigen(e.target.value);
-                            }}
                             placeholder='JFK'
+                            value={origen}
+                            onChange={( e ) => {
+                                console.log(
+                                    `Origen changed: ${ e.target.value }`,
+                                );
+                                setOrigen( e.target.value );
+                            }}
                             className='text-slate-900  w-1/2 text-center border-2 border-medium-blue rounded-md'
                         />
                     </section>
                     <section className='flex flex-col items-center'>
-                        <label>Destino:</label>
+                        <label>Destino</label>
                         <input
                             type='text'
                             placeholder='MAD'
                             value={destino}
-                            onChange={(e) => {
+                            onChange={( e ) => {
                                 console.log(
-                                    `Destino changed: ${e.target.value}`,
+                                    `Destino changed: ${ e.target.value }`,
                                 );
-                                setDestino(e.target.value);
+                                setDestino( e.target.value );
                             }}
-                            placeholder='MAD'
                             className='text-slate-900  w-1/2 text-center border-2 border-medium-blue rounded-md'
                         />
                     </section>
                     <section className='flex flex-col items-center text-[12px]'>
-                        <label>Fecha de Salida:</label>
+                        <label>Fecha de Salida</label>
                         <input
                             type='date'
                             value={fechaSalida}
-                            onChange={(e) => {
+                            onChange={( e ) => {
                                 console.log(
-                                    `Fecha de Salida changed: ${e.target.value}`,
+                                    `Fecha de Salida changed: ${ e.target.value }`,
                                 );
-                                setFechaSalida(e.target.value);
+                                setFechaSalida( e.target.value );
                             }}
                             className='text-slate-900 text-center border-2 border-medium-blue rounded-md'
                         />
                     </section>
                     {tipoViaje === 'ida-vuelta' && (
                         <section className='flex flex-col items-center text-[12px]'>
-                            <label>Fecha de Retorno:</label>
+                            <label>Fecha de Retorno</label>
                             <input
                                 type='date'
                                 value={fechaRetorno}
-                                onChange={(e) => {
+                                onChange={( e ) => {
                                     console.log(
-                                        `Fecha de Retorno changed: ${e.target.value}`,
+                                        `Fecha de Retorno changed: ${ e.target.value }`,
                                     );
-                                    setFechaRetorno(e.target.value);
+                                    setFechaRetorno( e.target.value );
                                 }}
                                 className='text-slate-900 text-center border-2 border-medium-blue rounded-md'
                             />
