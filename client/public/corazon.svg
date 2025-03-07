@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M50 80 
+             C 20 50, 5 30, 25 18 
+             C 40 8, 50 20, 50 20 
+             C 50 20, 60 8, 75 18 
+             C 95 30, 80 50, 50 80" 
+        stroke="#e5f7ff" stroke-width="4" fill="none"/>
+</svg>
