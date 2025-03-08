@@ -3,6 +3,9 @@ import { useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import FlightCard from '../components/FlightCard';
 import FlightFilters from '../components/FlightFilters';
+import Header from '../components/Header';
+import useAuthContext from '../hooks/useAuthContext';
+import toast from 'react-hot-toast';
 
 // obtiene la variable de entorno
 const { VITE_API_URL } = import.meta.env;
@@ -12,8 +15,11 @@ const SearchResultsPage = () => {
 
     // obtiene la ubicación actual
     const location = useLocation();
-    const [ flights, setFlights ] = useState( [] );
-    console.log( "Location state:", location.state );
+    const [isSaved, setIsSaved] = useState(false);
+    const [title, setTitle] = useState('');
+    const { searchParams = {} } = location.state || {};
+    const [flights, setFlights] = useState(location.state?.flights ?? []);
+    const { authToken } = useAuthContext();
 
     // actualiza los vuelos cuando cambia la ubicación
 
@@ -81,6 +87,89 @@ const SearchResultsPage = () => {
         }
     };
 
+
+    useEffect(() => {
+        if (!location.state?.flights || location.state.flights.length === 0) {
+            console.warn("No flights received from API. Using default flights.");
+            setFlights([
+                {
+                    id: '1',
+                    price: 100,
+                    currency: 'USD',
+                    itineraries: [
+                        {
+                            id: '1',
+                            segments: [
+                                {
+                                    id: '1',
+                                    origin: 'MEX',
+                                    destination: 'CUN',
+                                    departureTime: '2022-12-01T08:00:00',
+                                    arrivalTime: '2022-12-01T09:00:00',
+                                    duration: 60,
+                                },
+                            ],
+                        },
+                    ],
+                },
+                {
+                    id: '2',
+                    price: 200,
+                    currency: 'USD',
+                    itineraries: [
+                        {
+                            id: '2',
+                            segments: [
+                                {
+                                    id: '2',
+                                    origin: 'CUN',
+                                    destination: 'MEX',
+                                    departureTime: '2022-12-01T10:00:00',
+                                    arrivalTime: '2022-12-01T11:00:00',
+                                    duration: 60,
+                                },
+                            ],
+                        },
+                    ],
+                },
+            ]);
+        } else {
+            setFlights(location.state.flights);
+        }
+    }, [location.state?.flights]);
+
+    const handleSave = async () => {
+        try {
+            const formattedFavorites = {
+                title:
+                    title.trim() ||
+                    `${searchParams.origin} - ${searchParams.destination}`,
+                origin: searchParams.origin,
+                destination: searchParams.destination,
+                departureDate: searchParams.departureDate,
+                returnDate: searchParams.returnDate || null,
+                adults: searchParams.adults,
+            };
+            // Enviamos los cambios al endpoint de actualización de favoritos.
+            const res = await fetch(`${VITE_API_URL}/api/users/favorites`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: authToken,
+                },
+                body: JSON.stringify(formattedFavorites),
+            });
+            // Obtenemos el body.
+            const body = await res.json();
+            if (!res.ok) throw new Error(body.message);
+            setIsSaved(true);
+            toast.success(body.message);
+        } catch (err) {
+            toast.error(err.message, {
+                id: 'favoriteId',
+            });
+        }
+    };
     // Mostrar un mensaje si no hay vuelos
     if ( !flights.length )
     {
@@ -89,12 +178,40 @@ const SearchResultsPage = () => {
 
     // Renderizar la página de resultados de búsqueda
     return (
+        <>
+        <Header/>
         <section>
             <FlightFilters onFilterChange={handleFilterChange} />
-            <h2>Resultados de la Búsqueda</h2>
+            {authToken && (
+                 <div className="w-full max-w-lg mx-auto mt-4 p-4 sm:p-6">
+     {/* Titulo de la búsqueda */}
+     <input
+         type='text'
+         placeholder='Titulo de la búsqueda'
+         value={title}
+         onChange={(e) => setTitle(e.target.value)}
+         name='title'
+         className="w-full p-3 border border-gray-300 rounded-md text-gray-700 focus:ring-2 focus:ring-medium-blue focus:border-medium-blue mb-4"
+     />
+     {/* Botón de guardar */}
+     <div className="text-center">
+         <button
+             onClick={handleSave}
+             disabled={isSaved}
+             className={`${
+                 isSaved ? 'bg-gray-400' : 'bg-medium-blue'
+             } text-white px-6 py-2 rounded-md hover:bg-dark-blue transition-all text-sm sm:text-base`}
+         >
+             {isSaved ? 'Guardado' : 'Guardar Búsqueda'}
+         </button>
+     </div>
+ </div>
+             )}
+                 <section className="w-full max-w-4xl mx-auto mt-6 p-4 sm:p-6 bg-white rounded-lg shadow-md mb-10">
+                     <h2 className="text-2xl sm:text-3xl font-semibold text-center text-dark-blue mb-4 sm:mb-6">Resultados de la Búsqueda</h2>
             <section className="flight-cards-container">
                 {flights.length > 0 ? (
-                    flights.map( ( flight, index ) => (
+                    flights.map( ( flight, index ) => ( 
                         <FlightCard key={`${ flight.id }-${ index }`} flight={flight} />
                     ) )
                 ) : (
@@ -102,6 +219,8 @@ const SearchResultsPage = () => {
                 )}
             </section>
         </section>
+        </section>
+        </>
     );
 };
 

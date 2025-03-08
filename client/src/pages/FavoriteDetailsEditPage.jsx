@@ -5,6 +5,7 @@ import useAuthContext from '../hooks/useAuthContext.js';
 import { useNavigate } from "react-router-dom";
 import toast from 'react-hot-toast';
 import Header from '../components/Header.jsx';
+import LogoAnimation from '../components/LogoAnimation';
 
 const { VITE_API_URL } = import.meta.env;
 
@@ -115,19 +116,72 @@ const handleSave = async () => {
 
     //Buscamos el vuelo favorito del usuario
     const navigate = useNavigate();
-    const handleFavoriteSearch = async (favorite) => {
-        const searchParams = new URLSearchParams({
-            origin: favorite.origin,
-            destination: favorite.destination,
-            departureDate: favorite.departureDate,
-            adults: favorite.adults,
-        });
 
-        if (favorite.returnDate) {
-            searchParams.append('returnDate', favorite.returnDate);
+
+    const handleFavoriteSearch = async (favorites) => {
+        try {
+            setLoading(true);
+            const searchParams = new URLSearchParams({
+                origin: favorites.origin,
+                destination: favorites.destination,
+                departureDate: formatDate(favorites.departureDate),
+                adults: favorites.adults,
+            });
+    
+            if (favorites.returnDate) {
+                searchParams.append('returnDate', formatDate(favorites.returnDate));
+            }
+
+        // Hacer la petición directamente a la API de vuelos
+        const res = await fetch(`${VITE_API_URL}/api/flights/search?${searchParams.toString()}`);
+        const body = await res.json();
+       console.log(searchParams.toString());
+
+        if (!res.ok || body.status === 'error') {
+            throw new Error(body.message || 'Error al obtener los vuelos');
         }
 
-        navigate(`/?${searchParams.toString()}`);
+        const flights = body || [];
+
+                // 🛫 Si es ida y vuelta, obtener también los vuelos de regreso
+                let returnFlights = [];
+                if (favorites.returnDate) {
+                    const searchParamsVuelta = new URLSearchParams({
+                        origin: favorites.destination,
+                        destination: favorites.origin,
+                        departureDate: formatDate(favorites.departureDate),
+                        adults: favorites.adults,
+                    });
+        
+                    const resVuelta = await fetch(`${VITE_API_URL}/api/flights/search?${searchParamsVuelta.toString()}`);
+                    const bodyVuelta = await resVuelta.json();
+        
+                    if (resVuelta.ok && bodyVuelta.length > 0) {
+                        returnFlights = bodyVuelta.map((flight) => ({ ...flight, isReturn: true }));
+                    }
+                }
+
+    
+            //Envia los datos del favorito para mostrar los vuelos directamente
+            navigate('/search-results', {
+                state: {
+                    flights: [...flights, ...returnFlights],
+                    searchParams: {
+                        origin: favorites.origin,
+                        destination: favorites.destination,
+                        departureDate: favorites.departureDate,
+                        returnDate: favorites.returnDate || null,
+                        adults: favorites.adults,
+                        tipoViaje: favorites.returnDate ? 'ida-vuelta' : 'ida',
+                    },
+                },
+            });
+        } catch (err) {
+            console.error('Error al buscar vuelos:', err);
+            toast.error('Error al buscar vuelos, inténtelo de nuevo más tarde.');
+        } finally {
+            setLoading(false);
+        }
     };
 
     const handleCancel = () => {
@@ -135,7 +189,7 @@ const handleSave = async () => {
         setIsEditing(false); // Dejamos de editar
     };
 
-    if (loading) return <p>Cargando favorito...</p>;
+    if (loading) return <LogoAnimation/>;
 
     // Mostramos la lista de favoritos.
     return (
@@ -294,7 +348,7 @@ const handleSave = async () => {
                         )}
                         <button
                             disabled={isEditing}
-                            onClick={handleFavoriteSearch}
+                            onClick={() => handleFavoriteSearch(favorites)}
                             className='bg-light-blue text-dark-blue py-2 px-4 rounded-md hover:bg-accent-blue focus:outline-none'
                         >
                             Ver Vuelos

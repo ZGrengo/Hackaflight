@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import useRatingList from '../hooks/useRatingList';
 import SearchForm from '../components/SearchForm';
@@ -27,12 +27,10 @@ const HomePage = () => {
     const [ recentSearches, setRecentSearches ] = useState( [] );
     const [ loading, setLoading ] = useState( false );
     const [ error, setError ] = useState( null );
-    const [ isAnimationComplete, setIsAnimationComplete ] = useState( false );
 
     // Hook para navegar entre rutas
     const navigate = useNavigate();
     const { isAuthenticated } = useContext( AuthContext );
-    const [ searchParams ] = useSearchParams();
     const { ratings } = useRatingList();
 
     // Hook para cargar las búsqueda populares
@@ -43,26 +41,6 @@ const HomePage = () => {
             { origen: 'Paris', destino: 'Londres' },
         ] );
     }, [] );
-
-    // Hook para cargar las búsquedas recientes
-    useEffect( () => {
-        const origin = searchParams.get( 'origin' );
-        const destination = searchParams.get( 'destination' );
-        const departureDate = searchParams.get( 'departureDate' );
-        const adults = searchParams.get( 'adults' );
-        const returnDate = searchParams.get( 'returnDate' );
-        if ( returnDate )
-        {
-            // Si hay fecha de retorno, establecemos el tipo de viaje a ida y vuelta
-            setTipoViaje( 'ida-vuelta' );
-            setFechaRetorno( returnDate.split( 'T' )[ 0 ] );
-        }
-        // Establecemos los valores de los campos del formulario
-        setOrigen( origin || '' );
-        setDestino( destination || '' );
-        setFechaSalida( departureDate || '' );
-        setPasajeros( adults ? parseInt( adults, 10 ) : 1 );
-    }, [ searchParams ] );
 
     // Hook para cargar las búsquedas recientes
     const loadRecentSearches = () => {
