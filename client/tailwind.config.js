@@ -11,11 +11,11 @@ export default {
             },
             fontFamily: {
                 // Tipografía para titulos:
-                heading: ['Poppins', 'serif'],
+                heading: ['Raleway'],
                 // para párrafos:
-                body: ['Poppins', 'serif'],
+                body: ['Poppins'],
                 // Para botones:
-                button: ['Poppins', 'sans-serif'],
+                button: ['Poppins'],
             },
         },
     },

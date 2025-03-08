@@ -82,8 +82,8 @@ const UserProfilePage = () => {
             <main className='bg-gradient-to-b from-dark-blue to-thite min-h-screen flex flex-col justify-between'>
                 <div className='flex flex-col items-center justify-center flex-1 p-4'>
                     <div className='bg-white p-6 sm:p-8 rounded-lg shadow-md w-full max-w-lg lg:max-w-4xl transition transform hover:scale-[1.008]'>
-                        <h2 className='text-3xl sm:text-4xl font-heading text-dark-blue text-center mb-6'>
-                            Perfil de Usuario
+                        <h2 className='text-3xl sm:text-4xl font-heading font-light  text-dark-blue text-center mb-6'>
+                            PERFIL DE USUARIO
                         </h2>
                         {/* Mostramos la información de usuario */}
                         <div className='flex flex-col lg:flex-row lg:items-center lg:justify-center lg:gap-16'>
@@ -132,7 +132,7 @@ const UserProfilePage = () => {
                         <div className='mt-8 space-y-4 lg:flex lg:space-y-0 lg:space-x-4 lg:mt-10'>
                             <button
                                 onClick={() => navigate('/users/profile/edit')}
-                                className='w-full py-3 font-button font-bold rounded-md transition-colors duration-300 bg-dark-blue text-white hover:bg-medium-blue'
+                                className='w-full py-3 font-button rounded-md transition-colors duration-300 bg-dark-blue text-white hover:bg-medium-blue'
                             >
                                 Editar perfil
                             </button>
@@ -140,7 +140,7 @@ const UserProfilePage = () => {
                                 onClick={() =>
                                     navigate('/Users/Profile/password')
                                 }
-                                className='w-full py-3 font-button font-bold rounded-md transition-colors duration-300 bg-dark-blue text-white hover:bg-medium-blue'
+                                className='w-full py-3 font-button  rounded-md transition-colors duration-300 bg-dark-blue text-white hover:bg-medium-blue'
                             >
                                 Cambiar contraseña
                             </button>
