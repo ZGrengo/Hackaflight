@@ -162,8 +162,8 @@ const EditProfilePage = () => {
             <Header />
             <main className='bg-gradient-to-b from-dark-blue to-thite min-h-screen flex flex-col justify-center p-4'>
                 <div className='bg-white p-6 sm:p-8 rounded-lg shadow-md w-full max-w-sm lg:max-w-4xl mx-auto transition transform hover:scale-[1.008]'>
-                    <h2 className='text-3xl sm:text-4xl font-heading text-dark-blue text-center mb-6'>
-                        Editar Perfil
+                    <h2 className='text-3xl sm:text-4xl font-heading font-light text-dark-blue text-center mb-6'>
+                        EDITAR PERFIL
                     </h2>
 
                     <div className='flex flex-col items-center apace-y-4 mb-6'>
@@ -180,7 +180,7 @@ const EditProfilePage = () => {
                         <button
                             type='button'
                             onClick={() => inputFileRef.current.click()}
-                            className='w-full py-2 font-button font-bold rounded-md transition-colors duration-300 bg-dark-blue text-white hover:bg-medium-blue'
+                            className='w-full py-2 font-button rounded-md transition-colors duration-300 bg-dark-blue text-white hover:bg-medium-blue'
                         >
                             Cambiar Avatar
                         </button>
@@ -271,7 +271,7 @@ const EditProfilePage = () => {
                             <button
                                 type='submit'
                                 disabled={loading}
-                                className='w-full py-2 font-button font-bold rounded-md transition-color duration-300 bg-dark-blue text-white hover:bg-medium-blue'
+                                className='w-full py-2 font-button  rounded-md transition-color duration-300 bg-dark-blue text-white hover:bg-medium-blue'
                             >
                                 {loading ? 'Actualizando...' : 'Actualizar'}
                             </button>
@@ -279,7 +279,7 @@ const EditProfilePage = () => {
                                 type='button'
                                 onClick={() => navigate('/users/profile')}
                                 disabled={loading}
-                                className='w-full py-2 font-button font-bold rounded-md transition-color duration-300 bg-gray-200 text-dark-blue hover:bg-gray-300'
+                                className='w-full py-2 font-button rounded-md transition-color duration-300 bg-gray-200 text-dark-blue hover:bg-gray-300'
                             >
                                 Cancelar
                             </button>
@@ -288,7 +288,7 @@ const EditProfilePage = () => {
                     <hr className='my-4' />
                     <button
                         onClick={() => navigate('/users/profile/password')}
-                        className='w-full py-2 font-button font-bold rounded-md transition-colors duration-300 bg-dark-blue text-white hover:bg-medium-blue'
+                        className='w-full py-2 font-button rounded-md transition-colors duration-300 bg-dark-blue text-white hover:bg-medium-blue'
                     >
                         Cambiar Contraseña
                     </button>
