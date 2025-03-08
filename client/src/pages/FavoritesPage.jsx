@@ -5,11 +5,19 @@ import toast from 'react-hot-toast';
 const { VITE_API_URL } = import.meta.env;
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header.jsx';
+import LogoAnimation from '../components/LogoAnimation';
 
 const FavoritesPage = () => {
     const [favorites, setFavorites] = useState([]);
     const [loading, setLoading] = useState(true);
     const { authToken } = useAuthContext();
+    
+    //Formato de la fecha para que pueda ser enviada al endpoint de actualización de favoritos.
+    const formatDate = (date) => {
+        if (!date) return null; // Si la fecha es null, no la formateamos
+        const newDate = new Date(date);
+        return newDate.toISOString().split('T')[0]; // Devuelve solo la parte de la fecha (sin hora)
+    };
 
     useEffect(() => {
         if (!authToken) return;
@@ -43,18 +51,72 @@ const FavoritesPage = () => {
     }, [authToken]);
     const navigate = useNavigate();
     const handleFavoriteSearch = async (favorite) => {
-        const searchParams = new URLSearchParams({
-            origin: favorite.origin,
-            destination: favorite.destination,
-            departureDate: favorite.departureDate,
-            adults: favorite.adults,
-        });
+        try {
+            console.log(favorite);
+            setLoading(true);
+            const searchParams = new URLSearchParams({
+                origin: favorite.origin,
+                destination: favorite.destination,
+                departureDate: formatDate(favorite.departureDate),
+                adults: favorite.adults,
+            });
+    
+            if (favorite.returnDate) {
+                searchParams.append('returnDate', formatDate(favorite.returnDate));
+            }
 
-        if (favorite.returnDate) {
-            searchParams.append('returnDate', favorite.returnDate);
+        // Hacer la petición directamente a la API de vuelos
+        const res = await fetch(`${VITE_API_URL}/api/flights/search?${searchParams.toString()}`);
+        const body = await res.json();
+        
+        
+
+
+        if (!res.ok || body.status === 'error') {
+            throw new Error(body.message || 'Error al obtener los vuelos');
         }
 
-        navigate(`/?${searchParams.toString()}`);
+        const flights = body || [];
+
+                // 🛫 Si es ida y vuelta, obtener también los vuelos de regreso
+                let returnFlights = [];
+                if (favorite.returnDate) {
+                    console.log("Fecha de retorno:", favorite.returnDate);
+                    const searchParamsVuelta = new URLSearchParams({
+                        origin: favorite.destination,
+                        destination: favorite.origin,
+                        departureDate: formatDate(favorite.departureDate),
+                        adults: favorite.adults,
+                    });
+        
+                    const resVuelta = await fetch(`${VITE_API_URL}/api/flights/search?${searchParamsVuelta.toString()}`);
+                    const bodyVuelta = await resVuelta.json();
+                    
+                    if (resVuelta.ok && bodyVuelta.length > 0) {
+                        returnFlights = bodyVuelta.map((flight) => ({ ...flight, isReturn: true }));
+                    }
+                }
+    
+            //Envia los datos del favorito para mostrar los vuelos directamente
+            navigate('/search-results', {
+                state: {
+                    flights: [...flights, ...returnFlights],
+                    searchParams: {
+                        origin: favorite.origin,
+                        destination: favorite.destination,
+                        departureDate: favorite.departureDate,
+                        returnDate: favorite.returnDate || null,
+                        adults: favorite.adults,
+                        tipoViaje: favorite.returnDate ? 'ida-vuelta' : 'ida',
+                    },
+                },
+            });
+        } catch (err) {
+            console.error('Error al buscar vuelos:', err);
+            toast.error('Error al buscar vuelos, inténtelo de nuevo más tarde.');
+        } finally {
+            setLoading(false);
+        }
     };
 
     const handleDeleteFavorite = async (favoriteId) => {
@@ -83,7 +145,7 @@ const FavoritesPage = () => {
         }
     };
 
-    if (loading) return <p className="text-center text-lg text-gray-600">Cargando favoritos...</p>;
+    if (loading) return <LogoAnimation/>;
 
     return (
         <div className="flex flex-col min-h-screen">
@@ -108,7 +170,7 @@ const FavoritesPage = () => {
                                 className="bg-gray-100 p-4 rounded-lg shadow-sm"
                             >
                                 <p className="text-base sm:text-lg font-medium text-gray-800">
-                                    {favorite.title}: Desde{' '}
+                                    {favorite.title} - Desde{' '}
                                     <span className="text-medium-blue">
                                         {favorite.origin}
                                     </span>{' '}
@@ -124,6 +186,13 @@ const FavoritesPage = () => {
                                         month: 'long',
                                         year: 'numeric',
                                     })}{' '}
+
+                                    {favorite.returnDate ? `- Fecha de retorno: ${new Date(favorite.returnDate).toLocaleDateString('es-ES', {
+                                            day: '2-digit',
+                                            month: 'long',
+                                            year: 'numeric',
+                                        })}  ` : ''}
+
                                     | Adultos: {favorite.adults}
                                 </p>
     
