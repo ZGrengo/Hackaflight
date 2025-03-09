@@ -27,6 +27,7 @@ const HomePage = () => {
     const [ recentSearches, setRecentSearches ] = useState( [] );
     const [ loading, setLoading ] = useState( false );
     const [ error, setError ] = useState( null );
+    const [suggestions, setSuggestions] = useState([]);
 
     // Hook para navegar entre rutas
     const navigate = useNavigate();
@@ -217,6 +218,8 @@ const HomePage = () => {
                             setDestino={setDestino}
                             setPasajeros={setPasajeros}
                             handleSubmit={handleSubmit}
+                            suggestions={suggestions}
+                            setSuggestions={setSuggestions}
                         />
                         {/* Mostramos un mensaje de carga si está cargando */}
                         {loading && (
