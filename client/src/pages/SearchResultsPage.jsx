@@ -193,7 +193,40 @@ const SearchResultsPage = () => {
          name='title'
          className="w-full p-3 border border-gray-300 rounded-md text-gray-700 focus:ring-2 focus:ring-medium-blue focus:border-medium-blue mb-4"
      />
-     {/* Botón de guardar */}
+     {/* Botón de guardar y lista de parametros */}
+     <ul className="space-y-4">
+                            <li
+                                key={searchParams.favoriteId}
+                                className="bg-gray-100 p-4 rounded-lg shadow-sm mb-3"
+                            >
+                                <p className="text-base sm:text-lg font-medium text-gray-800">
+                                     Desde{' '}
+                                    <span className="text-medium-blue">
+                                        {searchParams.origin}
+                                    </span>{' '}
+                                    a{' '}
+                                    <span className="text-medium-blue">
+                                        {searchParams.destination}
+                                    </span>
+                                </p>
+                                <p className="text-sm text-gray-600">
+                                    Fecha de salida:{' '}
+                                    {new Date(searchParams.departureDate).toLocaleDateString('es-ES', {
+                                        day: '2-digit',
+                                        month: 'long',
+                                        year: 'numeric',
+                                    })}{' '}
+
+                                    {searchParams.returnDate ? `- Fecha de retorno: ${new Date(searchParams.returnDate).toLocaleDateString('es-ES', {
+                                            day: '2-digit',
+                                            month: 'long',
+                                            year: 'numeric',
+                                        })}  ` : ''}
+
+                                    | Adultos: {searchParams.adults}
+                                </p>
+                            </li>
+                    </ul>
      <div className="text-center">
          <button
              onClick={handleSave}

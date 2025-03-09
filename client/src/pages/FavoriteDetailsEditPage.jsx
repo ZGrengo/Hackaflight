@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import toast from 'react-hot-toast';
 import Header from '../components/Header.jsx';
 import LogoAnimation from '../components/LogoAnimation';
+import aircodes from 'aircodes';
 
 const { VITE_API_URL } = import.meta.env;
 
@@ -16,6 +17,22 @@ const FavoriteDetailsEditPage = () => {
     const [isEditing, setIsEditing] = useState(false);
     const { favoriteId } = useParams();
     const { authToken, authUser } = useAuthContext();
+
+        const [originSuggestions, setOriginSuggestions] = useState([]);
+        const [destinationSuggestions, setDestinationSuggestions] = useState([]);
+    
+        // Función para buscar aeropuertos con `aircodes`
+        const handleSearch = (query, setSuggestions) => {
+            if (query.length < 3) {
+                setSuggestions([]);
+                return;
+            }
+    
+            const results = aircodes.findAirport(query) || []; // 🔍 Busca aeropuertos por ciudad, país o código IATA
+    
+            setSuggestions(results);
+        };
+    
     // Obtenemos la lista de favoritos del usuario.
     useEffect(() => {
         const fetchFavorites = async () => {
@@ -216,38 +233,71 @@ const handleSave = async () => {
                             className='w-full px-4 py-3 rounded-md border border-gray-300 focus:ring-2 focus:ring-medium-blue focus:outline-none'
                         />
                     </div>
-                    <div className='mb-6'>
-                        <label
-                            htmlFor='destination'
-                            className='block text-base font-medium text-dark-blue mb-2'
-                        >
-                            Destino
-                        </label>
-                        <input
-                            type='text'
-                            name='destination'
-                            value={favorites.destination || ''}
-                            onChange={handleChange}
-                            readOnly={!isEditing}
-                            className='w-full px-4 py-3 rounded-md border border-gray-300 focus:ring-2 focus:ring-medium-blue focus:outline-none'
-                        />
-                    </div>
-
-                    <div className='mb-6'>
-                        <label
-                            htmlFor='origin'
-                            className='block text-base font-medium text-dark-blue mb-2'
-                        >
+                    <div className='mb-6 relative'>
+                        <label htmlFor='origin' className='block text-base font-medium text-dark-blue mb-2'>
                             Origen
                         </label>
                         <input
                             type='text'
                             name='origin'
                             value={favorites.origin || ''}
-                            onChange={handleChange}
+                            onChange={(e) => {
+                                handleChange(e);
+                                handleSearch(e.target.value, setOriginSuggestions);
+                            }}
                             readOnly={!isEditing}
                             className='w-full px-4 py-3 rounded-md border border-gray-300 focus:ring-2 focus:ring-medium-blue focus:outline-none'
                         />
+                        {originSuggestions.length > 0 && (
+                            <ul className='absolute top-full bg-white text-black border border-gray-300 .w-auto max-h-48 overflow-y-auto rounded-md shadow-md z-10'>
+                                {originSuggestions.map((airport) => (
+                                    <li
+                                        key={airport.iata}
+                                        className='p-2 hover:bg-gray-200 cursor-pointer'
+                                        onClick={() => {
+                                            setFavorite({ ...favorites, origin: airport.iata });
+                                            setOriginSuggestions([]); // Ocultar las sugerencias
+                                        }}
+                                    >
+                                        {airport.city} - {airport.name} ({airport.iata})
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
+                    </div>
+
+                    {/* Destino */}
+                    <div className='mb-6 relative'>
+                        <label htmlFor='destination' className='block text-base font-medium text-dark-blue mb-2'>
+                            Destino
+                        </label>
+                        <input
+                            type='text'
+                            name='destination'
+                            value={favorites.destination || ''}
+                            onChange={(e) => {
+                                handleChange(e);
+                                handleSearch(e.target.value, setDestinationSuggestions);
+                            }}
+                            readOnly={!isEditing}
+                            className='w-full px-4 py-3 rounded-md border border-gray-300 focus:ring-2 focus:ring-medium-blue focus:outline-none'
+                        />
+                        {destinationSuggestions.length > 0 && (
+                            <ul className='absolute top-full bg-white text-black border border-gray-300 .w-auto max-h-48 overflow-y-auto rounded-md shadow-md'>
+                                {destinationSuggestions.map((airport) => (
+                                    <li
+                                        key={airport.iata}
+                                        className='p-2 hover:bg-gray-200 cursor-pointer'
+                                        onClick={() => {
+                                            setFavorite({ ...favorites, destination: airport.iata });
+                                            setDestinationSuggestions([]); // Ocultar las sugerencias
+                                        }}
+                                    >
+                                        {airport.city} - {airport.name} ({airport.iata})
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
                     </div>
 
                     <div className='mb-6'>
