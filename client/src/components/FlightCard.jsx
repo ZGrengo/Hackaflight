@@ -58,9 +58,13 @@ const FlightCard = ( { flight, searchParams } ) => {
                             </div>
                         ) )}
                     </div>
-                    <p className="mb-2">Vuelo <span className="font-bold  text-cyan-200">{oneWay ? 'Solo ida' : 'Ida y vuelta'}</span></p>
-                    <p>De <span className="font-bold text-cyan-200">{searchParams.origin}</span> a <span className="font-bold text-cyan-200">{searchParams.destination}</span></p>
-                    <p>Volando con <span className="font-bold text-cyan-200"> {getAirlines( itineraries )}</span> .</p>
+                    <p className="mb-2">Vuelo <span className="font-bold text-cyan-200">{oneWay ? 'Solo ida' : 'Ida y vuelta'}</span></p>
+                    {searchParams && (
+                        <>
+                            <p>De <span className="font-bold text-cyan-200">{searchParams.origin}</span> a <span className="font-bold text-cyan-200">{searchParams.destination}</span></p>
+                            <p>Volando con <span className="font-bold text-cyan-200">{getAirlines( itineraries )}</span></p>
+                        </>
+                    )}
                 </div>
                 <br />
                 <div className="bg-medium-blue p-3 rounded-lg text-dark-blue">
@@ -118,9 +122,9 @@ FlightCard.propTypes = {
         oneWay: PropTypes.bool.isRequired
     } ).isRequired,
     searchParams: PropTypes.shape( {
-        origin: PropTypes.string.isRequired,
-        destination: PropTypes.string.isRequired,
-    } ).isRequired,
+        origin: PropTypes.string,
+        destination: PropTypes.string,
+    } ),
 };
 
 export default FlightCard;
