@@ -7,6 +7,7 @@ const FlightFilters = ( { onFilterChange } ) => {
         minPrice: '',
         maxPrice: '',
         sortByPrice: '',
+        airline: '',
     } );
 
     const handleInputChange = ( e ) => {
@@ -49,6 +50,16 @@ const FlightFilters = ( { onFilterChange } ) => {
                         </select>
                     </div>
                     <div>
+                        <label className="block text-base font-medium text-gray-700">Aerolíneas</label>
+                        <input
+                            type="text"
+                            name="airline"
+                            value={filters.airline}
+                            onChange={handleInputChange}
+                            className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-medium-blue focus:border-medium-blue text-sm"
+                        />
+                    </div>
+                    <div>
                         <label className="block text-base font-medium text-gray-700">Precio Mínimo</label>
                         <input
                             type="number"
@@ -89,7 +100,7 @@ const FlightFilters = ( { onFilterChange } ) => {
                     </div>
                 </div>
             </div>
-        </section >
+        </section>
     );
 };
 
