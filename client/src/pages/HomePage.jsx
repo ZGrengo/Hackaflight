@@ -29,6 +29,7 @@ const HomePage = () => {
     const [ error, setError ] = useState( null );
     const [suggestions, setSuggestions] = useState([]);
 
+
     // Hook para navegar entre rutas
     const navigate = useNavigate();
     const { isAuthenticated } = useContext( AuthContext );
@@ -167,7 +168,7 @@ const HomePage = () => {
         } catch ( err )
         {
             console.error( 'Error al buscar vuelos:', err );
-            toast.error( 'Error al buscar vuelos, inténtelo de nuevo más tarde.' );
+            toast.error(err.message || 'Error al buscar vuelos, inténtelo de nuevo más tarde.');
         } finally
         {
             setLoading( false );

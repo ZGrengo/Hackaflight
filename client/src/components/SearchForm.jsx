@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import aircodes from 'aircodes';
 
 const SearchForm = ({
@@ -20,6 +20,9 @@ const SearchForm = ({
     const [originSuggestions, setOriginSuggestions] = useState([]);
     const [destinationSuggestions, setDestinationSuggestions] = useState([]);
 
+    const originRef = useRef(null);
+    const destinationRef = useRef(null);
+
     // Función para buscar aeropuertos con `aircodes`
     const handleSearch = (query, setSuggestions) => {
         if (query.length < 3) {
@@ -31,6 +34,24 @@ const SearchForm = ({
 
         setSuggestions(results);
     };
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (
+                originRef.current && !originRef.current.contains(event.target) &&
+                destinationRef.current && !destinationRef.current.contains(event.target)
+            ) {
+                setOriginSuggestions([]);
+                setDestinationSuggestions([]);
+            }
+        };
+
+        document.addEventListener("click", handleClickOutside);
+        return () => {
+            document.removeEventListener("click", handleClickOutside);
+        };
+    }, []);
+
 
     return (
         <section className='relative z-10 top-48 opacity-90 flex justify-center items-center text-sm'>
@@ -62,11 +83,11 @@ const SearchForm = ({
                     </section>
 
                     {/* Origen */}
-                    <section className='flex flex-col items-center relative'>
+                    <section ref={originRef} className='flex flex-col items-center relative'>
                         <label>Origen</label>
                         <input
                             type='text'
-                            placeholder='Ej: Madrid, JFK, LAX'
+                            placeholder='JFK'
                             value={origen}
                             onChange={(e) => {
                                 setOrigen(e.target.value);
@@ -94,11 +115,11 @@ const SearchForm = ({
                     </section>
 
                     {/* Destino */}
-                    <section className='flex flex-col items-center relative'>
+                    <section ref={destinationRef} className='flex flex-col items-center relative'>
                         <label>Destino</label>
                         <input
                             type='text'
-                            placeholder='Ej: Barcelona, CDG, MIA'
+                            placeholder='MAD'
                             value={destino}
                             onChange={(e) => {
                                 setDestino(e.target.value);
@@ -131,6 +152,7 @@ const SearchForm = ({
                             type='date'
                             value={fechaSalida}
                             onChange={(e) => setFechaSalida(e.target.value)}
+                            min={new Date().toISOString().split('T')[0]}
                             className='text-slate-900 text-center border-2 border-medium-blue rounded-md'
                         />
                     </section>
@@ -143,6 +165,7 @@ const SearchForm = ({
                                 value={fechaRetorno}
                                 onChange={(e) => setFechaRetorno(e.target.value)}
                                 className='text-slate-900 text-center border-2 border-medium-blue rounded-md'
+                                min={fechaSalida || new Date().toISOString().split('T')[0]}
                             />
                         </section>
                     )}
