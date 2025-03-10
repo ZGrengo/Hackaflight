@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 // Importamos el contexto de autorización.
 import useAuthContext from '../hooks/useAuthContext.js';
 import Header from '../components/Header.jsx';
+import { Eye, EyeOff } from 'lucide-react';
 // Importamos la URL de nuestra API.
 const { VITE_API_URL } = import.meta.env;
 // Inicializamos el componente
@@ -19,6 +20,7 @@ const ChangePasswordPage = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     // cargando
     const [loading, setLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
 
     const handlePasswordChange = async (e) => {
         e.preventDefault();
@@ -64,14 +66,26 @@ const ChangePasswordPage = () => {
                 <div className='bg-white p-6 sm:p-8 rounded-lg shadow-md w-full max-w-sm lg:max-w-4xl mx-auto transition transform hover:scale-[1.008]'>
                     <h2 className='text-3xl sm:text-4xl font-heading font-light text-dark-blue text-center mb-6'>
                         CAMBIAR CONTRASEÑA
+                        <button
+                            type='button'
+                            onClick={() => setShowPassword(!showPassword)}
+                            className=' text-[#3951AA] hover:text-[#179DD9] pl-5 '
+                        >
+                            {showPassword ? (
+                                <EyeOff size={40} />
+                            ) : (
+                                <Eye size={40} />
+                            )}
+                        </button>
                     </h2>
+
                     <form onSubmit={handlePasswordChange} className='space-y-4'>
                         <div>
                             <label className='block text-dark-blue font-medium text-sm mb-1 font-body'>
                                 Contraseña Actual:
                             </label>
                             <input
-                                type='password'
+                                type={showPassword ? 'text' : 'password'}
                                 value={currentPassword}
                                 onChange={(e) =>
                                     setCurrentPassword(e.target.value)
@@ -87,7 +101,7 @@ const ChangePasswordPage = () => {
                                 Nueva Contraseña:
                             </label>
                             <input
-                                type='password'
+                                type={showPassword ? 'text' : 'password'}
                                 value={newPassword}
                                 onChange={(e) => setNewPassword(e.target.value)}
                                 required
@@ -101,7 +115,7 @@ const ChangePasswordPage = () => {
                                 Confirmar Contraseña:
                             </label>
                             <input
-                                type='password'
+                                type={showPassword ? 'text' : 'password'}
                                 value={confirmPassword}
                                 onChange={(e) =>
                                     setConfirmPassword(e.target.value)
