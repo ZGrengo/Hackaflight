@@ -60,12 +60,14 @@ const ChangePasswordPage = () => {
     return (
         <>
             <Header />
-            <main className='bg-[#E5f7ff] min-h-screen flex items-center justify-center p-4'>
-                <div className='bg-white p-6 rounded-lg shadow-md w-full max-w-sm'>
-                    <h2>Cambiar Contraseña</h2>
+            <main className='bg-gradient-to-b from-dark-blue to-white min-h-screen flex flex-col justify-center p-4'>
+                <div className='bg-white p-6 sm:p-8 rounded-lg shadow-md w-full max-w-sm lg:max-w-4xl mx-auto transition transform hover:scale-[1.008]'>
+                    <h2 className='text-3xl sm:text-4xl font-heading font-light text-dark-blue text-center mb-6'>
+                        CAMBIAR CONTRASEÑA
+                    </h2>
                     <form onSubmit={handlePasswordChange} className='space-y-4'>
                         <div>
-                            <label className='block text-[#083059] font-medium text-sm mb-1'>
+                            <label className='block text-dark-blue font-medium text-sm mb-1 font-body'>
                                 Contraseña Actual:
                             </label>
                             <input
@@ -77,11 +79,11 @@ const ChangePasswordPage = () => {
                                 required
                                 autoComplete='current-password'
                                 disabled={loading}
-                                className='w-full p-3 border border-[#3951AA] rounded-md focus:outline-none focus:ring-2 focus:ring-[#179DD9]'
+                                className='w-full p-3 border border-accent-blue rounded-md focus:outline-none focus:ring-2 focus:ring-medium-blue font-body'
                             />
                         </div>
                         <div>
-                            <label className='block text-[#083059] font-medium text-sm mb-1'>
+                            <label className='block text-dark-blue font-medium text-sm mb-1 font-body'>
                                 Nueva Contraseña:
                             </label>
                             <input
@@ -91,11 +93,11 @@ const ChangePasswordPage = () => {
                                 required
                                 autoComplete='new-password'
                                 disabled={loading}
-                                className='w-full p-3 border border-[#3951AA rounded-md focus:outline-none focus:ring-2 focus:ring-[#179DD9]'
+                                className='w-full p-3 border border-accent-blue rounded-md focus:outline-none focus:ring-2 focus:ring-medium-blue font-body'
                             />
                         </div>
                         <div>
-                            <label className='block text-[#083059] font-medium text-sm mb-1'>
+                            <label className='block text-dark-blue font-medium text-sm mb-1 font-body'>
                                 Confirmar Contraseña:
                             </label>
                             <input
@@ -107,24 +109,29 @@ const ChangePasswordPage = () => {
                                 required
                                 autoComplete='new-password'
                                 disabled={loading}
-                                className='w-full p-3 border border-[#3951AA rounded-md focus:outline-none focus:ring-2 focus:ring-[#179DD9'
+                                className='w-full p-3 border border-accent-blue rounded-md focus:outline-none focus:ring-2 focus:ring-medium-blue font-body'
                             />
                         </div>
-                        <button
-                            type='submit'
-                            disabled={loading}
-                            className='w-full py-2 font-bold rounded-md transition bg-[#083059] text-white hover:bg-[#179DD9'
-                        >
-                            {loading ? 'Actualizando...' : 'Cambiar contraseña'}
-                        </button>
+                        <div className='flex flex-col space-y-4 lg:flex-row lg:space-y-0 lg:space-x-4 mt-6'>
+                            <button
+                                type='submit'
+                                disabled={loading}
+                                className='w-full py-2 font-button rounded-md transition-colors duration-300 bg-dark-blue text-white hover:bg-medium-blue'
+                            >
+                                {loading
+                                    ? 'Actualizando...'
+                                    : 'Cambiar contraseña'}
+                            </button>
+                            <button
+                                type='button'
+                                onClick={() => navigate('/users/profile')}
+                                disabled={loading}
+                                className='w-full py-2 font-button rounded-md transition-colors duration-300 bg-gray-200 text-dark-blue hover:bg-gray-300'
+                            >
+                                Cancelar
+                            </button>
+                        </div>
                     </form>
-                    <button
-                        onClick={() => navigate('/users/profile')}
-                        disabled={loading}
-                        className='w-full py-2 mt-3 font-bold rounded-md transition bg-gray-200 text-[#083059] hover:bg-gray-300'
-                    >
-                        Cancelar
-                    </button>
                 </div>
             </main>
         </>

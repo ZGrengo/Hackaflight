@@ -267,7 +267,7 @@ const EditProfilePage = () => {
                                 className='w-full p-3 border border-gray-300 rounded-md bg-gray-100 text-gray-600 font-body'
                             />
                         </div>
-                        <div className='flex flex-col space-y-4 lg:flex-row lg:space-y-0 lg:space-x-4'>
+                        <div className='flex flex-col space-y-4 lg:flex-row lg:space-y-0 lg:space-x-4 mt-6'>
                             <button
                                 type='submit'
                                 disabled={loading}
