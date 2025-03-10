@@ -57,38 +57,42 @@ const SendRecoverPassPage = () => {
     return (
         <>
             <Header />
-            <main className='flex flex-col items-center pt-[50px] bg-[#e5f7ff]'>
-                <h2 className='font-bold text-[25px] text-[#083059]'>
-                    Recuperacion de contraseña
-                </h2>
-                <p className='font-bold text-[20px] text-[#083059]'>
-                    Por favor introduce el correo electronico registrado.
-                </p>
-                <form
-                    onSubmit={handleSendRecoveryPassCode}
-                    className='flex flex-col gap-[30px] p-[30px] font-bold'
-                >
-                    <label htmlFor='email'>Correo electronico:</label>
-                    <input
-                        className='w-full py-[8px] px-[20px] pr-[40px] text-[20px] rounded-[30px] border-none bg-[#083059]
-                     text-[white] transition-all duration-[300ms] ease-in-out focus:border-blue-500 focus:outline-[#3951aa]'
-                        type='email'
-                        id='email'
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        autoComplete='new-password'
-                        autoFocus
-                        required
-                    />
-
-                    <button
-                        className='w-full py-[8px] px-[30px] pr-[40px] text-[20px] rounded-[30px] border-none bg-[#083059]
-                    text-[white] transition-all duration-[300ms] ease-in-out mt-[20px]  focus:border-blue-500 focus:outline-[#179dd9] hover:bg-[#179dd9]'
-                        disabled={loading}
+            <main className='bg-[#E5F7FF] flex items-center justify-center min-h-screen p-4'>
+                <div className='bg-white p-8 rounded-lg shadow-md w-full max-w-md'>
+                    <h2 className='font-bold text-[25px] text-[#083059]'>
+                        Recuperacion de contraseña
+                    </h2>
+                    <p className='font-heavy text-[20px] text-[#083059]'>
+                        Por favor introduce el correo electronico registrado.
+                    </p>
+                    <form
+                        onSubmit={handleSendRecoveryPassCode}
+                        className='flex flex-col gap-[30px] p-[30px] font-bold'
                     >
-                        Enviar
-                    </button>
-                </form>
+                        <input
+                            className='w-full p-3 border border-[#3951AA] rounded-md focus:outline-none focus:ring-2 focus:ring-[#179DD9]'
+                            type='email'
+                            id='email'
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            autoComplete='new-password'
+                            autoFocus
+                            required
+                        />
+
+                        <button
+                            disabled={loading}
+                            className={`w-full py-3 font-bold rounded-md transition 
+                                ${
+                                    loading
+                                        ? 'bg-gray-400 cursor-not-allowed'
+                                        : 'bg-[#179DD9] text-white hover:bg-[#083059]'
+                                }`}
+                        >
+                            {loading ? 'Enviando...' : 'Enviar'}
+                        </button>
+                    </form>
+                </div>
             </main>
         </>
     );
