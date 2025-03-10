@@ -195,7 +195,7 @@ const handleSave = async () => {
             });
         } catch (err) {
             console.error('Error al buscar vuelos:', err);
-            toast.error('Error al buscar vuelos, inténtelo de nuevo más tarde.');
+            toast.error(err.message || 'Error al buscar vuelos, inténtelo de nuevo más tarde.');
         } finally {
             setLoading(false);
         }
@@ -212,7 +212,7 @@ const handleSave = async () => {
     return (
         <>
             <Header />
-            <main className='bg-light-blue p-8 rounded-lg shadow-md w-full max-w-lg mx-auto mt-10 mb-10'>
+            <main className='bg-light-blue p-8 rounded-lg shadow-md w-full max-w-lg mx-auto mt-10 mb-20'>
                 <h2 className='text-center text-dark-blue text-3xl mb-6'>
                     Detalles del Favorito
                 </h2>
@@ -318,6 +318,7 @@ const handleSave = async () => {
                                     : ''
                             }
                             onChange={handleChange}
+                            min={new Date().toISOString().split('T')[0]}
                             readOnly={!isEditing}
                             className='w-full px-4 py-3 rounded-md border border-gray-300 focus:ring-2 focus:ring-medium-blue focus:outline-none'
                         />
@@ -342,6 +343,7 @@ const handleSave = async () => {
                             }
                             onChange={handleChange}
                             readOnly={!isEditing}
+                            min={favorites.departureDate ? new Date(favorites.departureDate).toISOString().split('T')[0] : new Date().toISOString().split('T')[0]}
                             className='w-full px-4 py-3 rounded-md border border-gray-300 focus:ring-2 focus:ring-medium-blue focus:outline-none'
                         />
                     </div>

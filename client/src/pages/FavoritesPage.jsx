@@ -113,7 +113,7 @@ const FavoritesPage = () => {
             });
         } catch (err) {
             console.error('Error al buscar vuelos:', err);
-            toast.error('Error al buscar vuelos, inténtelo de nuevo más tarde.');
+            toast.error(err.message || 'Error al buscar vuelos, inténtelo de nuevo más tarde.');
         } finally {
             setLoading(false);
         }
