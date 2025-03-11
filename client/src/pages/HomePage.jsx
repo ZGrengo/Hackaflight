@@ -11,6 +11,7 @@ import LogoAnimation from '../components/LogoAnimation';
 //import PaperPlaneAnimation from '../components/PaperPlaneAnimation';
 import RatingsSummary from '../components/RatingsSummary';
 import { AuthContext } from '../contexts/AuthContext';
+import SlideshowCircle from '../components/Slideshow';
 
 // Obtenemos las variables de entorno
 const { VITE_API_URL } = import.meta.env;
@@ -18,7 +19,7 @@ const { VITE_API_URL } = import.meta.env;
 // Página de inicio
 const HomePage = () => {
     // Estados para la búsqueda
-    const [tipoViaje, setTipoViaje] = useState('ida');
+    const [tipoViaje, setTipoViaje] = useState('ida-vuelta');
     const [fechaSalida, setFechaSalida] = useState('');
     const [fechaRetorno, setFechaRetorno] = useState('');
     const [origen, setOrigen] = useState('');
@@ -196,44 +197,46 @@ const HomePage = () => {
 
     // Renderizamos el componente
     return (
-        <main>
+        <main className='min-h-screen bg-gradient-to-b from-dark-blue to-white'>
             <LogoAnimation />
             <Header />
 
-            <section className='bg-gradient-to-b from-dark-blue to-white min-h-screen flex flex-col justify-between'>
-                <div className=''>
-                    <div className=''>
-                        <SearchForm
-                            tipoViaje={tipoViaje}
-                            fechaSalida={fechaSalida}
-                            fechaRetorno={fechaRetorno}
-                            origen={origen}
-                            destino={destino}
-                            pasajeros={pasajeros}
-                            setTipoViaje={setTipoViaje}
-                            setFechaSalida={setFechaSalida}
-                            setFechaRetorno={setFechaRetorno}
-                            setOrigen={setOrigen}
-                            setDestino={setDestino}
-                            setPasajeros={setPasajeros}
-                            handleSubmit={handleSubmit}
-                            suggestions={suggestions}
-                            setSuggestions={setSuggestions}
-                        />
-                    </div>
-                    {/* Mostramos un mensaje de carga si está cargando */}
-                    {loading && (
-                        <div className='absolute top-1/2 z-30 transform -translate-y-1/2 text-center'>
-                            <div className='w-24 h-24 border-8 border-dashed rounded-full animate-spin border-medium-blue mx-auto mb-4'></div>
-                            <h2 className='text-medium-blue text-2xl font-medium'>
-                                Loading...
+            <section className='relative flex flex-col items-center justify-center p-4 mt-20 md:md-16'>
+                {/* el SlideshowCircle solo se muentra en escritorio*/}
+                <SlideshowCircle />
+                <div className='bg-white p-6 sm:p-8 rounded-lg shadow-md w-full max-w-5xl relative z-20'>
+                    <SearchForm
+                        tipoViaje={tipoViaje}
+                        fechaSalida={fechaSalida}
+                        fechaRetorno={fechaRetorno}
+                        origen={origen}
+                        destino={destino}
+                        pasajeros={pasajeros}
+                        setTipoViaje={setTipoViaje}
+                        setFechaSalida={setFechaSalida}
+                        setFechaRetorno={setFechaRetorno}
+                        setOrigen={setOrigen}
+                        setDestino={setDestino}
+                        setPasajeros={setPasajeros}
+                        handleSubmit={handleSubmit}
+                        suggestions={suggestions}
+                        setSuggestions={setSuggestions}
+                    />
+                </div>
+                {/* Mostramos un mensaje de carga si está cargando */}
+                {loading && (
+                    <div className='fixed inset-0 bg-dark-blue bg-opacity-90 flex item-center justify-center z-50'>
+                        <div className='bg-white p-8 rounded-md shadow-lg max-w-xs mx-auto'>
+                            <div className='w-16 h-16 border-8 border-dark-blue border-dashed rounded-full animate-spin mx-auto mb-4'></div>
+                            <h2 className='text-dark-blue text-2xl font-bold text-center'>
+                                Cargando...
                             </h2>
-                            <p className='text-medium-blue text-2xl font-medium'>
-                                Your adventure is about to begin
+                            <p className='text-dark-blue text-center mt-2'>
+                                hackeando tu vuelo...
                             </p>
                         </div>
-                    )}
-                </div>
+                    </div>
+                )}
             </section>
             {/* Mostramos un mensaje de error si hay uno */}
             {error && (
