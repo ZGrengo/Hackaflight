@@ -61,34 +61,36 @@ const AdminListUsers = () => {
         }
     };
 
-    // Borrar usuario
-    const handleDeleteUser = async (userId, isActive) => {
-        if (!window.confirm('¿Estás seguro de eliminar este usuario?')) return;
+ // Borrar usuario
+const handleDeleteUser = async (userId) => {
+    // Confirmación para borrar
+    if (!window.confirm('¿Estás seguro de eliminar este usuario?')) return;
 
-        try {
-            const res = await fetch(`${VITE_API_URL}/api/admin/users/${userId}`, {
-                method: 'DELETE',
-                headers: { Authorization: `${authToken}` },
-            });
+    try {
+        // Realizar la solicitud DELETE al backend
+        const res = await fetch(`${VITE_API_URL}/api/admin/users/${userId}`, {
+            method: 'DELETE',
+            headers: { Authorization: `${authToken}` },
+        });
 
-            const data = await res.json();
-            if (!res.ok) throw new Error(data.message);
+        const data = await res.json();
 
-            // Actualizar la lista de usuarios en el estado local
-            setUsersList((prevUsers) =>
-                prevUsers.map((user) =>
-                    user.userId === userId ? { ...user, isActive: !isActive } : user
-                )
-            );
+        // Si la respuesta no es exitosa, lanzamos un error
+        if (!res.ok) throw new Error(data.message);
 
-            toast.success('Usuario eliminado correctamente.');
-            toast('Recarga la página para ver los cambios.');
-        } catch (error) {
-            toast.error(
-                `Error: ${error.message || 'No se pudo eliminar el usuario.'}`,
-            );
-        }
-    };
+        // Actualizar la lista de usuarios en el estado local, eliminando el usuario
+        setUsersList((prevUsers) => 
+            prevUsers.filter((user) => user.userId !== userId) // Eliminamos al usuario de la lista
+        );
+
+        // Mostrar un mensaje de éxito
+        toast.success('Usuario eliminado correctamente.');
+        toast('Recarga la página para ver los cambios.');
+    } catch (error) {
+        // Manejar errores si algo sale mal
+        toast.error(`Error: ${error.message || 'No se pudo eliminar el usuario.'}`);
+    }
+};
 
     useEffect(() => {
         if (!token) {
