@@ -28,6 +28,7 @@ const EditProfilePage = () => {
     // cargando
     const [loading, setLoading] = useState(false);
     const [profileLoading, setProfileLoading] = useState(true);
+    const [avatarLoading, setAvatarLoading] = useState(false);
 
     const inputFileRef = useRef(null);
     // obtenemos los datos del usuario al cargar la página
@@ -77,7 +78,7 @@ const EditProfilePage = () => {
         if (e.target.files && e.target.files[0]) {
             const formData = new FormData();
             formData.append('avatar', e.target.files[0]);
-
+            setAvatarLoading(true);
             try {
                 const response = await fetch(
                     `${VITE_API_URL}/api/users/avatar`,
@@ -102,6 +103,8 @@ const EditProfilePage = () => {
                 setUserData({ ...userData, avatar: result.data.user.avatar });
             } catch (error) {
                 toast.error(`Error: ${error.message}`);
+            } finally {
+                setAvatarLoading(false);
             }
         }
     };
@@ -143,17 +146,21 @@ const EditProfilePage = () => {
     // Mostramos mensajes de perfil cargando...
     if (profileLoading) {
         return (
-            <p className='text-certer mt-8 text-darck-blue font-body'>
-                Cargando datos...
-            </p>
+            <div className='bg-gradient-to-b from-dark-blue to-white min-h-screen flex items-center justify-center'>
+                <p className='text-center text-dark-blue font-body text-xl sm:text-2xl'>
+                    Cargando perfil...
+                </p>
+            </div>
         );
     }
     // Si el perfil no carga, mostramos un error.
     if (!userData) {
         return (
-            <p className='text-center mt-8 text-darck-blue font-body'>
-                Error al cargar los datos del usuario.
-            </p>
+            <div className='bg-gradient-to-b from-dark-blue to-white min-h-screen flex items-center justify-center'>
+                <p className='text-center text-dark-blue font-body text-xl sm:text-2xl'>
+                    No se pudo cargar la información del usuario.
+                </p>
+            </div>
         );
     }
     // formulario para editar el perfil
@@ -180,9 +187,12 @@ const EditProfilePage = () => {
                         <button
                             type='button'
                             onClick={() => inputFileRef.current.click()}
+                            disabled={avatarLoading}
                             className='w-full py-2 font-button rounded-md transition-colors duration-300 bg-dark-blue text-white hover:bg-medium-blue'
                         >
-                            Cambiar Avatar
+                            {avatarLoading
+                                ? 'Cambiando avatar...'
+                                : 'Cambiar Avatar'}
                         </button>
                         <input
                             type='file'
