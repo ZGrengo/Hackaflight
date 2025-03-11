@@ -35,35 +35,45 @@ const AdminListUsers = () => {
         });
     };*/
 
+
+        // Estado para manejar la lista de usuarios en la UI
+        const [usersList, setUsersList] = useState([]);
+
+        // Actualizar la lista local de usuarios cuando `users` cambie
+        useEffect(() => {
+            setUsersList(users);
+        }, [users]);
+
     // Habilitar/Deshabilitar usuario
     const handleToggleUserStatus = async (userId, isActive) => {
         try {
             const res = await fetch(`${VITE_API_URL}/api/admin/users/${userId}/true`, {
                 method: 'PATCH',
                 headers: {
-                    'Content-Type': 'application/json', // Necesario para enviar JSON
+                    'Content-Type': 'application/json',
                     Authorization: `${authToken}`,
                 },
-                body: JSON.stringify({ isActive: !isActive }) // Debe ir dentro del objeto
+                body: JSON.stringify({ isActive: !isActive })
             });
+    
             const data = await res.json();
             if (!res.ok) throw new Error(data.message);
-
-            toast.success(
-                `Usuario ${
-                    !isActive ? 'habilitado' : 'deshabilitado'
-                } correctamente.`,
+    
+            // Actualizar el estado del local users
+            setUsersList((prevUsers) =>
+                prevUsers.map((user) =>
+                    user.userId === userId ? { ...user, isActive: !isActive } : user
+                )
             );
-            toast('Recarga la página para ver los cambios.');
+    
+            toast.success(`Usuario ${!isActive ? 'habilitado' : 'deshabilitado'} correctamente.`);
         } catch (error) {
-            toast.error(
-                `Error: ${error.message || 'No se pudo actualizar el usuario.'}`,
-            );
+            toast.error(`Error: ${error.message || 'No se pudo actualizar el usuario.'}`);
         }
     };
 
     // Borrar usuario
-    const handleDeleteUser = async (userId) => {
+    const handleDeleteUser = async (userId, isActive) => {
         if (!window.confirm('¿Estás seguro de eliminar este usuario?')) return;
 
         try {
@@ -73,6 +83,14 @@ const AdminListUsers = () => {
 
             const data = await res.json();
             if (!res.ok) throw new Error(data.message);
+
+
+              // Actualizar la lista de usuarios en el estado local
+              setUsersList((prevUsers) =>
+                prevUsers.map((user) =>
+                    user.userId === userId ? { ...user, isActive: !isActive } : user
+                )
+            );
 
             toast.success('Usuario eliminado correctamente.');
             toast('Recarga la página para ver los cambios.');
@@ -144,7 +162,7 @@ const AdminListUsers = () => {
             </tr>
         </thead>
         <tbody className="flex flex-col">
-            {users.map((user) => (
+            {usersList.map((user) => (
                 <tr key={user.userId} className="odd:bg-white even:bg-blue-50 flex">
                     <td className="px-4 py-2 border-b flex-1 text-center">{user.username}</td>
                     <td className="px-4 py-2 border-b flex-1 text-center">{user.email}</td>
