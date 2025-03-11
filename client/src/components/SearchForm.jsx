@@ -38,142 +38,288 @@ const SearchForm = ({
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (
-                originRef.current && !originRef.current.contains(event.target) &&
-                destinationRef.current && !destinationRef.current.contains(event.target)
+                originRef.current &&
+                !originRef.current.contains(event.target) &&
+                destinationRef.current &&
+                !destinationRef.current.contains(event.target)
             ) {
                 setOriginSuggestions([]);
                 setDestinationSuggestions([]);
             }
         };
 
-        document.addEventListener("click", handleClickOutside);
+        document.addEventListener('click', handleClickOutside);
         return () => {
-            document.removeEventListener("click", handleClickOutside);
+            document.removeEventListener('click', handleClickOutside);
         };
     }, []);
 
-
     return (
-        <section className='relative z-10 top-48 opacity-90 flex justify-center items-center text-sm'>
+        <section className='w-full max-w-5xl mx-auto px-4 py-6 hover:scale-[1.008]'>
             <form
                 onSubmit={handleSubmit}
-                className='flex flex-col items-center w-3/4 space-y-4 p-8 bg-dark-blue text-light-blue shadow-lg rounded-lg'
+                className='
+                        bg-white
+                        shadow-xl
+                        rounded-md
+                        p-4 flex
+                        flex-col
+                        md:flex-row
+                        items-center
+                        justify-between
+                        space-y-4
+                        md:space-y-0
+                        md:space-x-4
+                        font-body
+                        text-dark-blue'
             >
-                <section className='grid grid-cols-2 gap-4 w-full'>
-                    <section className='flex flex-col items-center'>
-                        <label>Pasajeros</label>
-                        <input
-                            type='number'
-                            value={pasajeros}
-                            onChange={(e) => setPasajeros(e.target.value)}
-                            min='1'
-                            className='text-slate-900 w-2/5 h-1/2 border-2 border-medium-blue rounded-md p-2 text-center'
-                        />
-                    </section>
-                    <section className='flex flex-col items-center'>
-                        <label>Tipo de Viaje</label>
-                        <select
-                            value={tipoViaje}
-                            onChange={(e) => setTipoViaje(e.target.value)}
-                            className='text-slate-900 w-4/5 h-1/2 border-2 border-medium-blue rounded-md'
+                <div className='flex flex-col w-full md:w-auto relative'>
+                    <label className='mb-1 text-sm font-medium'>
+                        Tipo de Viaje
+                    </label>
+                    <select
+                        value={tipoViaje}
+                        onChange={(e) => setTipoViaje(e.target.value)}
+                        className='
+                            w-full
+                            md:w-40
+                            border
+                            border-medium-blue
+                            rounded-md
+                            p-2
+                            focus:outline-none
+                            focus:ring-2
+                            focus:ring-medium-blue
+                            text-sm'
+                    >
+                        <option value='ida-vuelta'>Ida y Vuelta</option>
+                        <option value='ida'>Solo Ida</option>
+                    </select>
+                </div>
+                <div
+                    ref={originRef}
+                    className='flex flex-col w-full md:w-auto relative'
+                >
+                    <label className='mb-1 text-sm font-medium'>Origen</label>
+                    <input
+                        type='text'
+                        placeholder='Ciudad o Aeropuerto'
+                        value={origen}
+                        onChange={(e) => {
+                            setOrigen(e.target.value);
+                            handleSearch(e.target.value, setOriginSuggestions);
+                        }}
+                        className='
+                            w-full
+                            md:w-44
+                            border
+                            border-medium-blue
+                            rounded-md
+                            p-2
+                            text-dark-blue
+                            focus:ring-2
+                            focus:ring-medium-blue
+                            placeholder:text-gray-400'
+                    />
+                    {/* Sugerencias de origen*/}
+                    {originSuggestions.length > 0 && (
+                        <ul
+                            className='
+                            absolute
+                            top-full
+                            left-0
+                            w-full
+                            bg-white
+                            text-dark-blue
+                            border
+                            border-gray-300
+                            max-h-48
+                            overflow-y-auto
+                            rounded-md 
+                            mt-1
+                            z-10'
                         >
-                            <option value='ida'>Ida</option>
-                            <option value='ida-vuelta'>Ida y Vuelta</option>
-                        </select>
-                    </section>
+                            {originSuggestions.map((airport) => (
+                                <li
+                                    key={airport.iata}
+                                    className='p-2 hover:bg-gray-100 cursor-pointer'
+                                    onClick={() => {
+                                        setOrigen(airport.iata);
+                                        setOriginSuggestions([]);
+                                    }}
+                                >
+                                    {airport.city} - {airport.name} (
+                                    {airport.iata})
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+                </div>
 
-                    {/* Origen */}
-                    <section ref={originRef} className='flex flex-col items-center relative'>
-                        <label>Origen</label>
-                        <input
-                            type='text'
-                            placeholder='JFK'
-                            value={origen}
-                            onChange={(e) => {
-                                setOrigen(e.target.value);
-                                handleSearch(e.target.value, setOriginSuggestions);
-                            }}
-                            className='text-slate-900 w-1/2 text-center border-2 border-medium-blue rounded-md'
-                        />
-                        {/* 🔹 Lista de sugerencias */}
-                        {originSuggestions.length > 0 && (
-                            <ul className='absolute top-full bg-white text-black border border-gray-300 w-40 max-h-48 overflow-y-auto rounded-md shadow-md'>
-                                {originSuggestions.map((airport) => (
-                                    <li
-                                        key={airport.iata}
-                                        className='p-2 hover:bg-gray-200 cursor-pointer'
-                                        onClick={() => {
-                                            setOrigen(airport.iata); // Guarda el código IATA
-                                            setOriginSuggestions([]); // Oculta las sugerencias
-                                        }}
-                                    >
-                                        {airport.city} - {airport.name} ({airport.iata})
-                                    </li>
-                                ))}
-                            </ul>
-                        )}
-                    </section>
+                {/* Destino*/}
 
-                    {/* Destino */}
-                    <section ref={destinationRef} className='flex flex-col items-center relative'>
-                        <label>Destino</label>
-                        <input
-                            type='text'
-                            placeholder='MAD'
-                            value={destino}
-                            onChange={(e) => {
-                                setDestino(e.target.value);
-                                handleSearch(e.target.value, setDestinationSuggestions);
-                            }}
-                            className='text-slate-900 w-1/2 text-center border-2 border-medium-blue rounded-md'
-                        />
-                        {/* 🔹 Lista de sugerencias */}
-                        {destinationSuggestions.length > 0 && (
-                            <ul className='absolute top-full bg-white text-black border border-gray-300 w-40 max-h-48 overflow-y-auto rounded-md shadow-md'>
-                                {destinationSuggestions.map((airport) => (
-                                    <li
-                                        key={airport.iata}
-                                        className='p-2 hover:bg-gray-200 cursor-pointer'
-                                        onClick={() => {
-                                            setDestino(airport.iata);
-                                            setDestinationSuggestions([]);
-                                        }}
-                                    >
-                                        {airport.city} - {airport.name} ({airport.iata})
-                                    </li>
-                                ))}
-                            </ul>
-                        )}
-                    </section>
+                <div
+                    ref={destinationRef}
+                    className='flex flex-col w-full md:w-auto relative'
+                >
+                    <label className='mb-1 text-sm font-medium'>Destino</label>
+                    <input
+                        type='text'
+                        placeholder='Ciudad o Aeropuerto'
+                        value={destino}
+                        onChange={(e) => {
+                            setDestino(e.target.value);
+                            handleSearch(
+                                e.target.value,
+                                setDestinationSuggestions,
+                            );
+                        }}
+                        className='
+                            w-full
+                            md:w-44
+                            border
+                            border-medium-blue
+                            rounded-md
+                            p-2
+                            text-sm
+                            text-dark-blue
+                            focus:outline-none
+                            focus:ring-2
+                            focus:ring-medium-blue
+                            placeholder:text-gray-400'
+                    />
 
-                    <section className='flex flex-col items-center text-[12px]'>
-                        <label>Fecha de Salida</label>
+                    {/*Sugetencias de destino*/}
+
+                    {destinationSuggestions.length > 0 && (
+                        <ul
+                            className='
+                                        absolute
+                                        top-full
+                                        left-0
+                                        w-full
+                                        bg-white
+                                        text-dark-blue
+                                        border-gray-300
+                                        max-h-48
+                                        overflow-y-auto
+                                        rounded-md
+                                        shadow-md
+                                        mt-1
+                                        z-10'
+                        >
+                            {destinationSuggestions.map((airport) => (
+                                <li
+                                    key={airport.iata}
+                                    className='p-2 hover:bg-gray-100 cursor-pointer'
+                                    onClick={() => {
+                                        setDestino(airport.iata);
+                                        setDestinationSuggestions([]);
+                                    }}
+                                >
+                                    {airport.city} - {airport.name} (
+                                    {airport.iata})
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+                </div>
+                {/* Fecha de Salida*/}
+                <div className='flex flex-col w-full md:w-auto relative'>
+                    <label className='mb-1 text-sm font-medium'>Salida</label>
+                    <input
+                        type='date'
+                        value={fechaSalida}
+                        onChange={(e) => setFechaSalida(e.target.value)}
+                        min={new Date().toISOString().split('T')[0]}
+                        className='
+                                w-full 
+                                md:w-36 
+                                border 
+                                border-medium-blue 
+                                rounded-md 
+                                p-2 
+                                text-sm 
+                                text-dark-blue 
+                                focus:outline-none 
+                                focus:ring-2 
+                                focus:ring-medium-blue'
+                    />
+                </div>
+                {/* Fecha de Retorno*/}
+                {tipoViaje === 'ida-vuelta' && (
+                    <div className='flex flex-col w-full md:w-auto relative'>
+                        <label className='mb-1 text-sm font-medium'>
+                            Retorno
+                        </label>
                         <input
                             type='date'
-                            value={fechaSalida}
-                            onChange={(e) => setFechaSalida(e.target.value)}
-                            min={new Date().toISOString().split('T')[0]}
-                            className='text-slate-900 text-center border-2 border-medium-blue rounded-md'
+                            value={fechaRetorno}
+                            onChange={(e) => setFechaRetorno(e.target.value)}
+                            min={
+                                fechaSalida ||
+                                new Date().toISOString().split('T')[0]
+                            }
+                            className='
+                                w-full 
+                                md:w-36 
+                                border 
+                                border-medium-blue 
+                                rounded-md 
+                                p-2 
+                                text-sm 
+                                text-dark-blue 
+                                focus:outline-none 
+                                focus:ring-2 
+                                focus:ring-medium-blue'
                         />
-                    </section>
+                    </div>
+                )}
 
-                    {tipoViaje === 'ida-vuelta' && (
-                        <section className='flex flex-col items-center text-[12px]'>
-                            <label>Fecha de Retorno</label>
-                            <input
-                                type='date'
-                                value={fechaRetorno}
-                                onChange={(e) => setFechaRetorno(e.target.value)}
-                                className='text-slate-900 text-center border-2 border-medium-blue rounded-md'
-                                min={fechaSalida || new Date().toISOString().split('T')[0]}
-                            />
-                        </section>
-                    )}
-                </section>
+                {/* Pasajeros*/}
+                <div className='flex flex-col w-full md:w-auto relative'>
+                    <label className='mb-1 text-sm font-medium'>
+                        Pasajeros
+                    </label>
+                    <input
+                        type='number'
+                        value={pasajeros}
+                        onChange={(e) => setPasajeros(e.target.value)}
+                        min='1'
+                        className='
+                                w-full 
+                                md:w-16 
+                                border 
+                                border-medium-blue 
+                                rounded-md 
+                                p-2 
+                                text-sm 
+                                text-dark-blue 
+                                text-center
+                                focus:outline-none 
+                                focus:ring-2 
+                                focus:ring-medium-blue'
+                    />
+                </div>
 
+                {/* botón de Buscar*/}
                 <button
                     type='submit'
-                    className='top-3 relative py-2 px-4 text-slate-900 text-base font-bold overflow-hidden bg-medium-blue rounded-full transition-all duration-400 ease-in-out shadow-md hover:scale-105 hover:text-white hover:shadow-lg active:scale-90 before:absolute before:top-0 before:-left-full before:w-full before:h-full before:bg-gradient-to-r before:from-accent-blue before:to-medium-blue before:transition-all before:duration-500 before:ease-in-out before:z-[-1] before:rounded-full hover:before:left-0'
+                    className='
+                        bg-dark-blue
+                        text-white
+                        font-button
+                        text-sm
+                        font-bold
+                        rounded-md
+                        px-6
+                        py-3
+                        mt-2
+                        md:mt-5
+                        md:ml-2
+                        hover:bg-medium-blue
+                        transition-colors
+                        duration-300'
                 >
                     Buscar
                 </button>

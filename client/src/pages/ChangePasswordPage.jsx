@@ -20,7 +20,10 @@ const ChangePasswordPage = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     // cargando
     const [loading, setLoading] = useState(false);
-    const [showPassword, setShowPassword] = useState(false);
+    // Estados independientes para mostrar y ocultar cada contraseña
+    const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+    const [showNewPassword, setShowNewPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     const handlePasswordChange = async (e) => {
         e.preventDefault();
@@ -66,26 +69,14 @@ const ChangePasswordPage = () => {
                 <div className='bg-white p-6 sm:p-8 rounded-lg shadow-md w-full max-w-sm lg:max-w-4xl mx-auto transition transform hover:scale-[1.008]'>
                     <h2 className='text-3xl sm:text-4xl font-heading font-light text-dark-blue text-center mb-6'>
                         CAMBIAR CONTRASEÑA
-                        <button
-                            type='button'
-                            onClick={() => setShowPassword(!showPassword)}
-                            className=' text-[#3951AA] hover:text-[#179DD9] pl-5 '
-                        >
-                            {showPassword ? (
-                                <EyeOff size={40} />
-                            ) : (
-                                <Eye size={40} />
-                            )}
-                        </button>
                     </h2>
-
                     <form onSubmit={handlePasswordChange} className='space-y-4'>
-                        <div>
+                        <div className='relative w-full lg:w-1/2 mx-auto'>
                             <label className='block text-dark-blue font-medium text-sm mb-1 font-body'>
                                 Contraseña Actual:
                             </label>
                             <input
-                                type={showPassword ? 'text' : 'password'}
+                                type={showCurrentPassword ? 'text' : 'password'}
                                 value={currentPassword}
                                 onChange={(e) =>
                                     setCurrentPassword(e.target.value)
@@ -95,13 +86,26 @@ const ChangePasswordPage = () => {
                                 disabled={loading}
                                 className='w-full p-3 border border-accent-blue rounded-md focus:outline-none focus:ring-2 focus:ring-medium-blue font-body'
                             />
+                            <button
+                                type='button'
+                                onClick={() =>
+                                    setShowCurrentPassword(!showCurrentPassword)
+                                }
+                                className='absolute right-3 top-1/2 text-dark-blue hover:text-medium-blue hover:scale-[1.1]'
+                            >
+                                {showCurrentPassword ? (
+                                    <EyeOff size={20} />
+                                ) : (
+                                    <Eye size={20} />
+                                )}
+                            </button>
                         </div>
-                        <div>
+                        <div className='relative w-full lg:w-1/2 mx-auto'>
                             <label className='block text-dark-blue font-medium text-sm mb-1 font-body'>
                                 Nueva Contraseña:
                             </label>
                             <input
-                                type={showPassword ? 'text' : 'password'}
+                                type={showNewPassword ? 'text' : 'password'}
                                 value={newPassword}
                                 onChange={(e) => setNewPassword(e.target.value)}
                                 required
@@ -109,13 +113,26 @@ const ChangePasswordPage = () => {
                                 disabled={loading}
                                 className='w-full p-3 border border-accent-blue rounded-md focus:outline-none focus:ring-2 focus:ring-medium-blue font-body'
                             />
+                            <button
+                                type='button'
+                                onClick={() =>
+                                    setShowNewPassword(!showNewPassword)
+                                }
+                                className='absolute right-3 top-1/2 text-dark-blue hover:text-medium-blue hover:scale-[1.1]'
+                            >
+                                {showNewPassword ? (
+                                    <EyeOff size={20} />
+                                ) : (
+                                    <Eye size={20} />
+                                )}
+                            </button>
                         </div>
-                        <div>
+                        <div className='relative w-full lg:w-1/2 mx-auto'>
                             <label className='block text-dark-blue font-medium text-sm mb-1 font-body'>
                                 Confirmar Contraseña:
                             </label>
                             <input
-                                type={showPassword ? 'text' : 'password'}
+                                type={showConfirmPassword ? 'text' : 'password'}
                                 value={confirmPassword}
                                 onChange={(e) =>
                                     setConfirmPassword(e.target.value)
@@ -123,8 +140,21 @@ const ChangePasswordPage = () => {
                                 required
                                 autoComplete='new-password'
                                 disabled={loading}
-                                className='w-full p-3 border border-accent-blue rounded-md focus:outline-none focus:ring-2 focus:ring-medium-blue font-body'
+                                className='w-full p-3 pr-10 border border-accent-blue rounded-md focus:outline-none focus:ring-2 focus:ring-medium-blue font-body'
                             />
+                            <button
+                                type='button'
+                                onClick={() =>
+                                    setShowConfirmPassword(!showConfirmPassword)
+                                }
+                                className='absolute right-3 top-1/2 text-dark-blue hover:text-medium-blue hover:scale-[1.1]'
+                            >
+                                {showConfirmPassword ? (
+                                    <EyeOff size={20} />
+                                ) : (
+                                    <Eye size={20} />
+                                )}
+                            </button>
                         </div>
                         <div className='flex flex-col space-y-4 lg:flex-row lg:space-y-0 lg:space-x-4 mt-6'>
                             <button
