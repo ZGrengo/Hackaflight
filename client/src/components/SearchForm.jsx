@@ -55,89 +55,30 @@ const SearchForm = ({
     }, []);
 
     return (
-        <section className='w-full max-w-5xl mx-auto px-4 py-6 hover:scale-[1.008]'>
-            <form
-                onSubmit={handleSubmit}
-                className='
-                        bg-white
-                        shadow-xl
-                        rounded-md
-                        p-4 flex
-                        flex-col
-                        md:flex-row
-                        items-center
-                        justify-between
-                        space-y-4
-                        md:space-y-0
-                        md:space-x-4
-                        font-body
-                        text-dark-blue'
-            >
-                <div className='flex flex-col w-full md:w-auto relative'>
-                    <label className='mb-1 text-sm font-medium'>
-                        Tipo de Viaje
-                    </label>
-                    <select
-                        value={tipoViaje}
-                        onChange={(e) => setTipoViaje(e.target.value)}
-                        className='
-                            w-full
-                            md:w-40
-                            border
-                            border-medium-blue
-                            rounded-md
-                            p-2
-                            focus:outline-none
-                            focus:ring-2
-                            focus:ring-medium-blue
-                            text-sm'
-                    >
-                        <option value='ida-vuelta'>Ida y Vuelta</option>
-                        <option value='ida'>Solo Ida</option>
-                    </select>
-                </div>
-                <div
-                    ref={originRef}
-                    className='flex flex-col w-full md:w-auto relative'
-                >
+        <form
+            onSubmit={handleSubmit}
+            className='w-full font-body text-dark-blue'
+        >
+            {/* Fila Superior: Origen y Destino*/}
+            <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
+                <div ref={originRef} className='relative'>
                     <label className='mb-1 text-sm font-medium'>Origen</label>
                     <input
                         type='text'
-                        placeholder='Ciudad o Aeropuerto'
+                        placeholder='Ciudad o aeropuerto'
                         value={origen}
                         onChange={(e) => {
                             setOrigen(e.target.value);
                             handleSearch(e.target.value, setOriginSuggestions);
                         }}
-                        className='
-                            w-full
-                            md:w-44
-                            border
-                            border-medium-blue
-                            rounded-md
-                            p-2
-                            text-dark-blue
-                            focus:ring-2
-                            focus:ring-medium-blue
-                            placeholder:text-gray-400'
+                        className='w-full border border-medium-blue rounded-md p-2 text-sm
+                                    text-dark-blue focus:outline-none focus:ring-2 focus:ring-medium-blue
+                                    placeholder:text-gray-400'
                     />
-                    {/* Sugerencias de origen*/}
                     {originSuggestions.length > 0 && (
                         <ul
-                            className='
-                            absolute
-                            top-full
-                            left-0
-                            w-full
-                            bg-white
-                            text-dark-blue
-                            border
-                            border-gray-300
-                            max-h-48
-                            overflow-y-auto
-                            rounded-md 
-                            mt-1
-                            z-10'
+                            className='absolute top-full left-0 w-full bg-white text-dark-blue
+                                            border border-gray-300 max-h-48 overflow-y-auto rounded-md shadow-md mt-1 z-10'
                         >
                             {originSuggestions.map((airport) => (
                                 <li
@@ -155,17 +96,11 @@ const SearchForm = ({
                         </ul>
                     )}
                 </div>
-
-                {/* Destino*/}
-
-                <div
-                    ref={destinationRef}
-                    className='flex flex-col w-full md:w-auto relative'
-                >
+                <div ref={destinationRef} className='relative'>
                     <label className='mb-1 text-sm font-medium'>Destino</label>
                     <input
                         type='text'
-                        placeholder='Ciudad o Aeropuerto'
+                        placeholder='Ciudad o aeropuerto'
                         value={destino}
                         onChange={(e) => {
                             setDestino(e.target.value);
@@ -174,39 +109,15 @@ const SearchForm = ({
                                 setDestinationSuggestions,
                             );
                         }}
-                        className='
-                            w-full
-                            md:w-44
-                            border
-                            border-medium-blue
-                            rounded-md
-                            p-2
-                            text-sm
-                            text-dark-blue
-                            focus:outline-none
-                            focus:ring-2
-                            focus:ring-medium-blue
-                            placeholder:text-gray-400'
+                        className='w-full border border-medium-blue rounded-md p-2 text-sm
+                                        text-dark-blue focus:outline-none focus:ring-medium-blue
+                                        placeholder:text-gray-400'
                     />
-
-                    {/*Sugetencias de destino*/}
-
                     {destinationSuggestions.length > 0 && (
                         <ul
-                            className='
-                                        absolute
-                                        top-full
-                                        left-0
-                                        w-full
-                                        bg-white
-                                        text-dark-blue
-                                        border-gray-300
-                                        max-h-48
-                                        overflow-y-auto
-                                        rounded-md
-                                        shadow-md
-                                        mt-1
-                                        z-10'
+                            className='absolute top-full left-0 w-full bg-white text-dark-blue
+                                                border border-gray-300 max-h-48 overflow-y-auto
+                                                rounded-md shadow-md mt-1 z-10'
                         >
                             {destinationSuggestions.map((airport) => (
                                 <li
@@ -217,41 +128,49 @@ const SearchForm = ({
                                         setDestinationSuggestions([]);
                                     }}
                                 >
-                                    {airport.city} - {airport.name} (
+                                    {airport.city} - {airport.name}(
                                     {airport.iata})
                                 </li>
                             ))}
                         </ul>
                     )}
                 </div>
-                {/* Fecha de Salida*/}
-                <div className='flex flex-col w-full md:w-auto relative'>
+            </div>
+
+            {/* Fila inferior destribuida en 5 columnas iguales*/}
+            <div className='mt-4 grid grid-cols-1 gap-4 md:grid-cols-5 md:items-end'>
+                <div className='flex flex-col'>
+                    <label className='mb-1 text-sm font-medium'>
+                        Tipo de Viaje
+                    </label>
+                    <select
+                        value={tipoViaje}
+                        onChange={(e) => setTipoViaje(e.target.value)}
+                        className='w-full border border-medium-blue rounded-md p-2
+                                        text-sm focus:outline-none focus:ring-2 focus:ring-medium-blue'
+                    >
+                        <option value='ida-vuelta'>Ida y Vuelta</option>
+                        <option value='ida'>Solo Ida</option>
+                    </select>
+                </div>
+                <div className='flex flex-col'>
                     <label className='mb-1 text-sm font-medium'>Salida</label>
                     <input
                         type='date'
                         value={fechaSalida}
                         onChange={(e) => setFechaSalida(e.target.value)}
                         min={new Date().toISOString().split('T')[0]}
-                        className='
-                                w-full 
-                                md:w-36 
-                                border 
-                                border-medium-blue 
-                                rounded-md 
-                                p-2 
-                                text-sm 
-                                text-dark-blue 
-                                focus:outline-none 
-                                focus:ring-2 
-                                focus:ring-medium-blue'
+                        className='w-full border border-medium-blue rounded-md p-2 text-sm
+                                        text_dark-blue focus:outline-none focus:ring-2 focus:ring-medium-blue'
                     />
                 </div>
-                {/* Fecha de Retorno*/}
-                {tipoViaje === 'ida-vuelta' && (
-                    <div className='flex flex-col w-full md:w-auto relative'>
-                        <label className='mb-1 text-sm font-medium'>
-                            Retorno
-                        </label>
+                <div className='flex flex-col'>
+                    <label
+                        className={`mb-1 text-sm font-medium ${tipoViaje === 'ida' ? 'text-light-blue' : ''}`}
+                    >
+                        Retorno
+                    </label>
+                    {tipoViaje === 'ida-vuelta' ? (
                         <input
                             type='date'
                             value={fechaRetorno}
@@ -260,24 +179,18 @@ const SearchForm = ({
                                 fechaSalida ||
                                 new Date().toISOString().split('T')[0]
                             }
-                            className='
-                                w-full 
-                                md:w-36 
-                                border 
-                                border-medium-blue 
-                                rounded-md 
-                                p-2 
-                                text-sm 
-                                text-dark-blue 
-                                focus:outline-none 
-                                focus:ring-2 
-                                focus:ring-medium-blue'
+                            className='w-full border border-medium-blue rounded-md p-2 text-sm text_dark-blue focus:outline-none focus:ring-2 focus:ring-medium-blue'
                         />
-                    </div>
-                )}
-
-                {/* Pasajeros*/}
-                <div className='flex flex-col w-full md:w-auto relative'>
+                    ) : (
+                        <input
+                            type='dete'
+                            value={fechaRetorno}
+                            disabled
+                            className='w-full border border-light-blue rounded-md p-2 text-sm text-light-blue bg-light-blue cursor-not-allowed'
+                        />
+                    )}
+                </div>
+                <div className='flex flex-col'>
                     <label className='mb-1 text-sm font-medium'>
                         Pasajeros
                     </label>
@@ -286,45 +199,19 @@ const SearchForm = ({
                         value={pasajeros}
                         onChange={(e) => setPasajeros(e.target.value)}
                         min='1'
-                        className='
-                                w-full 
-                                md:w-16 
-                                border 
-                                border-medium-blue 
-                                rounded-md 
-                                p-2 
-                                text-sm 
-                                text-dark-blue 
-                                text-center
-                                focus:outline-none 
-                                focus:ring-2 
-                                focus:ring-medium-blue'
+                        className='w-full border border-medium-blue rounded-md p-2 text-sm text-dark-blue text-center focus:outline-none focus:ring-2 focus:ring-medium-blue'
                     />
                 </div>
-
-                {/* botón de Buscar*/}
-                <button
-                    type='submit'
-                    className='
-                        bg-dark-blue
-                        text-white
-                        font-button
-                        text-sm
-                        font-bold
-                        rounded-md
-                        px-6
-                        py-3
-                        mt-2
-                        md:mt-5
-                        md:ml-2
-                        hover:bg-medium-blue
-                        transition-colors
-                        duration-300'
-                >
-                    Buscar
-                </button>
-            </form>
-        </section>
+                <div className='flex justify-center'>
+                    <button
+                        type='submit'
+                        className='w-full bg-dark-blue text-white font-button text-sm font-bold rounded-md px-6 py-3 hover:bg-medium-blue transition-colors duration-300'
+                    >
+                        Buscar
+                    </button>
+                </div>
+            </div>
+        </form>
     );
 };
 
