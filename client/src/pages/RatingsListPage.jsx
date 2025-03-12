@@ -80,13 +80,13 @@ const RatingsListPage = () => {
             <Header />
             <main className='bg-gradient-to-b from-dark-blue to-white flex flex-col items-center justify-center min-h-screen p-6 '>
                 <section className='bg-white p-8 rounded-lg shadow-md w-full max-w-fit mx-auto'>
-                    <h2 className='text-2xl font-bold text-[#083059] text-center mb-6'>
+                    <h2 className='text-4xl font-light font-heading text-[#083059] text-center mb-6'>
                         VALORACIONES
                     </h2>
                     {/* formulario de búsqueda */}
                     <form
                         onSubmit={handleSearchRatings}
-                        className='flex gap-1 items-center mb-6 justify-end '
+                        className='flex gap-1 items-center mb-6 justify-end'
                     >
                         <select
                             value={rate}
@@ -104,16 +104,13 @@ const RatingsListPage = () => {
                             disabled={loading}
                             className='bg-[#083059] text-white py-1 px-4 rounded-md hover:bg-[#179DD9] transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed'
                         >
-                            {loading ? 'Buscando...' : 'Buscar'}
+                            {loading ? 'Filtrando...' : 'Filtrar'}
                         </button>
                     </form>
                     {/* Listado de valoraciones */}
-                    <ul className='list-none '>
+                    <ul className='grid grid-cols-1 md:grid-cols-2 gap-4 list-none '>
                         {currentRatings.map((rating) => (
-                            <div
-                                key={rating.id}
-                                className=' p-6 mb-4 mt-4 rounded-lg shadow-sm list-none'
-                            >
+                            <div key={rating.id} className='p-1 mb-1 mt-1 '>
                                 <RatingListItem
                                     ratingId={rating.id}
                                     title={rating.title}
