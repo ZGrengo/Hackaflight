@@ -26,7 +26,7 @@ const RatingsListPage = () => {
     //Declaramos una variable en el State para actualizar el listado de valoraciones
     const [currentPage, setCurrentPage] = useState(1);
     //Definimos cuantas valoraciones queremos mostrar por página
-    const ratingsPerPage = 5;
+    const ratingsPerPage = 4;
 
     //Calculamos el índice de la última valoración que se mostrará en la página actual
     const indexOfLastRating = currentPage * ratingsPerPage;
@@ -79,7 +79,7 @@ const RatingsListPage = () => {
         <>
             <Header />
             <main className='bg-gradient-to-b from-dark-blue to-white flex flex-col items-center justify-center min-h-screen p-6 '>
-                <section className='bg-white p-8 rounded-lg shadow-md w-full max-w-fit mx-auto'>
+                <section className='bg-white p-8 rounded-lg shadow-md w-full max-w-5xl mx-auto'>
                     <h2 className='text-4xl font-light font-heading text-[#083059] text-center mb-6'>
                         VALORACIONES
                     </h2>
