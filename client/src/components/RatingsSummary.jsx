@@ -16,13 +16,13 @@ const RatingsSummary = ({ ratings }) => {
     const topRatings = [...ratings].slice(0, 3);
 
     return (
-        <div className='bg-[#083059] p-8 text-white text-center max-h-fit mx-auto'>
-            <h2 className='text-2xl font-bold mb-6'>
-                <Link to='/ratings'>Lo que piensan nuestros usuarios...</Link>
+        <div className='p-8 font-body text-center max-w-fit mx-auto'>
+            <h2 className='text-2xl font-heading font-light mb-6'>
+                <Link to='/ratings'>LO QUE PIENSAN NUESTROS USUARIOS</Link>
             </h2>
             <div className='mb-6'>
                 {/* Calculamos (hook) y Mostramos la valoración media y el total */}
-                <p className='text-xl mb-2'>
+                <p className='text-xl mb-2 font-'>
                     {avgRating}⭐ de {totalRatings} valoraciones
                 </p>
 
@@ -36,7 +36,7 @@ const RatingsSummary = ({ ratings }) => {
                         topRatings.slice(0, 3).map((rating) => (
                             <div
                                 key={rating.id}
-                                className='bg-white p-4 rounded-lg shadow-sm text-[#083059]'
+                                className='bg-white p-4 rounded-lg shadow-sm text-dark-blue'
                             >
                                 <RatingListItem
                                     ratingId={rating.id}

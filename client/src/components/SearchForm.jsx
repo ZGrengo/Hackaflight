@@ -60,7 +60,7 @@ const SearchForm = ({
             className='w-full font-body text-dark-blue'
         >
             {/* Fila Superior: Origen y Destino*/}
-            <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
+            <div className='grid grid-cols-1 gap-4 md:grid-cols-2 mb-4'>
                 <div ref={originRef} className='relative'>
                     <label className='mb-1 text-sm font-medium'>Origen</label>
                     <input
