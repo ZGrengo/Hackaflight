@@ -39,13 +39,13 @@ const HomePage = () => {
     const { ratings } = useRatingList();
 
     // Cargar las búsqueda populares
-    useEffect(() => {
-        setPopularDestinations([
-            { origen: 'Madrid', destino: 'Nueva York' },
-            { origen: 'Londres', destino: 'Tokio' },
-            { origen: 'Paris', destino: 'Londres' },
-        ]);
-    }, []);
+    // useEffect(() => {
+    //     setPopularDestinations([
+    //         { origen: 'Madrid', destino: 'Nueva York' },
+    //         { origen: 'Londres', destino: 'Tokio' },
+    //         { origen: 'Paris', destino: 'Londres' },
+    //     ]);
+    // }, []);
     useEffect(() => {
         const handleScroll = () => {
             console.log('scrollY:', window.scrollY);
