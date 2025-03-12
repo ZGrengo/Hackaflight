@@ -11,7 +11,6 @@ import LogoAnimation from '../components/LogoAnimation';
 //import PaperPlaneAnimation from '../components/PaperPlaneAnimation';
 import RatingsSummary from '../components/RatingsSummary';
 import { AuthContext } from '../contexts/AuthContext';
-import SlideshowCircle from '../components/Slideshow';
 
 // Obtenemos las variables de entorno
 const { VITE_API_URL } = import.meta.env;
@@ -32,10 +31,13 @@ const HomePage = () => {
     // Estadis de carga y error
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+
+    const [opacity, setOpacity] = useState(0.4);
     // Hook para navegar entre rutas
     const navigate = useNavigate();
     const { isAuthenticated } = useContext(AuthContext);
     const { ratings } = useRatingList();
+
     // Cargar las búsqueda populares
     useEffect(() => {
         setPopularDestinations([
@@ -44,7 +46,19 @@ const HomePage = () => {
             { origen: 'Paris', destino: 'Londres' },
         ]);
     }, []);
+    useEffect(() => {
+        const handleScroll = () => {
+            console.log('scrollY:', window.scrollY);
+            if (window.scrollY > 0) {
+                setOpacity(1);
+            } else {
+                setOpacity(0.4);
+            }
+        };
 
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
     // Hook para cargar las búsquedas recientes si se está autenticado
     useEffect(() => {
         if (isAuthenticated) {
@@ -201,10 +215,11 @@ const HomePage = () => {
             <LogoAnimation />
             <Header />
 
-            <section className='relative flex flex-col items-center justify-center p-4 mt-20 md:md-16'>
-                {/* el SlideshowCircle solo se muentra en escritorio*/}
-                <SlideshowCircle />
-                <div className='bg-white p-6 sm:p-8 rounded-lg shadow-md w-full max-w-5xl relative z-20'>
+            <section className='relative flex flex-col items-center justify-center p-4 mt-16'>
+                <div className='bg-white p-6 sm:p-8 rounded-lg shadow-md w-full max-w-5xl relative z-20 hover:scale-[1.008]'>
+                    <h1 className='mb-6 text-3xl sm:text-4xl font-heading font-light text-dark-blue text-center'>
+                        ¡HACKEA TU VUELO!
+                    </h1>
                     <SearchForm
                         tipoViaje={tipoViaje}
                         fechaSalida={fechaSalida}
@@ -225,7 +240,7 @@ const HomePage = () => {
                 </div>
                 {/* Mostramos un mensaje de carga si está cargando */}
                 {loading && (
-                    <div className='fixed inset-0 bg-dark-blue bg-opacity-90 flex item-center justify-center z-50'>
+                    <div className='fixed inset-0 bg-dark-blue bg-opacity-90 flex items-center justify-center z-50'>
                         <div className='bg-white p-8 rounded-md shadow-lg max-w-xs mx-auto'>
                             <div className='w-16 h-16 border-8 border-dark-blue border-dashed rounded-full animate-spin mx-auto mb-4'></div>
                             <h2 className='text-dark-blue text-2xl font-bold text-center'>
@@ -253,13 +268,18 @@ const HomePage = () => {
                 />
             )}
             {/* Mostramos los destinos populares y el resumen de calificaciones */}
-            <section className='px-4 py-12 bg-white'>
-                <PopularDestinations
-                    popularDestinations={popularDestinations}
-                />
-            </section>
-            <section className='px-4 py-12 bg-gray-100'>
-                <RatingsSummary ratings={ratings} />
+            <section
+                className='px-4 py-12'
+                style={{ opacity, transition: 'opacity 0.7s ease-in-out' }}
+            >
+                <div className='w-full max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8'>
+                    <div className='bg-white p-6 rounded-lg shadow-md hover:scale-[1.008]'>
+                        <PopularDestinations />
+                    </div>
+                    <div className='bg-white p-6 rounded-lg shadow-md hover:scale-[1.008]'>
+                        <RatingsSummary ratings={ratings} />
+                    </div>
+                </div>
             </section>
         </main>
     );

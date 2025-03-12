@@ -1,45 +1,48 @@
-import PropTypes from 'prop-types';
+import { useState, useEffect } from 'react';
 
-const PopularDestinations = ({ popularDestinations = [] }) => {
+const PopularDestinations = () => {
+    const images = [
+        '/public/imagen1.jpg',
+        '/public/imagen2.jpg',
+        '/public/imagen3.jpg',
+        '/public/imagen4.jpg',
+        '/public/imagen5.jpg',
+        '/public/imagen6.jpg',
+        '/public/imagen7.jpg',
+        '/public/imagen8.jpg',
+        '/public/imagen9.jpg',
+    ];
+    const [currentImage, setCurrentImage] = useState(0);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentImage((prev) => (prev + 1) % images.length);
+        }, 7000); // tiempo que dura cada imagen 7 segundos
+        return () => clearInterval(interval);
+    }, [images.length]);
+
     return (
-        <section
-            className='bg-dark-blue my-4 text-center font-light text-light-blue h-80'
-            style={{
-                backgroundImage: 'url(./public/ticket.png)',
-                backgroundSize: 'auto',
-                backgroundPosition: 'center',
-            }}
-        >
-            <h2 className='font-bold italic text-medium-blue text-3xl m-6 pt-5'>
-                Destinos Populares
+        <section className='my-8 px-0,4'>
+            <h2 className='text-3xl font-light text-center text-dark-blue font-heading mb-6'>
+                DESTINOS POPULARES
             </h2>
-            {popularDestinations.length > 0 ? (
-                popularDestinations.slice(0, 5).map((destination, index) => (
-                    <div
-                        key={index}
-                        className='m-4 p-4 flex-col bg-light-blue text-dark-blue rounded-lg inline-block'
-                    >
-                        <p>Origen: {destination.origen}</p>
-                        <p>Destino: {destination.destino}</p>
-                    </div>
-                ))
-            ) : (
-                <p>
-                    Ejemplo: Madrid - Nueva York, Londres - Tokio, Paris -
-                    Londres
-                </p>
-            )}
+            <div className='relative w-full h-96 overflow-hidden shadow-lg rounded-lg'>
+                {images.map((img, index) => (
+                    <img
+                        key={img}
+                        src={img}
+                        alt='Destino'
+                        className={`absolute inset-0 object-cover w-full h-full transition-opacity duration-1000
+                                ${
+                                    index === currentImage
+                                        ? 'opacity-100'
+                                        : 'opacity-0'
+                                }`}
+                    />
+                ))}
+            </div>
         </section>
     );
-};
-
-PopularDestinations.propTypes = {
-    popularDestinations: PropTypes.arrayOf(
-        PropTypes.shape({
-            origen: PropTypes.string.isRequired,
-            destino: PropTypes.string.isRequired,
-        }),
-    ),
 };
 
 export default PopularDestinations;
