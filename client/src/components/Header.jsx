@@ -24,7 +24,7 @@ const Header = () => {
                             {authUser.role === 'admin' && (
                                 <Link to='/admin/users'>
                                     <img
-                                        src='/public/admin.png'
+                                        src='/public/admin.svg'
                                         alt='AdminUtils'
                                         className='w-8 h-8 transition-transform duration-200 hover:scale-110'
                                     />
