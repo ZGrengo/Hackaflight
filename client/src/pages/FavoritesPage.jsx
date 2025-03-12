@@ -145,7 +145,7 @@ const FavoritesPage = () => {
         }
     };
 
-    if (loading) return <LogoAnimation/>;
+    if (loading) return <LogoAnimation forcePlay />;
 
     return (
         <div className="flex flex-col min-h-screen">
