@@ -76,7 +76,7 @@ const ResetPassword = () => {
                     <form onSubmit={handlePasswordChange} className='space-y-4'>
                         <div>
                             <label className='block text-[#083059] font-medium text-sm mb-1'>
-                                Nueva Contraseña:
+                                Nueva Contraseña
                             </label>
                             <input
                                 type='password'
@@ -90,7 +90,7 @@ const ResetPassword = () => {
                         </div>
                         <div>
                             <label className='block text-[#083059] font-medium text-sm mb-1'>
-                                Confirmar Contraseña:
+                                Confirmar Contraseña
                             </label>
                             <input
                                 type='password'

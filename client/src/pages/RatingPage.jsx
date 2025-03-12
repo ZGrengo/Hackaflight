@@ -168,7 +168,7 @@ const RatingPage = () => {
                                     ratings.slice(0, 3).map((rating) => (
                                         <div
                                             key={rating.id}
-                                            className="bg-[#E5F7FF] p-4 rounded-lg shadow-sm list-none"
+                                            
                                         >
                                             <RatingListItem
                                                 ratingId={rating.id}

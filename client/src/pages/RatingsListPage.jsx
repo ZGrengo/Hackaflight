@@ -112,7 +112,7 @@ const RatingsListPage = () => {
                         {currentRatings.map((rating) => (
                             <div
                                 key={rating.id}
-                                className='bg-[#E5F7FF] p-6 mb-4 mt-4 rounded-lg shadow-sm list-none'
+                                className=' p-6 mb-4 mt-4 rounded-lg shadow-sm list-none'
                             >
                                 <RatingListItem
                                     ratingId={rating.id}

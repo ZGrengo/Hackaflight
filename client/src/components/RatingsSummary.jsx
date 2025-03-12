@@ -31,14 +31,14 @@ const RatingsSummary = ({ ratings }) => {
                     Mostrando 3 de {ratings.length} valoraciones
                 </p>
             </div>
-            <div className='space-y-6'>
-                <ul className='space-y-4 w-full max-w-2xl mx-auto'>
+            <div className='space-y-6 space-y-4 w-full max-w-2xl mx-auto '>
+                <ul className=''>
                     {/* Mostramos los 3 más recientes */}
                     {topRatings && topRatings.length > 0 ? (
                         topRatings.slice(0, 3).map((rating) => (
                             <div
                                 key={rating.id}
-                                className='bg-white p-4 rounded-lg shadow-md border-l-4 border-dark-blue hover:scale-[1.008]'
+                               
                             >
                                 <RatingListItem
                                     ratingId={rating.id}
