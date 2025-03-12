@@ -86,7 +86,7 @@ const RatingsListPage = () => {
                     {/* formulario de búsqueda */}
                     <form
                         onSubmit={handleSearchRatings}
-                        className='flex gap-4 items-center mb-6 justify-end'
+                        className='flex gap-1 items-center mb-6 justify-end '
                     >
                         <select
                             value={rate}

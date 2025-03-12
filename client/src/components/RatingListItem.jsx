@@ -8,7 +8,7 @@ import moment from 'moment';
 const RatingListItem = ({ title, rate, comment, createdAt, username }) => {
     return (
         <>
-            <div className='bg-white p-4 rounded-lg shadow-md border-l-4 border-dark-blue hover:scale-[1.008]'>
+            <div className='bg-white p-4 rounded-lg shadow-md border-l-4 border-dark-blue hover:scale-[1.008] mb-3'>
                 <div className='text-right'>
                     <p>{'⭐'.repeat(rate)}</p>
                 </div>
