@@ -190,7 +190,7 @@ const FavoriteDetailsEditPage = () => {
         setIsEditing(false); // Dejamos de editar
     };
 
-    if (loading) return <LogoAnimation />;
+    if (loading) return <LogoAnimation forcePlay />;
 
     return (
         <>
