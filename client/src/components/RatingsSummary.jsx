@@ -16,27 +16,29 @@ const RatingsSummary = ({ ratings }) => {
     const topRatings = [...ratings].slice(0, 3);
 
     return (
-        <div className='p-8 font-body text-center max-w-fit mx-auto'>
-            <h2 className='text-2xl font-heading font-light mb-6'>
+        <div className='p-6'>
+            <h2 className='text-3xl font-heading font-light mb-4 text-dark-blue border-b-2 border-accent-blue pb-2'>
                 <Link to='/ratings'>LO QUE PIENSAN NUESTROS USUARIOS</Link>
             </h2>
             <div className='mb-6'>
                 {/* Calculamos (hook) y Mostramos la valoración media y el total */}
-                <p className='text-xl mb-2 font-'>
+                <p className='text-xl text-dark-blue'>
                     {avgRating}⭐ de {totalRatings} valoraciones
                 </p>
 
                 {/* Indicamos cuántas valoraciones se muestran del total */}
-                <p>Mostrando 3 de {ratings.length} valoraciones</p>
+                <p className='text-sm text-medium-blue'>
+                    Mostrando 3 de {ratings.length} valoraciones
+                </p>
             </div>
-            <div className='w-full px-4'>
+            <div className='space-y-6'>
                 <ul className='space-y-4 w-full max-w-2xl mx-auto'>
                     {/* Mostramos los 3 más recientes */}
                     {topRatings && topRatings.length > 0 ? (
                         topRatings.slice(0, 3).map((rating) => (
                             <div
                                 key={rating.id}
-                                className='bg-white p-4 rounded-lg shadow-sm text-dark-blue'
+                                className='bg-white p-4 rounded-lg shadow-md border-l-4 border-dark-blue hover:scale-[1.008]'
                             >
                                 <RatingListItem
                                     ratingId={rating.id}
