@@ -16,7 +16,7 @@ const RatingsSummary = ({ ratings }) => {
     const topRatings = [...ratings].slice(0, 3);
 
     return (
-        <div className='p-6'>
+        <div className='p-7'>
             <h2 className='text-3xl font-heading font-light mb-4 text-dark-blue border-b-2 border-accent-blue pb-2'>
                 <Link to='/ratings'>LO QUE PIENSAN NUESTROS USUARIOS</Link>
             </h2>
