@@ -12,87 +12,91 @@ const { VITE_API_URL } = import.meta.env;
 
 // definimos la página de resultados de búsqueda
 const SearchResultsPage = () => {
-
     // obtiene la ubicación actual
     const location = useLocation();
-    const [ isSaved, setIsSaved ] = useState( false );
-    const [ title, setTitle ] = useState( '' );
+    const [isSaved, setIsSaved] = useState(false);
+    const [title, setTitle] = useState('');
     const { searchParams = {} } = location.state || {};
-    const [ flights, setFlights ] = useState( location.state?.flights ?? [] );
+    const [flights, setFlights] = useState(location.state?.flights ?? []);
     const { authToken } = useAuthContext();
 
     // actualiza los vuelos cuando cambia la ubicación
 
-    useEffect( () => {
-        if ( location.state?.flights )
-        {
-            console.log( "Location state flights:", location.state.flights );
-            location.state.flights.forEach( ( flight, index ) => {
-                console.log( `Flight ${ index } itineraries:`, flight.itineraries );
-            } );
-            setFlights( location.state.flights );
-            console.log( "Initial flights data after setFlights:", location.state.flights );
+    useEffect(() => {
+        if (location.state?.flights) {
+            console.log('Location state flights:', location.state.flights);
+            location.state.flights.forEach((flight, index) => {
+                console.log(`Flight ${index} itineraries:`, flight.itineraries);
+            });
+            setFlights(location.state.flights);
+            console.log(
+                'Initial flights data after setFlights:',
+                location.state.flights,
+            );
         }
-    }, [ location.state?.flights ] );
+    }, [location.state?.flights]);
 
     // función para manejar el cambio de filtros
-    const handleFilterChange = async ( filters ) => {
-        try
-        {
-            console.log( "Filters applied:", filters );
+    const handleFilterChange = async (filters) => {
+        try {
+            console.log('Filters applied:', filters);
 
             // Filtrar los parámetros vacíos
             const searchParams = new URLSearchParams();
-            Object.keys( filters ).forEach( key => {
-                if ( filters[ key ] )
-                {
-                    searchParams.append( key, filters[ key ] );
+            Object.keys(filters).forEach((key) => {
+                if (filters[key]) {
+                    searchParams.append(key, filters[key]);
                 }
-            } );
-            console.log( "Filtered parameters:", searchParams.toString() );
+            });
+            console.log('Filtered parameters:', searchParams.toString());
 
             // Realizar la petición a la API para vuelos filtrados
             const res = await fetch(
-                `${ VITE_API_URL }/api/flights/filter?${ searchParams.toString() }`,
+                `${VITE_API_URL}/api/flights/filter?${searchParams.toString()}`,
                 {
                     method: 'GET',
                     headers: { 'Content-Type': 'application/json' },
-                }
+                },
             );
 
-            console.log( 'Response:', res );
+            console.log('Response:', res);
 
             // Manejar la respuesta de la API
-            if ( !res.ok ) throw new Error( 'Se ha producido un error al filtrar los vuelos. Por favor, inténtalo de nuevo con otros parámetros.' );
+            if (!res.ok)
+                throw new Error(
+                    'Se ha producido un error al filtrar los vuelos. Por favor, inténtalo de nuevo con otros parámetros.',
+                );
             const body = await res.json();
 
-            console.log( 'Response body:', body );
-            if ( body.status === 'error' ) throw new Error( body.message );
+            console.log('Response body:', body);
+            if (body.status === 'error') throw new Error(body.message);
 
             // Actualizar los vuelos con los datos filtrados
             const filteredFlights = body.data || [];
-            setFlights( filteredFlights );
+            setFlights(filteredFlights);
 
-            filteredFlights.forEach( ( flight, index ) => {
-                console.log( `Filtered Flight ${ index } itineraries:`, flight.itineraries );
-            } );
+            filteredFlights.forEach((flight, index) => {
+                console.log(
+                    `Filtered Flight ${index} itineraries:`,
+                    flight.itineraries,
+                );
+            });
 
-            console.log( 'Filtered flights data:', filteredFlights );
-            console.log( 'Updated flights state:', filteredFlights );
-        } catch ( err )
-        {
-            console.log( 'Error al filtrar vuelos:', err );
-            console.log( 'Error message:', err.message );
-            console.log( 'Error stack:', err.stack );
+            console.log('Filtered flights data:', filteredFlights);
+            console.log('Updated flights state:', filteredFlights);
+        } catch (err) {
+            console.log('Error al filtrar vuelos:', err);
+            console.log('Error message:', err.message);
+            console.log('Error stack:', err.stack);
         }
     };
 
-
-    useEffect( () => {
-        if ( !location.state?.flights || location.state.flights.length === 0 )
-        {
-            console.warn( "No flights received from API. Using default flights." );
-            setFlights( [
+    useEffect(() => {
+        if (!location.state?.flights || location.state.flights.length === 0) {
+            console.warn(
+                'No flights received from API. Using default flights.',
+            );
+            setFlights([
                 {
                     id: '1',
                     price: 100,
@@ -133,20 +137,18 @@ const SearchResultsPage = () => {
                         },
                     ],
                 },
-            ] );
-        } else
-        {
-            setFlights( location.state.flights );
+            ]);
+        } else {
+            setFlights(location.state.flights);
         }
-    }, [ location.state?.flights ] );
+    }, [location.state?.flights]);
 
     const handleSave = async () => {
-        try
-        {
+        try {
             const formattedFavorites = {
                 title:
                     title.trim() ||
-                    `${ searchParams.origin } - ${ searchParams.destination }`,
+                    `${searchParams.origin} - ${searchParams.destination}`,
                 origin: searchParams.origin,
                 destination: searchParams.destination,
                 departureDate: searchParams.departureDate,
@@ -154,31 +156,30 @@ const SearchResultsPage = () => {
                 adults: searchParams.adults,
             };
             // Enviamos los cambios al endpoint de actualización de favoritos.
-            const res = await fetch( `${ VITE_API_URL }/api/users/favorites`, {
+            const res = await fetch(`${VITE_API_URL}/api/users/favorites`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: authToken,
                 },
-                body: JSON.stringify( formattedFavorites ),
-            } );
+                body: JSON.stringify(formattedFavorites),
+            });
             // Obtenemos el body.
             const body = await res.json();
-            if ( !res.ok ) throw new Error( body.message );
-            setIsSaved( true );
-            toast.success( body.message );
-        } catch ( err )
-        {
-            toast.error( err.message, {
+            if (!res.ok) throw new Error(body.message);
+            setIsSaved(true);
+            toast.success(body.message);
+        } catch (err) {
+            toast.error(err.message, {
                 id: 'favoriteId',
-            } );
+            });
         }
     };
 
     const getAirlines = (itineraries) => {
         const airlines = new Set();
-        itineraries.forEach(itinerary => {
-            itinerary.segments.forEach(segment => {
+        itineraries.forEach((itinerary) => {
+            itinerary.segments.forEach((segment) => {
                 airlines.add(segment.carrierCode);
             });
         });
@@ -186,20 +187,21 @@ const SearchResultsPage = () => {
     };
 
     // Obtener las aerolíneas visibles de los vuelos
-const getVisibleAirlines = (flights) => {
-    const airlines = new Set();
-    flights.forEach(flight => {
-        const airlinesInFlight = getAirlines(flight.itineraries); // Usa la función getAirlines para obtener las aerolíneas
-        airlinesInFlight.split(', ').forEach(airline => airlines.add(airline));
-    });
-    return Array.from(airlines); // Devuelve un array con las aerolíneas únicas
-};
+    const getVisibleAirlines = (flights) => {
+        const airlines = new Set();
+        flights.forEach((flight) => {
+            const airlinesInFlight = getAirlines(flight.itineraries); // Usa la función getAirlines para obtener las aerolíneas
+            airlinesInFlight
+                .split(', ')
+                .forEach((airline) => airlines.add(airline));
+        });
+        return Array.from(airlines); // Devuelve un array con las aerolíneas únicas
+    };
 
-const visibleAirlines = getVisibleAirlines(flights); // Llama a la función para obtener las aerolíneas de los vuelos
+    const visibleAirlines = getVisibleAirlines(flights); // Llama a la función para obtener las aerolíneas de los vuelos
 
     // Mostrar un mensaje si no hay vuelos
-    if ( !flights.length )
-    {
+    if (!flights.length) {
         return <p>No se encontraron resultados de búsqueda.</p>;
     }
 
@@ -208,71 +210,86 @@ const visibleAirlines = getVisibleAirlines(flights); // Llama a la función para
         <>
             <Header />
             <section>
-                <FlightFilters onFilterChange={handleFilterChange} visibleAirlines={visibleAirlines}/>
+                <FlightFilters
+                    onFilterChange={handleFilterChange}
+                    visibleAirlines={visibleAirlines}
+                />
+
                 {authToken && (
-                    <div className="w-full max-w-lg mx-auto mt-4 p-4 sm:p-6">
+                    <div className='w-full max-w-lg mx-auto mt-4 p-4 sm:p-6'>
                         {/* Titulo de la búsqueda */}
                         <input
                             type='text'
                             placeholder='Titulo de la búsqueda'
                             value={title}
-                            onChange={( e ) => setTitle( e.target.value )}
+                            onChange={(e) => setTitle(e.target.value)}
                             name='title'
-                            className="w-full p-3 border border-gray-300 rounded-md text-gray-700 focus:ring-2 focus:ring-medium-blue focus:border-medium-blue mb-4"
+                            className='w-full p-3 border border-gray-300 rounded-md text-gray-700 focus:ring-2 focus:ring-medium-blue focus:border-medium-blue mb-4'
                         />
                         {/* Botón de guardar y lista de parametros */}
-                        <ul className="space-y-4">
+                        <ul className='space-y-4'>
                             <li
                                 key={searchParams.favoriteId}
-                                className="bg-gray-100 p-4 rounded-lg shadow-sm mb-3"
+                                className='bg-gray-100 p-4 rounded-lg shadow-sm mb-3'
                             >
-                                <p className="text-base sm:text-lg font-medium text-gray-800">
+                                <p className='text-base sm:text-lg font-medium text-gray-800'>
                                     Desde{' '}
-                                    <span className="text-medium-blue">
+                                    <span className='text-medium-blue'>
                                         {searchParams.origin}
                                     </span>{' '}
                                     a{' '}
-                                    <span className="text-medium-blue">
+                                    <span className='text-medium-blue'>
                                         {searchParams.destination}
                                     </span>
                                 </p>
-                                <p className="text-sm text-gray-600">
+                                <p className='text-sm text-gray-600'>
                                     Fecha de salida:{' '}
-                                    {new Date( searchParams.departureDate ).toLocaleDateString( 'es-ES', {
+                                    {new Date(
+                                        searchParams.departureDate,
+                                    ).toLocaleDateString('es-ES', {
                                         day: '2-digit',
                                         month: 'long',
                                         year: 'numeric',
-                                    } )}{' '}
-
-                                    {searchParams.returnDate ? `- Fecha de retorno: ${ new Date( searchParams.returnDate ).toLocaleDateString( 'es-ES', {
-                                        day: '2-digit',
-                                        month: 'long',
-                                        year: 'numeric',
-                                    } ) }  ` : ''}
-
+                                    })}{' '}
+                                    {searchParams.returnDate
+                                        ? `- Fecha de retorno: ${new Date(
+                                              searchParams.returnDate,
+                                          ).toLocaleDateString('es-ES', {
+                                              day: '2-digit',
+                                              month: 'long',
+                                              year: 'numeric',
+                                          })}  `
+                                        : ''}
                                     | Adultos: {searchParams.adults}
                                 </p>
                             </li>
                         </ul>
-                        <div className="text-center">
+                        <div className='text-center'>
                             <button
                                 onClick={handleSave}
                                 disabled={isSaved}
-                                className={`${ isSaved ? 'bg-gray-400' : 'bg-medium-blue'
-                                    } text-white px-6 py-2 rounded-md hover:bg-dark-blue transition-all text-sm sm:text-base`}
+                                className={`${
+                                    isSaved ? 'bg-gray-400' : 'bg-medium-blue'
+                                } text-white px-6 py-2 rounded-md hover:bg-dark-blue transition-all text-sm sm:text-base`}
                             >
                                 {isSaved ? 'Guardado' : 'Guardar Búsqueda'}
                             </button>
                         </div>
                     </div>
                 )}
-                <section className="w-full max-w-4xl mx-auto mt-6 p-4 sm:p-6 bg-white mb-10">
-                    <h2 className="text-2xl sm:text-3xl font-semibold text-center text-dark-blue mb-4 sm:mb-6">Resultados de la Búsqueda</h2>
-                    <section className="flight-cards-container items-center justify-center align-middle flex flex-col">
+                <section>
+                    <h2 className='text-2xl sm:text-3xl font-semibold text-center text-dark-blue bg-light-blue'>
+                        Resultados de la Búsqueda
+                    </h2>
+                    <section className='flight-cards-container items-center justify-center align-middle flex flex-col bg-gradient-to-b from-light-blue to-dark-blue'>
                         {flights.length > 0 ? (
-                            flights.map( ( flight, index ) => (
-                                <FlightCard key={`${ flight.id }-${ index }`} flight={flight} searchParams={searchParams} />
-                            ) )
+                            flights.map((flight, index) => (
+                                <FlightCard
+                                    key={`${flight.id}-${index}`}
+                                    flight={flight}
+                                    searchParams={searchParams}
+                                />
+                            ))
                         ) : (
                             <p>No hay vuelos que coincidan con los filtros.</p>
                         )}
@@ -286,7 +303,7 @@ const visibleAirlines = getVisibleAirlines(flights); // Llama a la función para
 // Definir las propiedades requeridas para la página de resultados de búsqueda
 SearchResultsPage.propTypes = {
     flights: PropTypes.arrayOf(
-        PropTypes.shape( {
+        PropTypes.shape({
             type: PropTypes.string.isRequired,
             id: PropTypes.string.isRequired,
             source: PropTypes.string.isRequired,
@@ -298,90 +315,91 @@ SearchResultsPage.propTypes = {
             lastTicketingDateTime: PropTypes.string.isRequired,
             numberOfBookableSeats: PropTypes.number.isRequired,
             itineraries: PropTypes.arrayOf(
-                PropTypes.shape( {
+                PropTypes.shape({
                     duration: PropTypes.string.isRequired,
                     segments: PropTypes.arrayOf(
-                        PropTypes.shape( {
-                            departure: PropTypes.shape( {
+                        PropTypes.shape({
+                            departure: PropTypes.shape({
                                 iataCode: PropTypes.string.isRequired,
                                 terminal: PropTypes.string,
                                 at: PropTypes.string.isRequired,
-                            } ).isRequired,
-                            arrival: PropTypes.shape( {
+                            }).isRequired,
+                            arrival: PropTypes.shape({
                                 iataCode: PropTypes.string.isRequired,
                                 terminal: PropTypes.string,
                                 at: PropTypes.string.isRequired,
-                            } ).isRequired,
+                            }).isRequired,
                             carrierCode: PropTypes.string.isRequired,
                             number: PropTypes.string.isRequired,
-                            aircraft: PropTypes.shape( {
+                            aircraft: PropTypes.shape({
                                 code: PropTypes.string.isRequired,
-                            } ).isRequired,
-                            operating: PropTypes.shape( {
+                            }).isRequired,
+                            operating: PropTypes.shape({
                                 carrierCode: PropTypes.string.isRequired,
-                            } ).isRequired,
+                            }).isRequired,
                             duration: PropTypes.string.isRequired,
                             id: PropTypes.string.isRequired,
                             numberOfStops: PropTypes.number.isRequired,
                             blacklistedInEU: PropTypes.bool.isRequired,
-                        } ).isRequired
+                        }).isRequired,
                     ).isRequired,
-                } ).isRequired
+                }).isRequired,
             ).isRequired,
-            price: PropTypes.shape( {
+            price: PropTypes.shape({
                 currency: PropTypes.string.isRequired,
                 total: PropTypes.string.isRequired,
                 base: PropTypes.string,
                 fees: PropTypes.arrayOf(
-                    PropTypes.shape( {
+                    PropTypes.shape({
                         amount: PropTypes.string,
                         type: PropTypes.string,
-                    } )
+                    }),
                 ),
                 grandTotal: PropTypes.string,
-            } ).isRequired,
-            pricingOptions: PropTypes.shape( {
-                fareType: PropTypes.arrayOf( PropTypes.string ).isRequired,
+            }).isRequired,
+            pricingOptions: PropTypes.shape({
+                fareType: PropTypes.arrayOf(PropTypes.string).isRequired,
                 includedCheckedBagsOnly: PropTypes.bool.isRequired,
-            } ).isRequired,
-            validatingAirlineCodes: PropTypes.arrayOf( PropTypes.string ).isRequired,
+            }).isRequired,
+            validatingAirlineCodes: PropTypes.arrayOf(PropTypes.string)
+                .isRequired,
             travelerPricings: PropTypes.arrayOf(
-                PropTypes.shape( {
+                PropTypes.shape({
                     travelerId: PropTypes.string.isRequired,
                     fareOption: PropTypes.string.isRequired,
                     travelerType: PropTypes.string.isRequired,
-                    price: PropTypes.shape( {
+                    price: PropTypes.shape({
                         currency: PropTypes.string.isRequired,
                         total: PropTypes.string.isRequired,
                         base: PropTypes.string,
-                    } ).isRequired,
+                    }).isRequired,
                     fareDetailsBySegment: PropTypes.arrayOf(
-                        PropTypes.shape( {
+                        PropTypes.shape({
                             segmentId: PropTypes.string.isRequired,
                             cabin: PropTypes.string.isRequired,
                             fareBasis: PropTypes.string.isRequired,
                             class: PropTypes.string.isRequired,
-                            includedCheckedBags: PropTypes.shape( {
+                            includedCheckedBags: PropTypes.shape({
                                 quantity: PropTypes.number.isRequired,
-                            } ).isRequired,
-                            includedCabinBags: PropTypes.shape( {
+                            }).isRequired,
+                            includedCabinBags: PropTypes.shape({
                                 quantity: PropTypes.number.isRequired,
-                            } ).isRequired,
+                            }).isRequired,
                             amenities: PropTypes.arrayOf(
-                                PropTypes.shape( {
+                                PropTypes.shape({
                                     description: PropTypes.string.isRequired,
                                     isChargeable: PropTypes.bool.isRequired,
                                     amenityType: PropTypes.string.isRequired,
-                                    amenityProvider: PropTypes.shape( {
+                                    amenityProvider: PropTypes.shape({
                                         name: PropTypes.string.isRequired,
-                                    } ).isRequired,
-                                } ).isRequired
+                                    }).isRequired,
+                                }).isRequired,
                             ).isRequired,
-                        } ).isRequired
+                        }).isRequired,
                     ).isRequired,
-                } ).isRequired
+                }).isRequired,
             ).isRequired,
-        } ).isRequired
+        }).isRequired,
     ).isRequired,
 };
 
