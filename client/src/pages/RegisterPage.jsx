@@ -85,17 +85,20 @@ const RegisterPage = () => {
     return (
         <>
             <Header />
-            <main className='bg-[#E5F7FF] flex items-center justify-center min-h-screen p-4'>
-                <div className='bg-white p-8 rounded-lg shadow-md w-full max-w-md'>
-                    <h2 className='text-2xl font-bold text-[#083059] text-center mb-6'>
-                        Crea tu cuenta
+            <main className='bg-gradient-to-b from-dark-blue to-white flex items-center justify-center min-screen p-4'>
+                <div className='bg-white p-6 rounded-xl shadow-lg w-full max-w-5xl'>
+                    <h2 className='text-3xl font-heading font-light text-dark-blue text-center mb-8'>
+                        CREA TU CUENTA
                     </h2>
 
-                    <form onSubmit={handleRegister} className='space-y-4'>
+                    <form
+                        onSubmit={handleRegister}
+                        className='grid grid-cols-1 md:grid-cols-2 gap-4'
+                    >
                         <div>
                             <label
                                 htmlFor='firstName'
-                                className='block text-[#083059] font-medium'
+                                className='block text-dark-blue font-body'
                             >
                                 Nombre
                             </label>
@@ -104,32 +107,30 @@ const RegisterPage = () => {
                                 id='firstName'
                                 value={firstName}
                                 onChange={(e) => setFirstName(e.target.value)}
-                                className='w-full p-3 border border-[#3951AA] rounded-md focus:outline-none focus:ring-2 focus:ring-[#179DD9]'
+                                className='w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-blue'
                                 required
                             />
                         </div>
                         <div>
-                            <div>
-                                <label
-                                    htmlFor='lastName'
-                                    className='block text-[#083059] font-medium'
-                                >
-                                    Apellidos
-                                </label>
-                                <input
-                                    type='text'
-                                    id='lastName'
-                                    value={lastName}
-                                    onChange={(e) =>
-                                        setLastName(e.target.value)
-                                    }
-                                    className='w-full p-3 border border-[#3951AA] rounded-md focus:outline-none focus:ring-2 focus:ring-[#179DD9]'
-                                    required
-                                />
-                            </div>
+                            <label
+                                htmlFor='lastName'
+                                className='block text-dark-blue font-body'
+                            >
+                                Apellidos
+                            </label>
+                            <input
+                                type='text'
+                                id='lastName'
+                                value={lastName}
+                                onChange={(e) => setLastName(e.target.value)}
+                                className='w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-blue'
+                                required
+                            />
+                        </div>
+                        <div className='md:col-span-2'>
                             <label
                                 htmlFor='username'
-                                className='block text-[#083059] font-medium'
+                                className='block text-dark-blue font-body'
                             >
                                 Usuario
                             </label>
@@ -138,15 +139,15 @@ const RegisterPage = () => {
                                 id='username'
                                 value={username}
                                 onChange={(e) => setUsername(e.target.value)}
-                                className='w-full p-3 border border-[#3951AA] rounded-md focus:outline-none focus:ring-2 focus:ring-[#179DD9]'
+                                className='w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-blue'
                                 required
                             />
                         </div>
 
-                        <div>
+                        <div className='md:col-span-2'>
                             <label
                                 htmlFor='email'
-                                className='block text-[#083059] font-medium'
+                                className='block text-dark-blue font-body'
                             >
                                 Correo Electrónico
                             </label>
@@ -155,7 +156,7 @@ const RegisterPage = () => {
                                 id='email'
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                className='w-full p-3 border border-[#3951AA] rounded-md focus:outline-none focus:ring-2 focus:ring-[#179DD9]'
+                                className='w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-blue'
                                 required
                             />
                         </div>
@@ -163,7 +164,7 @@ const RegisterPage = () => {
                         <div>
                             <label
                                 htmlFor='password'
-                                className='block text-[#083059] font-medium'
+                                className='block text-dark-blue font-body'
                             >
                                 Contraseña
                             </label>
@@ -172,7 +173,7 @@ const RegisterPage = () => {
                                 id='password'
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                className='w-full p-3 border border-[#3951AA] rounded-md focus:outline-none focus:ring-2 focus:ring-[#179DD9]'
+                                className='w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-blue'
                                 required
                             />
                         </div>
@@ -180,7 +181,7 @@ const RegisterPage = () => {
                         <div>
                             <label
                                 htmlFor='passConfirm'
-                                className='block text-[#083059] font-medium'
+                                className='block text-dark-blue font-body'
                             >
                                 Confirmar Contraseña
                             </label>
@@ -189,14 +190,14 @@ const RegisterPage = () => {
                                 id='passConfirm'
                                 value={passConfirm}
                                 onChange={(e) => setPassConfirm(e.target.value)}
-                                className='w-full p-3 border border-[#3951AA] rounded-md focus:outline-none focus:ring-2 focus:ring-[#179DD9]'
+                                className='w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-blue'
                                 required
                             />
                         </div>
-                        <div>
+                        <div className='md:col-span-2'>
                             <label
                                 htmlFor='birthdate'
-                                className='block text-[#083059] font-medium'
+                                className='block text-dark-blue font-body'
                             >
                                 Fecha de Nacimiento
                             </label>
@@ -205,30 +206,31 @@ const RegisterPage = () => {
                                 id='birthdate'
                                 value={birthdate}
                                 onChange={(e) => setBirthdate(e.target.value)}
-                                className='w-full p-3 border border-[#3951AA] rounded-md focus:outline-none focus:ring-2 focus:ring-[#179DD9]'
+                                className='w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-blue'
                                 required
                             />
                         </div>
-
-                        <button
-                            type='submit'
-                            disabled={loading}
-                            className={`w-full py-3 font-bold rounded-md transition 
+                        <div className='md:col-span-2'>
+                            <button
+                                type='submit'
+                                disabled={loading}
+                                className={`w-full py-3 font-button font-bold rounded-md transition 
                             ${
                                 loading
                                     ? 'bg-gray-400 cursor-not-allowed'
-                                    : 'bg-[#179DD9] text-white hover:bg-[#083059]'
+                                    : 'bg-dark-blue text-white hover:bg-medium-blue'
                             }`}
-                        >
-                            {loading ? 'Registrando...' : 'Registrarse'}
-                        </button>
+                            >
+                                {loading ? 'Registrando...' : 'Registrarse'}
+                            </button>
+                        </div>
                     </form>
 
-                    <p className='text-center text-[#083059] mt-4'>
+                    <p className='text-center text-dark-blue mt-4'>
                         ¿Ya tienes cuenta?{' '}
                         <a
                             href='/login'
-                            className='text-[#3951AA] font-bold hover:underline'
+                            className='text-medium-blue font-bold hover:underline'
                         >
                             Inicia sesión
                         </a>

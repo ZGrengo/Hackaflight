@@ -55,23 +55,23 @@ const LoginPage = () => {
     return (
         <>
             <Header />
-            <main className='bg-[#E5F7FF] flex items-center justify-center min-h-screen p-4'>
-                <div className='bg-white p-8 rounded-lg shadow-md w-full max-w-md'>
-                    <h2 className='text-2xl font-bold text-[#083059] text-center mb-6'>
-                        Iniciar sesión
+            <main className='bg-gradient-to-b from-dark-blue to-white flex items-center justify-center min-h-screen p-4'>
+                <div className='bg-white p-6 rounded-xl shadow-lg w-full max-w-lg'>
+                    <h2 className='text-3xl font-heading font-light text-dark-blue text-center mb-8'>
+                        INICIAR SESIÓN
                     </h2>
                     <form
                         onSubmit={handleLogin}
-                        className='flex flex-col gap-[30px] p-[30px] font-bold'
+                        className='flex flex-col space-y-4'
                     >
                         <label
                             htmlFor='email'
-                            className='block text-[#083059] font-medium'
+                            className='block text-dark-blue font-body'
                         >
                             Correo Electrónico
                         </label>
                         <input
-                            className='w-full p-3 border border-[#3951AA] rounded-md focus:outline-none focus:ring-2 focus:ring-[#179DD9]'
+                            className='w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-blue'
                             type='email'
                             id='email'
                             value={formInputs.email}
@@ -87,13 +87,13 @@ const LoginPage = () => {
                         />
                         <label
                             htmlFor='pass'
-                            className='block text-[#083059] font-medium'
+                            className='block text-dark-blue font-body'
                         >
                             Contraseña
                         </label>
                         <div className='relative'>
                             <input
-                                className='w-full p-3 pr-10 border border-[#3951AA] rounded-md focus:outline-none focus:ring-2 focus:ring-[#179DD9]'
+                                className='w-full p-3 pr-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-blue'
                                 type={showPassword ? 'text' : 'password'}
                                 id='pass'
                                 value={formInputs.password}
@@ -120,7 +120,7 @@ const LoginPage = () => {
                         </div>
                         <div className='text-center text-[#083059] '>
                             <Link
-                                className='text-[#3951AA] font-bold hover:underline'
+                                className='text-medium-blue font-bold hover:underline'
                                 to='/users/password/recover/request'
                             >
                                 Recuperar Contraseña
@@ -132,7 +132,7 @@ const LoginPage = () => {
                                 ${
                                     loading
                                         ? 'bg-gray-400 cursor-not-allowed'
-                                        : 'bg-[#179DD9] text-white hover:bg-[#083059]'
+                                        : 'bg-dark-blue text-white hover:bg-medium-blue'
                                 }`}
                         >
                             {loading ? 'Iniciando...' : 'Iniciar sesión'}
@@ -142,7 +142,7 @@ const LoginPage = () => {
                                 ¿Ya tienes cuenta?
                                 <Link
                                     to='/register'
-                                    className='text-[#3951AA] pl-2 hover:underline'
+                                    className='text-medium-blue pl-2 hover:underline'
                                 >
                                     ¡Registrate!
                                 </Link>
