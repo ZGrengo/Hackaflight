@@ -32,7 +32,7 @@ const HomePage = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const [opacity, setOpacity] = useState(0.4);
+    const [opacity, setOpacity] = useState(0.2);
     // Hook para navegar entre rutas
     const navigate = useNavigate();
     const { isAuthenticated } = useContext(AuthContext);

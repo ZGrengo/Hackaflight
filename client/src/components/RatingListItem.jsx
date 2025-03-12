@@ -8,23 +8,26 @@ import moment from 'moment';
 const RatingListItem = ({ title, rate, comment, createdAt, username }) => {
     return (
         <li>
-            <header>
-                <h3 className='font-bold'>{title}</h3>
-            </header>
-            <div className='p-2'>
-                <p className='font-semibold'>Valoración: {'⭐'.repeat(rate)}</p>
-                <p>
-                    <span className='font-semibold'>Descripción:</span>{' '}
-                    {comment}
-                </p>
+            <div>
+                <div className='text-right'>
+                    <p>{'⭐'.repeat(rate)}</p>
+                </div>
+                <div className='text-left mb-3'>
+                    <h3 className='font-bold text-xl text-dark-blue'>
+                        {title}
+                    </h3>
+                </div>
+
+                <div className='text-center mb-5'>
+                    <p className='text-base text-dark-blue'>{comment}</p>
+                </div>
+                <div className='flex flex-col items-end'>
+                    <p className='font-light text-sm text-medium-blue'>
+                        {moment(createdAt).format('DD/MM/YYYY [a las] HH:mm')}}
+                    </p>
+                    <p className='text-sm text-accent-blue'>@{username}</p>
+                </div>
             </div>
-            <footer className='ml-2'>
-                <p>Autor/a: {username}</p>
-                <p className='font-light'>
-                    Creada el {''}
-                    {moment(createdAt).format('DD/MM/YYYY [a las] HH:mm')}
-                </p>
-            </footer>
         </li>
     );
 };
