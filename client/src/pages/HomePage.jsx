@@ -26,7 +26,7 @@ const HomePage = () => {
     const [pasajeros, setPasajeros] = useState(1);
     const [suggestions, setSuggestions] = useState([]);
     // Estados para destinos populares y busquedas recientes
-    const [popularDestinations, setPopularDestinations] = useState([]);
+
     const [recentSearches, setRecentSearches] = useState([]);
     // Estadis de carga y error
     const [loading, setLoading] = useState(false);
@@ -38,14 +38,6 @@ const HomePage = () => {
     const { isAuthenticated } = useContext(AuthContext);
     const { ratings } = useRatingList();
 
-    // Cargar las búsqueda populares
-    // useEffect(() => {
-    //     setPopularDestinations([
-    //         { origen: 'Madrid', destino: 'Nueva York' },
-    //         { origen: 'Londres', destino: 'Tokio' },
-    //         { origen: 'Paris', destino: 'Londres' },
-    //     ]);
-    // }, []);
     useEffect(() => {
         const handleScroll = () => {
             console.log('scrollY:', window.scrollY);
@@ -213,7 +205,7 @@ const HomePage = () => {
     return (
         <main className='min-h-screen bg-gradient-to-b from-dark-blue to-white'>
             <LogoAnimation />
-            <Header />
+            <Header className='sticky' />
 
             <section className='relative flex flex-col items-center justify-center p-4 mt-16'>
                 <div className='bg-white p-6 sm:p-8 rounded-lg shadow-md w-full max-w-5xl relative z-20 hover:scale-[1.008]'>
