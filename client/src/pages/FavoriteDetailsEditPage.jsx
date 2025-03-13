@@ -4,7 +4,6 @@ import useAuthContext from '../hooks/useAuthContext.js';
 import { useNavigate } from "react-router-dom";
 import toast from 'react-hot-toast';
 import Header from '../components/Header.jsx';
-import LogoAnimation from '../components/LogoAnimation';
 import aircodes from 'aircodes';
 
 const { VITE_API_URL } = import.meta.env;
@@ -163,7 +162,6 @@ const FavoriteDetailsEditPage = () => {
                     returnFlights = bodyVuelta.map((flight) => ({ ...flight, isReturn: true }));
                 }
             }
-
             navigate('/search-results', {
                 state: {
                     flights: [...flights, ...returnFlights],
@@ -177,11 +175,10 @@ const FavoriteDetailsEditPage = () => {
                     },
                 },
             });
+            setLoading(false);
         } catch (err) {
             console.error('Error al buscar vuelos:', err);
             toast.error(err.message || 'Error al buscar vuelos, inténtelo de nuevo más tarde.');
-        } finally {
-            setLoading(false);
         }
     };
 
@@ -189,7 +186,6 @@ const FavoriteDetailsEditPage = () => {
         setFavorite(initialFavorites); // Restauramos el estado inicial
         setIsEditing(false); // Dejamos de editar
     };
-
     
     return (
         <>
@@ -207,6 +203,20 @@ const FavoriteDetailsEditPage = () => {
                     </div>
                 )}
             <Header />
+                    {/* Animación de carga sobrepuesta */}
+        {loading && (
+            <div className='fixed inset-0 bg-dark-blue bg-opacity-90 flex items-center justify-center z-50'>
+                <div className='bg-white p-8 rounded-md shadow-lg max-w-xs mx-auto'>
+                    <div className='w-16 h-16 border-8 border-dark-blue border-dashed rounded-full animate-spin mx-auto mb-4'></div>
+                    <h2 className='text-dark-blue text-2xl font-bold text-center'>
+                        Cargando...
+                    </h2>
+                    <p className='text-dark-blue text-center mt-2'>
+                        Hackeando tu vuelo...
+                    </p>
+                </div>
+            </div>
+        )}
             <main className="bg-light-blue p-8 rounded-lg shadow-md w-full max-w-lg mx-auto mt-10 mb-20">
                 <h2 className="text-center text-dark-blue text-3xl mb-6">Detalles del Favorito</h2>
                 <form>
@@ -376,7 +386,9 @@ const FavoriteDetailsEditPage = () => {
                         )}
                         <button
                             disabled={isEditing}
-                            onClick={() => handleFavoriteSearch(favorites)}
+                            onClick={(e) => {
+                                e.preventDefault();
+                                handleFavoriteSearch(favorites)}}
                             className="bg-light-blue text-dark-blue py-2 px-4 rounded-md hover:bg-accent-blue focus:outline-none"
                         >
                             Ver Vuelos

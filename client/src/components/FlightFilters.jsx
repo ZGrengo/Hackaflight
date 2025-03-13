@@ -172,7 +172,7 @@ const FlightFilters = ({ onFilterChange, visibleAirlines }) => {
                         >
                             Aplicar Filtros
                         </button>
-                    </div>
+                    </div>                    
                 </div>
             </div>
         </section>
