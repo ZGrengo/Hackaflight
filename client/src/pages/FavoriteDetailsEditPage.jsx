@@ -186,10 +186,22 @@ const FavoriteDetailsEditPage = () => {
         setFavorite(initialFavorites); // Restauramos el estado inicial
         setIsEditing(false); // Dejamos de editar
     };
-
+    
     return (
         <>
-        
+         {loading && (
+                    <div className='fixed inset-0 bg-dark-blue bg-opacity-90 flex items-center justify-center z-50'>
+                        <div className='bg-white p-8 rounded-md shadow-lg max-w-xs mx-auto'>
+                            <div className='w-16 h-16 border-8 border-dark-blue border-dashed rounded-full animate-spin mx-auto mb-4'></div>
+                            <h2 className='text-dark-blue text-2xl font-bold text-center'>
+                                Cargando...
+                            </h2>
+                            <p className='text-dark-blue text-center mt-2'>
+                                hackeando tu vuelo...
+                            </p>
+                        </div>
+                    </div>
+                )}
             <Header />
                     {/* Animación de carga sobrepuesta */}
         {loading && (
@@ -331,7 +343,19 @@ const FavoriteDetailsEditPage = () => {
                             className="w-full px-4 py-3 rounded-md border border-gray-300 focus:ring-2 focus:ring-medium-blue focus:outline-none"
                         />
                     </div>
-
+                    {loading && (
+                    <div className='fixed inset-0 bg-dark-blue bg-opacity-90 flex items-center justify-center z-50'>
+                        <div className='bg-white p-8 rounded-md shadow-lg max-w-xs mx-auto'>
+                            <div className='w-16 h-16 border-8 border-dark-blue border-dashed rounded-full animate-spin mx-auto mb-4'></div>
+                            <h2 className='text-dark-blue text-2xl font-bold text-center'>
+                                Cargando...
+                            </h2>
+                            <p className='text-dark-blue text-center mt-2'>
+                                hackeando tu vuelo...
+                            </p>
+                        </div>
+                    </div>
+                )}
                     <div className="flex justify-between items-center">
                         {isEditing && (
                             <button
