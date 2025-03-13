@@ -91,7 +91,7 @@ const RatingsListPage = () => {
                         <select
                             value={rate}
                             onChange={(e) => setRate(e.target.value)}
-                            className='text-[#083059] font-medium p-'
+                            className='text-[#083059] font-medium p-1'
                         >
                             <option value=''>--Selecciona un valor--</option>
                             <option value='1'>⭐</option>
