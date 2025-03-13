@@ -6,6 +6,7 @@ import FlightFilters from '../components/FlightFilters';
 import Header from '../components/Header';
 import useAuthContext from '../hooks/useAuthContext';
 import toast from 'react-hot-toast';
+import ScrollToTopButton from '../components/ScrollTopButton';
 
 // obtiene la variable de entorno
 const { VITE_API_URL } = import.meta.env;
@@ -209,14 +210,14 @@ const SearchResultsPage = () => {
     return (
         <>
             <Header />
-            <section>
+            <section className='bg-light-blue'>
                 <FlightFilters
                     onFilterChange={handleFilterChange}
                     visibleAirlines={visibleAirlines}
                 />
 
                 {authToken && (
-                    <div className='w-full max-w-lg mx-auto mt-4 p-4 sm:p-6'>
+                    <div className='w-full max-w-lg mx-auto mt-4 p-4 sm:p-6 ' >
                         {/* Titulo de la búsqueda */}
                         <input
                             type='text'
@@ -289,10 +290,12 @@ const SearchResultsPage = () => {
                                     flight={flight}
                                     searchParams={searchParams}
                                 />
+                                
                             ))
                         ) : (
                             <p>No hay vuelos que coincidan con los filtros.</p>
                         )}
+                        <ScrollToTopButton />
                     </section>
                 </section>
             </section>
