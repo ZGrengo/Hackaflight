@@ -190,10 +190,22 @@ const FavoriteDetailsEditPage = () => {
         setIsEditing(false); // Dejamos de editar
     };
 
-    if (loading) return <LogoAnimation forcePlay />;
-
+    
     return (
         <>
+         {loading && (
+                    <div className='fixed inset-0 bg-dark-blue bg-opacity-90 flex items-center justify-center z-50'>
+                        <div className='bg-white p-8 rounded-md shadow-lg max-w-xs mx-auto'>
+                            <div className='w-16 h-16 border-8 border-dark-blue border-dashed rounded-full animate-spin mx-auto mb-4'></div>
+                            <h2 className='text-dark-blue text-2xl font-bold text-center'>
+                                Cargando...
+                            </h2>
+                            <p className='text-dark-blue text-center mt-2'>
+                                hackeando tu vuelo...
+                            </p>
+                        </div>
+                    </div>
+                )}
             <Header />
             <main className="bg-light-blue p-8 rounded-lg shadow-md w-full max-w-lg mx-auto mt-10 mb-20">
                 <h2 className="text-center text-dark-blue text-3xl mb-6">Detalles del Favorito</h2>
@@ -321,7 +333,19 @@ const FavoriteDetailsEditPage = () => {
                             className="w-full px-4 py-3 rounded-md border border-gray-300 focus:ring-2 focus:ring-medium-blue focus:outline-none"
                         />
                     </div>
-
+                    {loading && (
+                    <div className='fixed inset-0 bg-dark-blue bg-opacity-90 flex items-center justify-center z-50'>
+                        <div className='bg-white p-8 rounded-md shadow-lg max-w-xs mx-auto'>
+                            <div className='w-16 h-16 border-8 border-dark-blue border-dashed rounded-full animate-spin mx-auto mb-4'></div>
+                            <h2 className='text-dark-blue text-2xl font-bold text-center'>
+                                Cargando...
+                            </h2>
+                            <p className='text-dark-blue text-center mt-2'>
+                                hackeando tu vuelo...
+                            </p>
+                        </div>
+                    </div>
+                )}
                     <div className="flex justify-between items-center">
                         {isEditing && (
                             <button
