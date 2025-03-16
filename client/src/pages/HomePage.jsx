@@ -7,8 +7,6 @@ import SearchForm from '../components/SearchForm';
 import RecentSearches from '../components/RecentSearches';
 import PopularDestinations from '../components/PopularDestinations';
 import Header from '../components/Header';
-import LogoAnimation from '../components/LogoAnimation';
-//import PaperPlaneAnimation from '../components/PaperPlaneAnimation';
 import RatingsSummary from '../components/RatingsSummary';
 import { AuthContext } from '../contexts/AuthContext';
 
@@ -204,7 +202,7 @@ const HomePage = () => {
     // Renderizamos el componente
     return (
         <main className='min-h-screen bg-gradient-to-b from-dark-blue to-white'>
-            <LogoAnimation />
+            
             <Header className='sticky' />
 
             <section className='relative flex flex-col items-center justify-center p-4 mt-16'>
