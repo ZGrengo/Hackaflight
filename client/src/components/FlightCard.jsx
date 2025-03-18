@@ -45,7 +45,7 @@ const FlightCard = ({ flight, searchParams }) => {
 
     // Renderizado del componente
     return (
-        <div className='flight-card w-full sm:w-1/2 md:w-1/3 lg:w-2/4 p-3'>
+        <div className='flight-card w-full sm:w-3/4 md:w-2/3 lg:w-3/4 xl:w-4/5 p-3'>
             <div className=' text-white p-4 rounded-2xl shadow-lg transform hover:scale-105 transition duration-300'>
 
                 {/* Contenedor principal en dos columnas */}

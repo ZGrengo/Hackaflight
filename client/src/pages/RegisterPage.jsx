@@ -85,158 +85,136 @@ const RegisterPage = () => {
     return (
         <>
             <Header />
-            <main className='bg-gradient-to-b from-dark-blue to-white flex items-center justify-center min-screen p-4'>
-                <div className='bg-white p-6 rounded-xl shadow-lg w-full max-w-5xl'>
-                    <h2 className='text-3xl font-heading font-light text-dark-blue text-center mb-8'>
-                        CREA TU CUENTA
-                    </h2>
-
-                    <form
-                        onSubmit={handleRegister}
-                        className='grid grid-cols-1 md:grid-cols-2 gap-4'
-                    >
-                        <div>
-                            <label
-                                htmlFor='firstName'
-                                className='block text-dark-blue font-body'
-                            >
-                                Nombre
-                            </label>
-                            <input
-                                type='text'
-                                id='firstName'
-                                value={firstName}
-                                onChange={(e) => setFirstName(e.target.value)}
-                                className='w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-blue'
-                                required
-                            />
-                        </div>
-                        <div>
-                            <label
-                                htmlFor='lastName'
-                                className='block text-dark-blue font-body'
-                            >
-                                Apellidos
-                            </label>
-                            <input
-                                type='text'
-                                id='lastName'
-                                value={lastName}
-                                onChange={(e) => setLastName(e.target.value)}
-                                className='w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-blue'
-                                required
-                            />
-                        </div>
-                        <div className='md:col-span-2'>
-                            <label
-                                htmlFor='username'
-                                className='block text-dark-blue font-body'
-                            >
-                                Usuario
-                            </label>
-                            <input
-                                type='text'
-                                id='username'
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
-                                className='w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-blue'
-                                required
-                            />
-                        </div>
-
-                        <div className='md:col-span-2'>
-                            <label
-                                htmlFor='email'
-                                className='block text-dark-blue font-body'
-                            >
-                                Correo Electrónico
-                            </label>
-                            <input
-                                type='email'
-                                id='email'
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                className='w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-blue'
-                                required
-                            />
-                        </div>
-
-                        <div>
-                            <label
-                                htmlFor='password'
-                                className='block text-dark-blue font-body'
-                            >
-                                Contraseña
-                            </label>
-                            <input
-                                type='password'
-                                id='password'
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                className='w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-blue'
-                                required
-                            />
-                        </div>
-
-                        <div>
-                            <label
-                                htmlFor='passConfirm'
-                                className='block text-dark-blue font-body'
-                            >
-                                Confirmar Contraseña
-                            </label>
-                            <input
-                                type='password'
-                                id='passConfirm'
-                                value={passConfirm}
-                                onChange={(e) => setPassConfirm(e.target.value)}
-                                className='w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-blue'
-                                required
-                            />
-                        </div>
-                        <div className='md:col-span-2'>
-                            <label
-                                htmlFor='birthdate'
-                                className='block text-dark-blue font-body'
-                            >
-                                Fecha de Nacimiento
-                            </label>
-                            <input
-                                type='date'
-                                id='birthdate'
-                                value={birthdate}
-                                onChange={(e) => setBirthdate(e.target.value)}
-                                className='w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-blue'
-                                required
-                            />
-                        </div>
-                        <div className='md:col-span-2'>
-                            <button
-                                type='submit'
-                                disabled={loading}
-                                className={`w-full py-3 font-button font-bold rounded-md transition 
-                            ${
-                                loading
-                                    ? 'bg-gray-400 cursor-not-allowed'
-                                    : 'bg-dark-blue text-white hover:bg-medium-blue'
-                            }`}
-                            >
-                                {loading ? 'Registrando...' : 'Registrarse'}
-                            </button>
-                        </div>
-                    </form>
-
-                    <p className='text-center text-dark-blue mt-4'>
-                        ¿Ya tienes cuenta?{' '}
-                        <a
-                            href='/login'
-                            className='text-medium-blue font-bold hover:underline'
+            <div className="min-h-screen flex flex-col">
+                <main className="bg-light-blue flex items-center justify-center flex-grow p-4">
+                    <div className="bg-white p-6 rounded-xl shadow-lg w-full max-w-5xl">
+                        <h2 className="text-3xl font-heading font-light text-dark-blue text-center mb-8">
+                            CREA TU CUENTA
+                        </h2>
+    
+                        <form
+                            onSubmit={handleRegister}
+                            className="grid grid-cols-1 md:grid-cols-2 gap-4"
                         >
-                            Inicia sesión
-                        </a>
-                    </p>
-                </div>
-            </main>
+                            <div>
+                                <label htmlFor="firstName" className="block text-dark-blue font-body">
+                                    Nombre
+                                </label>
+                                <input
+                                    type="text"
+                                    id="firstName"
+                                    value={firstName}
+                                    onChange={(e) => setFirstName(e.target.value)}
+                                    className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-blue"
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <label htmlFor="lastName" className="block text-dark-blue font-body">
+                                    Apellidos
+                                </label>
+                                <input
+                                    type="text"
+                                    id="lastName"
+                                    value={lastName}
+                                    onChange={(e) => setLastName(e.target.value)}
+                                    className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-blue"
+                                    required
+                                />
+                            </div>
+                            <div className="md:col-span-2">
+                                <label htmlFor="username" className="block text-dark-blue font-body">
+                                    Usuario
+                                </label>
+                                <input
+                                    type="text"
+                                    id="username"
+                                    value={username}
+                                    onChange={(e) => setUsername(e.target.value)}
+                                    className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-blue"
+                                    required
+                                />
+                            </div>
+    
+                            <div className="md:col-span-2">
+                                <label htmlFor="email" className="block text-dark-blue font-body">
+                                    Correo Electrónico
+                                </label>
+                                <input
+                                    type="email"
+                                    id="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-blue"
+                                    required
+                                />
+                            </div>
+    
+                            <div>
+                                <label htmlFor="password" className="block text-dark-blue font-body">
+                                    Contraseña
+                                </label>
+                                <input
+                                    type="password"
+                                    id="password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-blue"
+                                    required
+                                />
+                            </div>
+    
+                            <div>
+                                <label htmlFor="passConfirm" className="block text-dark-blue font-body">
+                                    Confirmar Contraseña
+                                </label>
+                                <input
+                                    type="password"
+                                    id="passConfirm"
+                                    value={passConfirm}
+                                    onChange={(e) => setPassConfirm(e.target.value)}
+                                    className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-blue"
+                                    required
+                                />
+                            </div>
+                            <div className="md:col-span-2">
+                                <label htmlFor="birthdate" className="block text-dark-blue font-body">
+                                    Fecha de Nacimiento
+                                </label>
+                                <input
+                                    type="date"
+                                    id="birthdate"
+                                    value={birthdate}
+                                    onChange={(e) => setBirthdate(e.target.value)}
+                                    className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-blue"
+                                    required
+                                />
+                            </div>
+                            <div className="md:col-span-2">
+                                <button
+                                    type="submit"
+                                    disabled={loading}
+                                    className={`w-full py-3 font-button font-bold rounded-md transition 
+                                ${
+                                    loading
+                                        ? 'bg-gray-400 cursor-not-allowed'
+                                        : 'bg-dark-blue text-white hover:bg-medium-blue'
+                                }`}
+                                >
+                                    {loading ? 'Registrando...' : 'Registrarse'}
+                                </button>
+                            </div>
+                        </form>
+    
+                        <p className="text-center text-dark-blue mt-4">
+                            ¿Ya tienes cuenta?{' '}
+                            <a href="/login" className="text-medium-blue font-bold hover:underline">
+                                Inicia sesión
+                            </a>
+                        </p>
+                    </div>
+                </main>
+            </div>
         </>
     );
 };

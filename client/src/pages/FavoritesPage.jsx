@@ -147,7 +147,7 @@ const FavoritesPage = () => {
     return (
         <>
         <Header />
-        <div className="flex flex-col min-h-screen bg-gradient-to-b from-light-blue to-dark-blue p-4">
+        <div className="flex flex-col min-h-screen bg-light-blue p-4">
             
 
             {loading && (

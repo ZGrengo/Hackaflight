@@ -210,9 +210,9 @@ const SearchResultsPage = () => {
     return (
         <>
             <Header />
-            <section className='bg-gradient-to-b from-light-blue to-dark-blue p-4'>
+            <section className='bg-light-blue p-4'>
                 {/* Contenedor de filtros y resultados con diseño flexible */}
-                <div className='flex flex-col md:flex-row gap-6'>
+                <div className='flex flex-col md:flex-row gap-4'>
                     {/* Sección de Filtros (izquierda) */}
                     <aside className='w-full md:w-1/4'>
                         <div className='sticky top-4 space-y-12'>
@@ -298,7 +298,7 @@ const SearchResultsPage = () => {
                     </aside>
 
                     {/* Sección de Resultados (derecha) */}
-                    <main className='w-full md:w-3/4'>
+                    <main className='w-full md:w-4/5'>
                         {/* Resultados de la Búsqueda */}
                         <section className='mt-6'>
                             <h2 className='text-2xl sm:text-3xl font-semibold text-center text-dark-blue mb-4'>

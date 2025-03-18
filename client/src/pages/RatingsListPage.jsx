@@ -78,7 +78,7 @@ const RatingsListPage = () => {
     return (
         <>
             <Header />
-            <main className='bg-gradient-to-b from-dark-blue to-white flex flex-col items-center justify-center min-h-screen p-6 '>
+            <main className='bg-light-blue flex flex-col items-center justify-center min-h-screen p-6 '>
                 <section className='bg-white p-8 rounded-lg shadow-md w-full max-w-5xl mx-auto'>
                     <h2 className='text-4xl font-light font-heading text-[#083059] text-center mb-6'>
                         VALORACIONES

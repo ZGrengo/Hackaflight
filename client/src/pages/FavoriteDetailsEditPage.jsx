@@ -351,7 +351,7 @@ const FavoriteDetailsEditPage = () => {
                                 Cargando...
                             </h2>
                             <p className='text-dark-blue text-center mt-2'>
-                                hackeando tu vuelo...
+                                Hackeando tu vuelo...
                             </p>
                         </div>
                     </div>
@@ -389,7 +389,7 @@ const FavoriteDetailsEditPage = () => {
                             onClick={(e) => {
                                 e.preventDefault();
                                 handleFavoriteSearch(favorites)}}
-                            className="bg-light-blue text-dark-blue py-2 px-4 rounded-md hover:bg-accent-blue focus:outline-none"
+                            className="bg-light-blue text-dark-blue py-2 px-4 rounded-md hover:bg-accent-blue hover:text-white focus:outline-none"
                         >
                             Ver Vuelos
                         </button>

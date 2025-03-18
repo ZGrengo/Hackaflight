@@ -146,7 +146,7 @@ const EditProfilePage = () => {
     // Mostramos mensajes de perfil cargando...
     if (profileLoading) {
         return (
-            <div className='bg-gradient-to-b from-dark-blue to-white min-h-screen flex items-center justify-center'>
+            <div className='bg-light-blue min-h-screen flex items-center justify-center'>
                 <p className='text-center text-dark-blue font-body text-xl sm:text-2xl'>
                     Cargando perfil...
                 </p>
@@ -156,7 +156,7 @@ const EditProfilePage = () => {
     // Si el perfil no carga, mostramos un error.
     if (!userData) {
         return (
-            <div className='bg-gradient-to-b from-dark-blue to-white min-h-screen flex items-center justify-center'>
+            <div className='bg-light-blue min-h-screen flex items-center justify-center'>
                 <p className='text-center text-dark-blue font-body text-xl sm:text-2xl'>
                     No se pudo cargar la información del usuario.
                 </p>

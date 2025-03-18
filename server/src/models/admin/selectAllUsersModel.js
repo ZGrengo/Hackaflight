@@ -1,5 +1,14 @@
+// Importamos la función que retorna una conexión con la base de datos.
 import { getPool } from '../../db/getPool.js';
+
+import dotenv from 'dotenv';
+
+// Importamos la función que genera un error.
 import generateErrorUtil from '../../utils/generateErrorUtil.js';
+
+// Función que se conecta a la base de datos y retorna todos los usuarios o filtra por los criterios dados.
+// Recibimos un objeto vacío por defecto.
+dotenv.config();
 
 const selectAllUsersModel = async (
     userId,
@@ -20,6 +29,7 @@ const selectAllUsersModel = async (
         active, 
         createdAt 
     FROM users`;
+
     const params = [];
     const conditions = [];
 
@@ -46,6 +56,12 @@ const selectAllUsersModel = async (
     if (email) {
         conditions.push('email LIKE ?');
         params.push(`%${email}%`);
+    }
+
+    // Excluir al administrador si está definido en el .env
+    if (process.env.MYSQL_ADMIN_EMAIL) {
+        conditions.push('email != ?');
+        params.push(process.env.MYSQL_ADMIN_EMAIL);
     }
 
     if (conditions.length > 0) {

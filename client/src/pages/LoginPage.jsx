@@ -55,7 +55,7 @@ const LoginPage = () => {
     return (
         <>
             <Header />
-            <main className='bg-gradient-to-b from-dark-blue to-white flex items-center justify-center min-h-screen p-4'>
+            <main className='bg-light-blue flex items-center justify-center min-h-screen p-4'>
                 <div className='bg-white p-6 rounded-xl shadow-lg w-full max-w-lg'>
                     <h2 className='text-3xl font-heading font-light text-dark-blue text-center mb-8'>
                         INICIAR SESIÓN

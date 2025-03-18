@@ -61,7 +61,7 @@ const UserProfilePage = () => {
     // Mostramos mensajes de perfil cargando...
     if (profileLoading) {
         return (
-            <div className='bg-gradiwnt-to-b from-dark-blue to-white min-h-screen flex items-center justify-center'>
+            <div className='bg-light-blue min-h-screen flex items-center justify-center'>
                 <p className='text-center mt-4 text-dark-blue font-body'>
                     Cargando perfil...
                 </p>
@@ -80,7 +80,7 @@ const UserProfilePage = () => {
     return (
         <>
             <Header />
-            <main className='bg-gradient-to-b from-dark-blue to-white min-h-screen flex flex-col justify-between'>
+            <main className='bg-light-blue min-h-screen flex flex-col justify-between'>
                 <div className='flex flex-col items-center justify-center flex-1 p-4'>
                     <div className='bg-white p-6 sm:p-8 rounded-lg shadow-md w-full max-w-lg lg:max-w-4xl transition transform hover:scale-[1.008]'>
                         <h2 className='text-3xl sm:text-4xl font-heading font-light  text-dark-blue text-center mb-6'>

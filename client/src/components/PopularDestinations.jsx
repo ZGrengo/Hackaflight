@@ -26,21 +26,17 @@ const PopularDestinations = () => {
             <h2 className='text-3xl font-light text-center text-dark-blue font-heading mb-6'>
                 DESTINOS POPULARES
             </h2>
-            <div className='relative w-full h-96 overflow-hidden shadow-lg rounded-lg'>
-                {images.map((img, index) => (
-                    <img
-                        key={img}
-                        src={img}
-                        alt='Destino'
-                        className={`absolute inset-0 object-cover w-full h-full transition-opacity duration-1000
-                                ${
-                                    index === currentImage
-                                        ? 'opacity-100'
-                                        : 'opacity-0'
-                                }`}
-                    />
-                ))}
-            </div>
+<div className='relative w-full h-[400px] overflow-hidden shadow-lg rounded-lg'>
+    {images.map((img, index) => (
+        <img
+            key={img}
+            src={img}
+            alt='Destino'
+            className={`absolute inset-0 object-cover w-full h-full transition-opacity duration-1000
+                        ${index === currentImage ? 'opacity-100' : 'opacity-0'}`}
+        />
+    ))}
+</div>
         </section>
     );
 };

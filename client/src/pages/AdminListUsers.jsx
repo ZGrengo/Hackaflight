@@ -102,9 +102,9 @@ const handleDeleteUser = async (userId) => {
     return (
         <>
             <Header />
-            <main className="bg-gradient-to-b from-dark-blue to-white min-h-screen flex flex-col justify-between">
+            <main className="bg-light-blue min-h-screen flex flex-col justify-between">
                 <div className="flex flex-col items-center justify-center flex-1 p-4">
-                    <div className="bg-white p-6 sm:p-8 rounded-lg shadow-md w-full max-w-lg lg:max-w-4xl transition transform hover:scale-[1.008]">
+                    <div className="bg-white p-6 sm:p-8 rounded-lg shadow-md w-full max-w-6xl lg:max-w-7xl transition transform hover:scale-[1.008]">
                         <h2 className="text-3xl sm:text-4xl font-heading font-light text-dark-blue text-center mb-6">
                             Lista de Usuarios
                         </h2>
@@ -113,7 +113,7 @@ const handleDeleteUser = async (userId) => {
                             <p className="text-center text-dark-blue">Cargando usuarios...</p>
                         ) : (
                             <div className="overflow-x-auto">
-                                <table className="min-w-full border border-blue-300 table-fixed">
+                                <table className="min-w-full border border-blue-300 table-auto">
                                     <thead>
                                         <tr className="bg-blue-100">
                                             <th className="px-4 py-2 border-b text-center">Usuario</th>
@@ -132,7 +132,7 @@ const handleDeleteUser = async (userId) => {
                                                 <td className="px-4 py-2 border-b text-center">{user.firstName}</td>
                                                 <td className="px-4 py-2 border-b text-center">{user.lastName}</td>
                                                 <td className="px-4 py-2 border-b text-center">
-                                                    {user.isActive ? 'Activo' : 'Inactivo'}
+                                                    {user.isActive ? 'Inactivo' : 'Activo'}
                                                 </td>
                                                 <td className="px-4 py-2 border-b text-center">
                                                     <button

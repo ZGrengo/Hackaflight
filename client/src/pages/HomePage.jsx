@@ -39,7 +39,6 @@ const HomePage = () => {
 
     useEffect(() => {
         const handleScroll = () => {
-            console.log('scrollY:', window.scrollY);
             if (window.scrollY > 0) {
                 setOpacity(1);
             } else {
@@ -202,10 +201,10 @@ const HomePage = () => {
 
     // Renderizamos el componente
     return (
-        <main className='min-h-screen bg-gradient-to-b from-dark-blue to-white'>
+        <main className='min-h-screen bg-light-blue'>
             <LogoAnimation />
             <Header className='sticky' />
-
+    
             <section className='relative flex flex-col items-center justify-center p-4 mt-16'>
                 <div className='bg-white p-6 sm:p-8 rounded-lg shadow-md w-full max-w-5xl relative z-20 hover:scale-[1.008]'>
                     <h1 className='mb-6 text-3xl sm:text-4xl font-heading font-light text-dark-blue text-center'>
@@ -263,12 +262,18 @@ const HomePage = () => {
                 className='px-4 py-12'
                 style={{ opacity, transition: 'opacity 0.7s ease-in-out' }}
             >
-                <div className='w-full max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8'>
-                    <div className='bg-white p-6 rounded-lg shadow-md hover:scale-[1.008]'>
-                        <PopularDestinations />
-                    </div>
-                    <div className='bg-white p-6 rounded-lg shadow-md hover:scale-[1.008]'>
-                        <RatingsSummary ratings={ratings} />
+                {/* Usamos una grid de una columna en pantallas pequeñas y dos filas */}
+                <div className='w-full max-w-5xl mx-auto'>
+                    {/* Contenedor para las filas */}
+                    <div className='space-y-8'>
+                        {/* Fila 1: Destinos populares */}
+                        <div className='bg-white p-6 rounded-lg shadow-md hover:scale-[1.008]'>
+                            <PopularDestinations />
+                        </div>
+                        {/* Fila 2: Resumen de calificaciones */}
+                        <div className='bg-white p-6 rounded-lg shadow-md hover:scale-[1.008]'>
+                            <RatingsSummary ratings={ratings} />
+                        </div>
                     </div>
                 </div>
             </section>

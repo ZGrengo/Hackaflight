@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
-import { useState, useEffect, useRef } from 'react'; // Importamos la función findAirline de aircodes
+import { useState, useEffect, useRef } from 'react';
+import { findAirline } from 'aircodes'; // ✅ Corrección de importación
 
 const FlightFilters = ({ onFilterChange, visibleAirlines }) => {
     const [filters, setFilters] = useState({
@@ -26,11 +27,21 @@ const FlightFilters = ({ onFilterChange, visibleAirlines }) => {
             setAirlineSuggestions([]);
         }
     };
-
     const fetchAirlineSuggestions = (query) => {
-        const filteredSuggestions = visibleAirlines.filter((airline) =>
-            airline.toLowerCase().includes(query.toLowerCase())
-        );
+        const filteredSuggestions = visibleAirlines.map((airlineCode) => {
+            const result = findAirline(airlineCode); // Devuelve un array
+    
+            // Filtrar para obtener exactamente la aerolínea con el código IATA exacto
+            const airlineData = Array.isArray(result) 
+                ? result.find((airline) => airline.iata === airlineCode) 
+                : null;
+    
+            return {
+                code: airlineCode,
+                name: airlineData ? airlineData.name : "Aerolínea desconocida", // Fallback si no se encuentra
+            };
+        }).filter((airline) => airline.name.toLowerCase().includes(query.toLowerCase()));
+    
         setAirlineSuggestions(filteredSuggestions);
     };
 
@@ -38,8 +49,8 @@ const FlightFilters = ({ onFilterChange, visibleAirlines }) => {
         onFilterChange(filters);
     };
 
-    const handleSuggestionClick = (airlineName) => {
-        setFilters({ ...filters, airline: airlineName });
+    const handleSuggestionClick = (airline) => {
+        setFilters({ ...filters, airline: airline.code }); // ✅ Guarda solo el código
         setAirlineSuggestions([]);
     };
 
@@ -57,7 +68,7 @@ const FlightFilters = ({ onFilterChange, visibleAirlines }) => {
     }, []);
 
     return (
-        <aside className=" bg-white p-10 rounded-lg w-full m-t10">
+        <aside className="bg-white p-10 rounded-lg w-full m-t10">
             <h2 className="text-lg font-semibold text-dark-blue mb-4">Filtrar Resultados</h2>
 
             <div className="space-y-4">
@@ -83,24 +94,24 @@ const FlightFilters = ({ onFilterChange, visibleAirlines }) => {
                     <input
                         type="text"
                         name="airline"
-                        value={filters.airline}
+                        value={airlineSuggestions.find(a => a.code === filters.airline)?.name || filters.airline}
                         onChange={handleInputChange}
                         className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-medium-blue text-sm"
                         placeholder="Ej. Iberia, Ryanair"
                     />
-                    {airlineSuggestions.length > 0 && (
-                        <ul ref={suggestionsRef} className="absolute mt-1 w-full bg-white border border-gray-300 rounded-md shadow-md max-h-40 overflow-y-auto z-10">
-                            {airlineSuggestions.map((airline, index) => (
-                                <li
-                                    key={index}
-                                    className="p-2 cursor-pointer hover:bg-gray-100 text-sm"
-                                    onClick={() => handleSuggestionClick(airline)}
-                                >
-                                    {airline}
-                                </li>
-                            ))}
-                        </ul>
-                    )}
+{airlineSuggestions.length > 0 && (
+    <ul ref={suggestionsRef} className="absolute mt-1 w-full bg-white border border-gray-300 rounded-md shadow-md max-h-40 overflow-y-auto z-10">
+        {airlineSuggestions.map((airline, index) => (
+            <li
+                key={index}
+                className="p-2 cursor-pointer hover:bg-gray-100 text-sm"
+                onClick={() => handleSuggestionClick(airline)}
+            >
+                {airline.name} {/* ✅ Ahora solo muestra el nombre */}
+            </li>
+        ))}
+    </ul>
+)}
                 </div>
 
                 {/* Rango de precios */}

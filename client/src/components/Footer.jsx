@@ -140,7 +140,7 @@ const Footer = () => {
                     {/* Copyright section */}
                     <div className='border-t border-gray-600 pt-4 mt-8'>
                         <p className='text-sm text-gray-300 text-center'>
-                            Copyright © 2025 HackaFligth Company S.L. Todos los
+                            Copyright © 2025 HackaFlight Company S.L. Todos los
                             derechos reservados.
                         </p>
                     </div>
