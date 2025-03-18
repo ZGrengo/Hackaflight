@@ -210,79 +210,114 @@ const SearchResultsPage = () => {
     return (
         <>
             <Header />
-            <section className="bg-gradient-to-b from-light-blue to-dark-blue p-4">
+            <section className='bg-gradient-to-b from-light-blue to-dark-blue p-4'>
                 {/* Contenedor de filtros y resultados con diseño flexible */}
-                <div className="flex flex-col md:flex-row gap-6">
+                <div className='flex flex-col md:flex-row gap-6'>
                     {/* Sección de Filtros (izquierda) */}
-                    <aside className="w-full md:w-1/4 bg-white p-4 rounded-lg shadow-md">
-                        <FlightFilters onFilterChange={handleFilterChange} visibleAirlines={visibleAirlines} />
-                    </aside>
-    
-                    {/* Sección de Resultados (derecha) */}
-                    <main className="w-full md:w-3/4">
-                        {authToken && (
-                            <div className="w-full max-w-lg mx-auto mt-4 p-4 sm:p-6 bg-white rounded-lg shadow-md">
-                                <input
-                                    type="text"
-                                    placeholder="Título de la búsqueda"
-                                    value={title}
-                                    onChange={(e) => setTitle(e.target.value)}
-                                    name="title"
-                                    className="w-full p-3 border border-gray-300 rounded-md text-gray-700 focus:ring-2 focus:ring-medium-blue focus:border-medium-blue mb-4"
+                    <aside className='w-full md:w-1/4'>
+                        <div className='sticky top-4 space-y-12'>
+                            {/* Filtros de búsqueda */}
+                            <div className='p-4 bg-white rounded-lg shadow-md'>
+                                <FlightFilters
+                                    onFilterChange={handleFilterChange}
+                                    visibleAirlines={visibleAirlines}
                                 />
-                                <ul className="space-y-4">
-                                    <li key={searchParams.favoriteId} className="bg-gray-100 p-4 rounded-lg shadow-sm mb-3">
-                                        <p className="text-base sm:text-lg font-medium text-gray-800">
-                                            Desde <span className="text-medium-blue">{searchParams.origin}</span> a{' '}
-                                            <span className="text-medium-blue">{searchParams.destination}</span>
-                                        </p>
-                                        <p className="text-sm text-gray-600">
-                                            Fecha de salida:{' '}
-                                            {new Date(searchParams.departureDate).toLocaleDateString('es-ES', {
-                                                day: '2-digit',
-                                                month: 'long',
-                                                year: 'numeric',
-                                            })}{' '}
-                                            {searchParams.returnDate
-                                                ? `- Fecha de retorno: ${new Date(searchParams.returnDate).toLocaleDateString(
-                                                      'es-ES',
-                                                      {
-                                                          day: '2-digit',
-                                                          month: 'long',
-                                                          year: 'numeric',
-                                                      }
-                                                  )}  `
-                                                : ''}
-                                            | Adultos: {searchParams.adults}
-                                        </p>
-                                    </li>
-                                </ul>
-                                <div className="text-center">
-                                    <button
-                                        onClick={handleSave}
-                                        disabled={isSaved}
-                                        className={`${
-                                            isSaved ? 'bg-gray-400' : 'bg-medium-blue'
-                                        } text-white px-6 py-2 rounded-md hover:bg-dark-blue transition-all text-sm sm:text-base`}
-                                    >
-                                        {isSaved ? 'Guardado' : 'Guardar Búsqueda'}
-                                    </button>
-                                </div>
                             </div>
-                        )}
-    
+
+                            {/* Guardar búsqueda (Solo si hay autenticación) */}
+                            {authToken && (
+                                <div className='p-4 bg-white rounded-lg shadow-md'>
+                                    <input
+                                        type='text'
+                                        placeholder='Título de la búsqueda'
+                                        value={title}
+                                        onChange={(e) =>
+                                            setTitle(e.target.value)
+                                        }
+                                        name='title'
+                                        className='w-full p-3 border border-gray-300 rounded-md text-gray-700 focus:ring-2 focus:ring-medium-blue focus:border-medium-blue mb-4'
+                                    />
+                                    <ul className='space-y-4'>
+                                        <li
+                                            key={searchParams.favoriteId}
+                                            className='bg-gray-100 p-4 rounded-lg shadow-sm'
+                                        >
+                                            <p className='text-base sm:text-lg font-medium text-gray-800'>
+                                                Desde{' '}
+                                                <span className='text-medium-blue'>
+                                                    {searchParams.origin}
+                                                </span>{' '}
+                                                a{' '}
+                                                <span className='text-medium-blue'>
+                                                    {searchParams.destination}
+                                                </span>
+                                            </p>
+                                            <p className='text-sm text-gray-600'>
+                                                Fecha de salida:{' '}
+                                                {new Date(
+                                                    searchParams.departureDate,
+                                                ).toLocaleDateString('es-ES', {
+                                                    day: '2-digit',
+                                                    month: 'long',
+                                                    year: 'numeric',
+                                                })}{' '}
+                                                {searchParams.returnDate
+                                                    ? `- Fecha de retorno: ${new Date(
+                                                          searchParams.returnDate,
+                                                      ).toLocaleDateString(
+                                                          'es-ES',
+                                                          {
+                                                              day: '2-digit',
+                                                              month: 'long',
+                                                              year: 'numeric',
+                                                          },
+                                                      )}  `
+                                                    : ''}
+                                                | Adultos: {searchParams.adults}
+                                            </p>
+                                        </li>
+                                    </ul>
+                                    <div className='text-center'>
+                                        <button
+                                            onClick={handleSave}
+                                            disabled={isSaved}
+                                            className={`${
+                                                isSaved
+                                                    ? 'bg-gray-400'
+                                                    : 'bg-medium-blue'
+                                            } text-white px-6 mt-4 py-2 rounded-md hover:bg-dark-blue transition-all text-sm sm:text-base`}
+                                        >
+                                            {isSaved
+                                                ? 'Guardado'
+                                                : 'Guardar Búsqueda'}
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    </aside>
+
+                    {/* Sección de Resultados (derecha) */}
+                    <main className='w-full md:w-3/4'>
                         {/* Resultados de la Búsqueda */}
-                        <section className="mt-6">
-                            <h2 className="text-2xl sm:text-3xl font-semibold text-center text-dark-blue mb-4">
+                        <section className='mt-6'>
+                            <h2 className='text-2xl sm:text-3xl font-semibold text-center text-dark-blue mb-4'>
                                 Resultados de la Búsqueda
                             </h2>
-                            <div className="flex flex-col items-center justify-center p-4 rounded-lg">
+                            <div className='flex flex-col items-center justify-center p-4 rounded-lg'>
                                 {flights.length > 0 ? (
                                     flights.map((flight, index) => (
-                                        <FlightCard key={`${flight.id}-${index}`} flight={flight} searchParams={searchParams} />
+                                        <FlightCard
+                                            key={`${flight.id}-${index}`}
+                                            flight={flight}
+                                            searchParams={searchParams}
+                                        />
                                     ))
                                 ) : (
-                                    <p className="text-gray-700">No hay vuelos que coincidan con los filtros.</p>
+                                    <p className='text-gray-700'>
+                                        No hay vuelos que coincidan con los
+                                        filtros.
+                                    </p>
                                 )}
                                 <ScrollToTopButton />
                             </div>
@@ -292,7 +327,6 @@ const SearchResultsPage = () => {
             </section>
         </>
     );
-    
 };
 
 // Definir las propiedades requeridas para la página de resultados de búsqueda

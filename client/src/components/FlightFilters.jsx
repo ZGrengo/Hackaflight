@@ -57,7 +57,7 @@ const FlightFilters = ({ onFilterChange, visibleAirlines }) => {
     }, []);
 
     return (
-        <aside className="p-6 rounded-lg w-full">
+        <aside className=" bg-white p-10 rounded-lg w-full m-t10">
             <h2 className="text-lg font-semibold text-dark-blue mb-4">Filtrar Resultados</h2>
 
             <div className="space-y-4">
@@ -86,7 +86,7 @@ const FlightFilters = ({ onFilterChange, visibleAirlines }) => {
                         value={filters.airline}
                         onChange={handleInputChange}
                         className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-medium-blue text-sm"
-                        placeholder="Ej. Avianca, LATAM"
+                        placeholder="Ej. Iberia, Ryanair"
                     />
                     {airlineSuggestions.length > 0 && (
                         <ul ref={suggestionsRef} className="absolute mt-1 w-full bg-white border border-gray-300 rounded-md shadow-md max-h-40 overflow-y-auto z-10">
