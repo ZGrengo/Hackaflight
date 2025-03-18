@@ -10,172 +10,151 @@ const FlightFilters = ({ onFilterChange, visibleAirlines }) => {
         airline: '',
     });
 
-    const [airlineSuggestions, setAirlineSuggestions] = useState([]); // Estado para las sugerencias de aerolíneas
-    const suggestionsRef = useRef(null); // Referencia para el contenedor de sugerencias
+    const [airlineSuggestions, setAirlineSuggestions] = useState([]);
+    const suggestionsRef = useRef(null);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        console.log(`Filter changed: ${name} = ${value}`);
         setFilters((prevFilters) => ({
             ...prevFilters,
             [name]: value,
         }));
 
-        // Si el campo que cambia es "airline", buscar sugerencias de aerolíneas
         if (name === 'airline' && value) {
-            fetchAirlineSuggestions(value); // Llamar a la función de búsqueda de aerolíneas
+            fetchAirlineSuggestions(value);
         } else {
-            setAirlineSuggestions([]); // Limpiar las sugerencias si el campo está vacío
+            setAirlineSuggestions([]);
         }
     };
 
     const fetchAirlineSuggestions = (query) => {
-        // Filtrar las aerolíneas visibles que coinciden con el query
         const filteredSuggestions = visibleAirlines.filter((airline) =>
-            airline.toLowerCase().includes(query.toLowerCase()),
+            airline.toLowerCase().includes(query.toLowerCase())
         );
         setAirlineSuggestions(filteredSuggestions);
     };
 
     const applyFilters = () => {
-        console.log('Applying filters:', filters);
         onFilterChange(filters);
     };
 
     const handleSuggestionClick = (airlineName) => {
-        // Establecer el nombre de la aerolínea en el filtro y limpiar las sugerencias
-        setFilters({
-            ...filters,
-            airline: airlineName,
-        });
-        setAirlineSuggestions([]); // Limpiar las sugerencias después de seleccionar una
+        setFilters({ ...filters, airline: airlineName });
+        setAirlineSuggestions([]);
     };
 
-    // Detectar clics fuera del contenedor de sugerencias
     useEffect(() => {
         const handleClickOutside = (event) => {
-            if (
-                suggestionsRef.current &&
-                !suggestionsRef.current.contains(event.target)
-            ) {
-                setAirlineSuggestions([]); // Cerrar las sugerencias si el clic es fuera del contenedor
+            if (suggestionsRef.current && !suggestionsRef.current.contains(event.target)) {
+                setAirlineSuggestions([]);
             }
         };
 
-        document.addEventListener('mousedown', handleClickOutside); // Escuchar clics fuera del contenedor
-
+        document.addEventListener('mousedown', handleClickOutside);
         return () => {
-            document.removeEventListener('mousedown', handleClickOutside); // Limpiar el evento cuando se desmonta el componente
+            document.removeEventListener('mousedown', handleClickOutside);
         };
     }, []);
 
-    useEffect(() => {
-        console.log('Filters state updated:', filters);
-    }, [filters]);
-
     return (
-        <section className='flex justify-center w-full py-6 bg-gradient-to-b from-dark-blue to-light-blue'>
-            <div className='w-full max-w-lg mx-auto p-4 bg-white rounded-lg shadow-md space-y-4'>
-                <h2 className='text-xl sm:text-2xl font-semibold text-center text-dark-blue mb-4'>
-                    Filtros de Búsqueda
-                </h2>
-                <div className='space-y-3'>
+        <aside className="p-6 rounded-lg w-full">
+            <h2 className="text-lg font-semibold text-dark-blue mb-4">Filtrar Resultados</h2>
+
+            <div className="space-y-4">
+                {/* Número de paradas */}
+                <div>
+                    <label className="block text-sm font-medium text-gray-700">Escalas</label>
+                    <select
+                        name="stops"
+                        value={filters.stops}
+                        onChange={handleInputChange}
+                        className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-medium-blue text-sm"
+                    >
+                        <option value="">Todas</option>
+                        <option value="0">Directo</option>
+                        <option value="1">1 Escala</option>
+                        <option value="2">2 Escalas</option>
+                    </select>
+                </div>
+
+                {/* Aerolíneas */}
+                <div className="relative">
+                    <label className="block text-sm font-medium text-gray-700">Aerolínea</label>
+                    <input
+                        type="text"
+                        name="airline"
+                        value={filters.airline}
+                        onChange={handleInputChange}
+                        className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-medium-blue text-sm"
+                        placeholder="Ej. Avianca, LATAM"
+                    />
+                    {airlineSuggestions.length > 0 && (
+                        <ul ref={suggestionsRef} className="absolute mt-1 w-full bg-white border border-gray-300 rounded-md shadow-md max-h-40 overflow-y-auto z-10">
+                            {airlineSuggestions.map((airline, index) => (
+                                <li
+                                    key={index}
+                                    className="p-2 cursor-pointer hover:bg-gray-100 text-sm"
+                                    onClick={() => handleSuggestionClick(airline)}
+                                >
+                                    {airline}
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+                </div>
+
+                {/* Rango de precios */}
+                <div className="grid grid-cols-2 gap-2">
                     <div>
-                        <label className='block text-base font-medium text-gray-700'>
-                            Paradas
-                        </label>
-                        <select
-                            name='stops'
-                            value={filters.stops}
-                            onChange={handleInputChange}
-                            className='w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-medium-blue focus:border-medium-blue text-sm'
-                        >
-                            <option value=''>Cualquiera</option>
-                            <option value='0'>Directo</option>
-                            <option value='1'>1 Parada</option>
-                            <option value='2'>2 Paradas</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label className='block text-base font-medium text-gray-700'>
-                            Aerolíneas
-                        </label>
+                        <label className="block text-sm font-medium text-gray-700">Precio Mín</label>
                         <input
-                            type='text'
-                            name='airline'
-                            value={filters.airline}
-                            onChange={handleInputChange}
-                            className='w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-medium-blue focus:border-medium-blue text-sm'
-                        />
-                        {airlineSuggestions.length > 0 && (
-                            <ul
-                                ref={suggestionsRef} // Asignamos la referencia al contenedor de las sugerencias
-                                className='mt-2 border border-gray-300 rounded-md bg-white max-h-40 overflow-y-auto'
-                            >
-                                {airlineSuggestions.map((airline, index) => (
-                                    <li
-                                        key={index}
-                                        className='p-2 cursor-pointer hover:bg-gray-100'
-                                        onClick={() =>
-                                            handleSuggestionClick(airline)
-                                        } // Llamamos a handleSuggestionClick al seleccionar una sugerencia
-                                    >
-                                        {airline}
-                                    </li>
-                                ))}
-                            </ul>
-                        )}
-                    </div>
-                    <div>
-                        <label className='block text-base font-medium text-gray-700'>
-                            Precio Mínimo
-                        </label>
-                        <input
-                            type='number'
-                            name='minPrice'
+                            type="number"
+                            name="minPrice"
                             value={filters.minPrice}
                             onChange={handleInputChange}
-                            className='w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-medium-blue focus:border-medium-blue text-sm'
+                            className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-medium-blue text-sm"
+                            placeholder="0"
                         />
                     </div>
                     <div>
-                        <label className='block text-base font-medium text-gray-700'>
-                            Precio Máximo
-                        </label>
+                        <label className="block text-sm font-medium text-gray-700">Precio Máx</label>
                         <input
-                            type='number'
-                            name='maxPrice'
+                            type="number"
+                            name="maxPrice"
                             value={filters.maxPrice}
                             onChange={handleInputChange}
-                            className='w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-medium-blue focus:border-medium-blue text-sm'
+                            className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-medium-blue text-sm"
+                            placeholder="5000"
                         />
                     </div>
-                    <div>
-                        <label className='block text-base font-medium text-gray-700'>
-                            Ordenar por
-                        </label>
-                        <select
-                            name='sortByPrice'
-                            value={filters.sortByPrice}
-                            onChange={handleInputChange}
-                            className='w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-medium-blue focus:border-medium-blue text-sm'
-                        >
-                            <option value=''>Seleccionar</option>
-                            <option value='true'>Precio Ascendente</option>
-                            <option value='false'>Precio Descendente</option>
-                        </select>
-                    </div>
-                    <div className='text-center'>
-                        <button
-                            onClick={applyFilters}
-                            className='top-3 relative py-2 px-4 text-white text-base font-bold overflow-hidden bg-medium-blue rounded-full transition-all duration-400 ease-in-out shadow-md hover:scale-105 hover:text-white hover:shadow-lg active:scale-90 before:absolute before:top-0 '
-                        >
-                            Aplicar Filtros
-                        </button>
-                    </div>                    
+                </div>
+
+                {/* Ordenar por precio */}
+                <div>
+                    <label className="block text-sm font-medium text-gray-700">Ordenar por</label>
+                    <select
+                        name="sortByPrice"
+                        value={filters.sortByPrice}
+                        onChange={handleInputChange}
+                        className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-medium-blue text-sm"
+                    >
+                        <option value="">Seleccionar</option>
+                        <option value="true">Menor a Mayor</option>
+                        <option value="false">Mayor a Menor</option>
+                    </select>
+                </div>
+
+                {/* Botón de aplicar filtros */}
+                <div className="text-center">
+                    <button
+                        onClick={applyFilters}
+                        className="py-2 px-4 w-full text-white font-bold bg-medium-blue rounded-full transition-all duration-300 hover:scale-105 hover:shadow-md active:scale-95"
+                    >
+                        Aplicar Filtros
+                    </button>
                 </div>
             </div>
-        </section>
+        </aside>
     );
 };
 

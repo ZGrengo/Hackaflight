@@ -9,6 +9,7 @@ import PopularDestinations from '../components/PopularDestinations';
 import Header from '../components/Header';
 import RatingsSummary from '../components/RatingsSummary';
 import { AuthContext } from '../contexts/AuthContext';
+import LogoAnimation from '../components/LogoAnimation';
 
 // Obtenemos las variables de entorno
 const { VITE_API_URL } = import.meta.env;
@@ -202,7 +203,7 @@ const HomePage = () => {
     // Renderizamos el componente
     return (
         <main className='min-h-screen bg-gradient-to-b from-dark-blue to-white'>
-            
+            <LogoAnimation />
             <Header className='sticky' />
 
             <section className='relative flex flex-col items-center justify-center p-4 mt-16'>
