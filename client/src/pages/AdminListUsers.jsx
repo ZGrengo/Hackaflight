@@ -85,7 +85,6 @@ const handleDeleteUser = async (userId) => {
 
         // Mostrar un mensaje de éxito
         toast.success('Usuario eliminado correctamente.');
-        toast('Recarga la página para ver los cambios.');
     } catch (error) {
         // Manejar errores si algo sale mal
         toast.error(`Error: ${error.message || 'No se pudo eliminar el usuario.'}`);
@@ -141,7 +140,7 @@ const handleDeleteUser = async (userId) => {
                                                         }
                                                         className="bg-medium-blue text-white px-4 py-2 rounded hover:bg-medium-blue w-full mb-2"
                                                     >
-                                                        {user.isActive ? 'Deshabilitar' : 'Habilitar'}
+                                                        {user.isActive ? 'Habilitar' : 'Deshabilitar'}
                                                     </button>
                                                     <button
                                                         onClick={() => handleDeleteUser(user.userId)}

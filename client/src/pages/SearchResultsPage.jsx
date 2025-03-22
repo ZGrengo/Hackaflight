@@ -215,9 +215,9 @@ const SearchResultsPage = () => {
                 <div className='flex flex-col md:flex-row gap-4'>
                     {/* Sección de Filtros (izquierda) */}
                     <aside className='w-full md:w-1/4'>
-                        <div className='sticky top-4 space-y-12'>
+                        <div className='sticky top-4 space-y-6'>
                             {/* Filtros de búsqueda */}
-                            <div className='p-4 bg-white rounded-lg shadow-md'>
+                            <div className='p-2 bg-white rounded-lg shadow-md'>
                                 <FlightFilters
                                     onFilterChange={handleFilterChange}
                                     visibleAirlines={visibleAirlines}

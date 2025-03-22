@@ -23,7 +23,7 @@ const LogoAnimation = () => {
         );
 
         // Duración de la animación de escritura
-        const typingDuration = 1000;
+        const typingDuration = 800;
         // Duración del parpadeo del cursor de escritura
         const cursorBlinkDelay = 200;
 
@@ -84,7 +84,7 @@ const LogoAnimation = () => {
                                 'true',
                             );
                             logoAnimationSection.classList.add('hidden');
-                        }, 2000); // Cambia 2000 por el tiempo deseado en milisegundos
+                        }, 1000); // Cambia 2000 por el tiempo deseado en milisegundos
                     }, 500);
                 });
                 // Parpadear cursor de escritura

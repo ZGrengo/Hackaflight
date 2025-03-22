@@ -49,4 +49,3 @@ const useUsersList = () => {
 };
 
 export default useUsersList;
-
