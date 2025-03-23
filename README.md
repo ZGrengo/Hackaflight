@@ -1,10 +1,27 @@
-# HackaFlight
+✈️ HackaFlight - Plataforma de búsqueda y gestión de vuelos
+HackaFlight es una plataforma web full stack que permite a los usuarios buscar vuelos en tiempo real, guardar búsquedas favoritas y gestionar reservas de manera eficiente. El sistema consume la API de Amadeus para obtener información actualizada de vuelos y está diseñado con un enfoque en rendimiento, seguridad y experiencia de usuario.
 
-HackaFlight es una plataforma para la búsqueda de vuelos, donde los usuarios pueden registrar cuentas, buscar vuelos, guardar búsquedas favoritas y gestionar sus reservas de manera eficiente.
+📌 Tecnologías utilizadas:
+🔹 Frontend: React.js, Tailwind CSS → Interfaz moderna, intuitiva y responsive.
+🔹 Backend: Node.js, Express.js → API robusta para la gestión de vuelos.
+🔹 Base de datos: MySQL → Almacenamiento estructurado y eficiente.
+🔹 Autenticación: JWT, bcrypt → Seguridad en el acceso de usuarios.
+🔹 API externa: Amadeus API → Obtención de información de vuelos en tiempo real.
+🔹 Metodologías: Scrum, Scrumban → Desarrollo ágil y trabajo en equipo.
 
-## Dependencias
+🚀 Características principales
+✔️ Búsqueda avanzada de vuelos con filtros de origen, destino y fechas.
+✔️ Comparación de precios y aerolíneas en tiempo real.
+✔️ Gestión de reservas con confirmaciones automáticas.
+✔️ Sistema de autenticación seguro con encriptación de contraseñas.
+✔️ Funcionalidad de favoritos para guardar búsquedas recurrentes.
+✔️ Valoraciones de usuarios para evaluar la experiencia en la plataforma.
+✔️ Diseño responsive para una experiencia fluida en todos los dispositivos.
 
-## 🚀 Instalación
+
+💻 Dependencias
+
+🚀 Instalación Server
 
 1. Instalar las dependencias con el comando:
     ```sh
@@ -20,9 +37,26 @@ HackaFlight es una plataforma para la búsqueda de vuelos, donde los usuarios pu
     npm run dev
     ```
 
-## Base de datos
+🚀 Instalación Cliente
 
-### users
+1. Instalar las dependencias con el comando:
+    ```sh
+    npm install
+    ```
+2. Copiar el archivo `.env.example` y renombrarlo como `.env`, luego completar los datos necesarios.
+3. Iniciar el cliente en modo desarrollo con:
+    ```sh
+    npm run dev
+    ```
+
+🛢 Modelo de Base de Datos
+🔹 Usuarios: Gestión de cuentas, roles y autenticación segura.
+🔹 Favoritos: Permite a los usuarios guardar criterios de búsqueda de vuelos.
+🔹 Reservas: Administración de vuelos reservados por los usuarios.
+🔹 Valoraciones: Sistema de feedback con puntuaciones y comentarios.
+
+
+👋 users
 
 | Campo           | Tipo         | Descripción                          |
 | --------------- | ------------ | ------------------------------------ |
@@ -41,7 +75,7 @@ HackaFlight es una plataforma para la búsqueda de vuelos, donde los usuarios pu
 | createdAt       | DATETIME     | Fecha de creación                    |
 | modifiedAt      | DATETIME     | Fecha de última modificación         |
 
-### favorites
+⭐ favorites
 
 | Campo         | Tipo         | Descripción                               |
 | ------------- | ------------ | ----------------------------------------- |
@@ -55,7 +89,7 @@ HackaFlight es una plataforma para la búsqueda de vuelos, donde los usuarios pu
 | adults        | TINYINT(5)   | Número de adultos en la búsqueda          |
 | createdAt     | DATETIME     | Fecha de creación del registro            |
 
-### valorations
+💙 ratings
 
 | Campo        | Tipo         | Descripción                          |
 | ------------ | ------------ | ------------------------------------ |
@@ -66,38 +100,22 @@ HackaFlight es una plataforma para la búsqueda de vuelos, donde los usuarios pu
 | comment      | VARCHAR(600) | Comentario sobre la experiencia      |
 | createdAt    | DATETIME     | Fecha de creación                    |
 
-## Endpoints del usuario
+📡 Endpoints principales
+🔹 Usuarios
+✅ POST /api/users/register → Registro de nuevos usuarios.
+✅ POST /api/users/login → Inicio de sesión con JWT.
+✅ GET /api/users/profile → Obtiene la información del usuario autenticado.
 
--   **POST** - [`/api/users/register`] - Crea un nuevo usuario.
--   **PUT** - [`/api/users/validate/:regCode`] - Validación usuario.
--   **POST** - [`/api/users/login`] - Inicia sesión y retorna un token.
--   **POST** - [`/api/users/password`] - Permite cambiar la contraseña.
--   **PUT** - [`/api/users/password/reset`] - Permite enviar un email de recuperación de contraseña.
--   **PUT** - [`/api/users/password/reset/:recoverPassCode`] - Permite cambiar la contraseña con un código.
--   **GET** - [`/api/users/profile`] - Obtiene la información del usuario autenticado.
--   **PUT** - [`/api/users/profile`] - Actualiza el perfil del usuario autenticado.
--   **PUT** - [`/api/users/avatar`] - Actualiza el avatar del usuario autenticado.
--   **POST** - [`/api/users/favorites`] - Guarda un criterio de búsqueda como favorito.
--   **GET** - [`/api/users/favorites`] - Lista los criterios de búsqueda guardados como favoritos.
--   **GET** - [`/api/users/favorites/:favoriteId`] - Obtiene detalles de un criterio de búsqueda favorito.
--   **PUT** - [`/api/users/favorites/:favoriteId`] - Actualiza un criterio de búsqueda favorito.
--   **DELETE** - [`/api/users/favorites/:favoriteId`] - Elimina un criterio de búsqueda favorito.
--   **POST** - [`/api/users/ratings`] - Agregar una valoración a la plataforma.
+🔹 Vuelos
+✅ GET /api/flights/search → Búsqueda de vuelos con filtros avanzados.
+✅ GET /api/flights/details/:id → Detalles de un vuelo específico.
 
-## Endpoints de vuelos
+🔹 Favoritos y reservas
+✅ POST /api/users/favorites → Guardar un criterio de búsqueda.
+✅ GET /api/users/favorites → Listar favoritos guardados.
+✅ POST /api/users/reservations → Registrar una reserva de vuelo.
+✅ GET /api/users/reservations → Obtener todas las reservas de un usuario.
 
--   **GET** - [`/api/flights/search`] - Busca vuelos con filtros de origen, destino y fecha.
--   **GET** - [`/api/flights/filter`] - Obtiene detalles de un vuelo específico.
-
-## Endpoints de valoraciones
-
--   **GET** - [`/api/ratings`] - Listar todas las valoraciones.
--   **GET** - [`/api/ratings/avg`] - Obtien media de todas las valoraciones.
-
-## Endpoints administrador/a
-
--   **GET** - [`/api/admin/users/list`] - Lista todos los usuarios (requiere permisos de administrador).
--   **PATCH** - [`/api/admin/users/:id/:active`] - Habilita / deshabilita un usuario.
--   **DELETE** - [`/api/admin/users/:id/`] - Elimina un usuario de la plataforma.
-
-Este proyecto está desarrollado en **Node.js con Express** y utiliza **MySQL** como base de datos. 🚀
+🚀 Estado del proyecto
+📌 MVP completado.
+📌 Posibles mejoras: Integración de vinculos a las aerolineas, optimización de rendimiento, nuevas APIs.
