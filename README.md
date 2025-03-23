@@ -1,22 +1,38 @@
 ✈️ HackaFlight - Plataforma de búsqueda y gestión de vuelos
+
 HackaFlight es una plataforma web full stack que permite a los usuarios buscar vuelos en tiempo real, guardar búsquedas favoritas y gestionar reservas de manera eficiente. El sistema consume la API de Amadeus para obtener información actualizada de vuelos y está diseñado con un enfoque en rendimiento, seguridad y experiencia de usuario.
 
 📌 Tecnologías utilizadas:
+
 🔹 Frontend: React.js, Tailwind CSS → Interfaz moderna, intuitiva y responsive.
+
 🔹 Backend: Node.js, Express.js → API robusta para la gestión de vuelos.
+
 🔹 Base de datos: MySQL → Almacenamiento estructurado y eficiente.
+
 🔹 Autenticación: JWT, bcrypt → Seguridad en el acceso de usuarios.
+
 🔹 API externa: Amadeus API → Obtención de información de vuelos en tiempo real.
+
 🔹 Metodologías: Scrum, Scrumban → Desarrollo ágil y trabajo en equipo.
 
+
 🚀 Características principales
+
 ✔️ Búsqueda avanzada de vuelos con filtros de origen, destino y fechas.
+
 ✔️ Comparación de precios y aerolíneas en tiempo real.
+
 ✔️ Gestión de reservas con confirmaciones automáticas.
+
 ✔️ Sistema de autenticación seguro con encriptación de contraseñas.
+
 ✔️ Funcionalidad de favoritos para guardar búsquedas recurrentes.
+
 ✔️ Valoraciones de usuarios para evaluar la experiencia en la plataforma.
+
 ✔️ Diseño responsive para una experiencia fluida en todos los dispositivos.
+
 
 
 💻 Dependencias
@@ -50,9 +66,13 @@ HackaFlight es una plataforma web full stack que permite a los usuarios buscar v
     ```
 
 🛢 Modelo de Base de Datos
+
 🔹 Usuarios: Gestión de cuentas, roles y autenticación segura.
+
 🔹 Favoritos: Permite a los usuarios guardar criterios de búsqueda de vuelos.
+
 🔹 Reservas: Administración de vuelos reservados por los usuarios.
+
 🔹 Valoraciones: Sistema de feedback con puntuaciones y comentarios.
 
 
@@ -101,21 +121,37 @@ HackaFlight es una plataforma web full stack que permite a los usuarios buscar v
 | createdAt    | DATETIME     | Fecha de creación                    |
 
 📡 Endpoints principales
+
 🔹 Usuarios
+
 ✅ POST /api/users/register → Registro de nuevos usuarios.
+
 ✅ POST /api/users/login → Inicio de sesión con JWT.
+
 ✅ GET /api/users/profile → Obtiene la información del usuario autenticado.
 
+
 🔹 Vuelos
+
 ✅ GET /api/flights/search → Búsqueda de vuelos con filtros avanzados.
+
 ✅ GET /api/flights/details/:id → Detalles de un vuelo específico.
 
+
 🔹 Favoritos y reservas
+
 ✅ POST /api/users/favorites → Guardar un criterio de búsqueda.
+
 ✅ GET /api/users/favorites → Listar favoritos guardados.
+
 ✅ POST /api/users/reservations → Registrar una reserva de vuelo.
+
 ✅ GET /api/users/reservations → Obtener todas las reservas de un usuario.
 
+
 🚀 Estado del proyecto
+
 📌 MVP completado.
+
 📌 Posibles mejoras: Integración de vinculos a las aerolineas, optimización de rendimiento, nuevas APIs.
+
