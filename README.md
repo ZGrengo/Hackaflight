@@ -69,7 +69,7 @@ HackaFlight es una plataforma web full stack que permite a los usuarios buscar v
 
 A continuación se muestran capturas de pantalla de la plataforma en diferentes dispositivos y funcionalidades:
 
-### 🖥️ Vista Desktop
+### 🖥 Vista Desktop
 
 #### Página de Inicio
 
